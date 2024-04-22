@@ -1,4 +1,8 @@
 
+
+@import url(https://fonts.googleapis.com/css?family=Lato);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css);
+
 body {
     background-color: rgb(255, 255, 255);
     
@@ -64,3 +68,332 @@ video {
      
 }
 */
+
+/*
+.obras_past {
+    filter: grayscale(100%);
+  }
+
+  */
+
+
+  #contenedor-imagen_acerca_de {
+    width: 100%;
+    
+    margin: 0 auto;
+    text-align: center;
+    max-width: 200px
+  }
+
+  .contenedor-imagen_equipo {
+    width: 100%;
+    
+    margin: 0 auto;
+    text-align: center;
+    max-width: 200px
+  }
+
+  .three-step-method-heading{
+
+    text-align: center;
+  }
+  
+  #equipo_container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .person_container {
+    flex: 1;
+  }
+  
+  @media (max-width: 769px) {
+    #equipo_container {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .person_container {
+        flex: 1;
+         
+        margin-bottom: 50px;
+      }
+
+  }
+
+
+  .img_person {
+    border-radius: 50%; /* Para hacer la imagen circular */
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.336); /* Cambia los valores según tu preferencia */
+  }
+ 
+
+  #footer_redes{
+    font-size: 30px;
+    flex-direction: column;
+    background-color: #00000000;
+    color: white;
+  margin-top: 40px;
+    padding-top: 50px;
+    padding-bottom: 70px;
+  }
+ 
+  #siguenos{
+    
+font-family: 'Oswald', sans-serif;
+font-style: normal;
+font-weight: 700;
+font-size: 50px;
+text-align: center;
+text-transform: uppercase;
+letter-spacing: -0.04em;
+color: #000000;
+  
+  }
+
+
+  #instaholder{
+    display:  inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.623);
+    border-radius: 0px;
+    padding: 0px 0px;
+    background-color: rgba(5, 75, 75, 0);
+    color: white;
+     margin-top: 0px;
+     margin-bottom: 40px;
+     padding-bottom: 10px;
+    padding-left: 10px;
+  }
+  #instagra_logo{
+    max-height: 20px;
+   margin-top: 3px;
+   
+  }
+
+  
+  #insta5e{
+    font-size: 20px;
+    line-height: 1.7;
+    letter-spacing: normal;
+    font-weight: 400;
+    color: #ffffff;
+    padding-right: 15px;
+    padding-top: 0;
+    margin-top: 0;
+ 
+  }
+
+
+  
+ 
+  
+
+/*  contactanos */
+.contact_container {
+  display: flex;
+  width: 100vw; /* Ancho de la pantalla */
+  height: auto;
+  background-color: rgba(0, 255, 255, 0);
+  flex-direction:row;
+}
+
+@media (max-width: 768px) {
+  .contact_container {
+    display: flex;
+    width: 100vw; /* Ancho de la pantalla */
+    height: auto;
+    background-color: rgba(6, 114, 114, 0);
+    flex-direction: column;
+  }
+
+  #divider_contact{
+  background-color: #00000000;
+  height: 50px;
+
+  }
+}
+
+.left_contact, .right_contact {
+  flex: 1;
+
+}
+
+
+.left_contact{
+  background-color: rgba(248, 79, 79, 0);
+}
+
+
+ 
+ #upper_holder{
+  background-color: rgba(102, 0, 80, 0);
+  display: flex;
+  justify-content: center; /* Alinear a la izquierda */
+ }
+#contact_holder{
+  background-color: rgba(255, 145, 0, 0);
+  
+}
+
+#contact_direccion, #contact_telefono, #contact_mail{
+  background-color: rgba(240, 248, 255, 0);  
+  display: flex;
+  justify-content: flex-start; /* Alinear a la izquierda */
+
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  margin-bottom: 5px;
+  
+  
+}
+.icon_contact{
+  max-width: 20px;
+  max-height: 20px;
+  margin-right: 10px;
+}
+#title_contactanos{
+  font-family: 'Oswald', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    color: #000;
+
+    
+
+
+}
+
+
+
+#parrafo_contactanos{
+font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: normal;
+    font-weight: 400;
+    color: #5f5f5f;
+    padding-bottom: 30px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+ 
+    margin-left: 20px;
+    margin-right: 20px;
+
+    display: block; /* Convertir el span en un bloque */
+    text-align: left; /* Justificar el texto a la izquierda */
+    background-color: rgba(0, 255, 255, 0);
+
+}
+
+.right_contact{
+  background-color: rgba(0, 255, 34, 0);
+  display: flex;
+  flex-direction: column;
+ width: 100%;
+ padding: 0;
+}
+.container_upper_form {
+  display: flex;
+  flex-direction: column;
+  background-color: #00000000;
+  margin-left: 20px;
+  margin-right: 150px;
+  
+}
+
+@media (max-width: 768px) {
+  .container_upper_form {
+    margin-left: 20px;
+    margin-right: 20px;
+    }
+}
+
+.nombre_form_container,
+.email_form_container,
+.mensaje_form_container {
+  margin-bottom: 10px; /* Espacio entre cada contenedor */
+  background-color: rgba(255, 84, 135, 0);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+
+
+#text_input_name_form, #text_input_email_form, #text_input_message_form {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 16px;
+  color: #000;
+
+   
+  border: 1px solid rgb(192, 190, 190); /* Borde gris predeterminado */
+        transition: border-color 0.3s; /* Agrega una transición suave al cambio de color del borde */
+}
+
+#text_input_name_form:focus, #text_input_email_form:focus, #text_input_message_form:focus {
+  border-color: rgba(0, 0, 0, 0.521); /* Cambia el color del borde a negro cuando está activo */
+}
+
+#text_input_message_form{
+  min-height: 150px;
+}
+
+#error_text_name_form, #error_text_email_form, #error_text_message_form{
+  display: none;
+}
+
+
+.title_input_form{
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #000;
+}
+
+
+.boton-enviar {
+  background-color: black;
+  color: white;
+  border-radius: 0;
+  border: none;
+  padding: 10px 20px; 
+  max-width: 200px;
+}
+
+
+#container_sending{
+  text-align: left;
+  display: none;
+
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.title_form_sending{
+  
+ 
+  font-style: normal;
+  font-weight: 500;
+ 
+  color: #000;
+
+}
+/*   end  contactanos   */

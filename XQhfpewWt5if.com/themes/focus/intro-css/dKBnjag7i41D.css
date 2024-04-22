@@ -1780,7 +1780,7 @@ background: rgba(0, 0, 0, .4);
 /* the button */
 .the-button-wrapper {
 position: relative;
-width: 165px;
+width: 265px;
 height: auto;
 line-height: 1.5;
 padding: 0;
@@ -1794,28 +1794,28 @@ margin: -7px auto 0 auto;
 
 @media all and (min-width: 1920px) {
   .the-button-wrapper {
-    width: 205px;
+    width: 265px;
     margin: -4px auto 0 auto;
   }
 }
 
 @media only screen and (max-width: 640px) {
   .the-button-wrapper {
-    width: 165px;
+    width: 265px;
   }
 }
 
 .the-button,
 .the-button-purchase {
 position: relative;
-font-size: 10px;
+font-size: 20px;
 font-weight: 500;
-text-transform: uppercase;
+ 
 text-decoration: none;
 letter-spacing: 0.10em;
-color: #db0018;
+color: #000000;
 background: none;
-padding: 9px 40px 0 40px;
+ 
 margin-top: 10px;
 -webkit-border-radius: 0;
    -moz-border-radius: 0;
@@ -1827,16 +1827,16 @@ margin-top: 10px;
 @media all and (min-width: 1920px) {
   .the-button,
   .the-button-purchase {
-    font-size: 11px;
+    font-size: 18px;
     letter-spacing: 0.25em;
-	padding: 11px 40px 0 40px;
+	 
   }
 }
 
 @media only screen and (max-width: 640px) {
   .the-button,
   .the-button-purchase {
-    font-size: 10px;
+    font-size: 15px;
 	letter-spacing: 0.10em;
   }
 }
@@ -1859,7 +1859,7 @@ width: 15px;
 height: 38px;
 top: -2px;
 left: -6px;
-border: 1px solid #db0018;
+border: 1px solid rgb(190, 190, 190);
 border-right: none;
 -webkit-transition: all 0.5s linear;
    -moz-transition: all 0.5s linear;
@@ -1894,7 +1894,7 @@ width: 15px;
 height: 38px;
 top: -2px;
 right: -6px;
-border: 1px solid #db0018;
+border: 1px solid rgb(190, 190, 190);
 border-left: none;
 -webkit-transition: all 0.5s linear;
    -moz-transition: all 0.5s linear;
