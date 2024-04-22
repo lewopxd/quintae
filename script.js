@@ -1,7 +1,7 @@
 
 window.onload = function () {
   console.info("hello world");
-
+preventImages();
 };
 
 function submit() {
@@ -184,4 +184,21 @@ function funcionerror(){
 
  var holder = document.getElementById("sending_holder");
  holder.style.display = "none";
+}
+
+
+function preventImages(){
+  // Selecciona todas las imágenes de la página
+var imagenes = document.querySelectorAll('img');
+
+// Itera sobre todas las imágenes y agrega un evento para evitar el menú contextual
+imagenes.forEach(function(imagen) {
+
+  imagen.draggable = false;
+  imagen.addEventListener('contextmenu', function(event) {
+    // Evita que se abra el menú contextual
+    event.preventDefault();
+  });
+});
+
 }
