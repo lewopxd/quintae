@@ -6,7 +6,7 @@
     <title>
         Quinta Esencia || Teatro
     </title>
-
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
     <meta content="Teatro Quinta Esencia" name="description">
     <meta content="Quinta Esencia" name="author">
@@ -26,7 +26,7 @@
     <!-- style start -->
     <link href="../../fonts.css" media="all" rel="stylesheet" type="text/css">
  
-
+    <link href="../../urlimgs.css" media="all" rel="stylesheet" type="text/css">
     <link href="../../XQhfpewWt5if.com/themes/focus/intro-css/iRWavZgnz6SN.css" media="all" rel="stylesheet"
         type="text/css">
     <link href="../../XQhfpewWt5if.com/themes/focus/intro-css/dKBnjag7i41D.css" media="all" rel="stylesheet"
@@ -38,10 +38,14 @@
 
      <!-- Icono de la página -->
      <link rel="icon" href="././images/icon_red.png" type="image/png">
-
+  
 </head>
 
 <body>
+
+
+
+
     <!-- preloader start -->
     <div class="preloader-bg"></div>
     <div id="preloader">
@@ -51,6 +55,11 @@
             </div>
         </div>
     </div><!-- preloader end -->
+
+
+
+  
+
     <!-- navigation start -->
     <nav class="navbar navbar-fixed-top navbar-bg-switch">
         <!-- container start -->
@@ -80,10 +89,10 @@
                     <!-- menu start -->
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a class="page-scroll link-underline-menu active" href="#">Incio</a>
+                            <a class="page-scroll link-underline-menu active" href="#inicio">Incio</a>
                         </li>
                         <li>
-                            <a class="page-scroll link-underline-menu" href="#obras">Obras</a>
+                            <a class="page-scroll link-underline-menu" href="#producciones">Producciones</a>
                         </li>
                         <li>
                             <a class="page-scroll link-underline-menu" href="#acerca_de_nosotros">Acerca de nosotros</a>
@@ -98,8 +107,12 @@
             </div><!-- main navigation end -->
         </div><!-- container end -->
     </nav><!-- navigation end -->
+
+
+ 
+
     <!-- home start -->
-    <div class="upper-page" id="incio">
+    <section class="upper-page" id="inicio">
         <!-- hero bg start -->
         <div class="hero-fullscreen overlay overlay-top-bottom-dark-15">
             <!-- single image start -->
@@ -136,10 +149,10 @@
                 <!-- divider start -->
                 <div class="inner-divider-half"></div><!-- divider end -->
                 <!-- demos launcher start -->
-                <a class="page-scroll" href="#obras">
+                <a class="page-scroll" href="#producciones">
                     <div class="the-button-wrapper fadeIn-element">
                         <div class="the-button-light">
-                            Obras
+                            Producciones
                         </div>
                     </div>
                 </a><!-- demos launcher end -->
@@ -151,7 +164,7 @@
                 <div class="scroll-line"></div>
             </div>
         </div><!-- scroll indicator end -->
-    </div><!-- home end -->
+    </section><!-- home end -->
 
     </div>
     </a><!-- to top arrow end -->
@@ -169,20 +182,24 @@
 
 
 <!-- Winner Start-->
+<section id="winner">
 <div>
     <!-- line start -->
  <div class="the-line" bis_skin_checked="1"></div><!-- line end -->
  <!-- divider start -->
  <div class="inner-divider-half" bis_skin_checked="1"></div><!-- divider end -->
+        
          <img  id="img_winner" src="././images/WINNER_black_png">
-         
+     
  <!-- divider start -->
  <div class="inner-divider-half" bis_skin_checked="1"></div><!-- divider end -->
  
  <!-- line start -->
  <div class="the-line" bis_skin_checked="1"></div><!-- line end -->
      </div>
- 
+    </div>
+
+</section>
      <!-- Winner end-->
 
 
@@ -194,7 +211,8 @@
 
 
     <!-- demos start -->
-    <section id="obras">
+    <section id="producciones">
+        <div class="minimundivider"></div>
         <!-- container start -->
         <div class="container-fluid sections">
 
@@ -203,7 +221,7 @@
                 <div class="col-lg-12">
                     <!-- page title start -->
                     <h2 class="section-heading">
-                        Obras
+                        Producciones
                     </h2><!-- page title end -->
                     <!-- divider start -->
                     <div class="inner-divider-ultra-half"></div><!-- divider end -->
@@ -369,7 +387,7 @@
 
 
     <!-- purchase start -->
-    <section class="section-parallax" id="purchase">
+    <section class="section-parallax" id="comprar">
         <!-- container start -->
         <div class="container-fluid sections">
             <!-- row start -->
@@ -422,6 +440,7 @@
     <!-- about start -->
 
     <section id="acerca_de_nosotros">
+        <div class="minimundivider"></div>
         <!-- container start -->
         <div class="container sections">
 
@@ -486,8 +505,8 @@
 
 
 
-    <!-- three step method start -->
-    <section id="three-step-method">
+    <!-- three step method start   EQUIPO-->
+    <section id="equipo">
         <!-- divider start -->
         <div class="inner-divider"></div><!-- divider end -->
         <!-- container start -->
@@ -512,18 +531,16 @@
             <div class="inner-divider-half"></div><!-- divider end -->
 
         </div><!-- container end -->
-    </section><!-- three step method end -->
-
-
-
-
-
+   
 
 
     <!-- container equipo start  -->
     <div id="equipo_container">
 
-        <!-- person start  -->
+
+        <!--two block container START-->
+  <div class="group_persons_container">
+        <!-- person 1 start  -->
         <div class="person_container">
             <div class="contenedor-imagen_equipo">
                 <img class="img_person" src="././images/camila_circled.png">
@@ -532,9 +549,9 @@
             <h4 class="three-step-method-heading">
                 Camila Bermúdez
             </h4>
-        </div> <!-- person end -->
+        </div> <!-- person 1 end -->
 
-        <!-- person start  -->
+        <!-- person  2 start  -->
         <div class="person_container">
             <div class="contenedor-imagen_equipo">
                 <img class="img_person" src="././images/pau_circled.png">
@@ -543,7 +560,13 @@
             <h4 class="three-step-method-heading">
                 Paula Medina
             </h4>
-        </div> <!-- person end -->
+        </div> <!-- person   2  end -->
+
+    </div>
+          <!--two block container END-->
+
+ <!--two block container START-->
+ <div class="group_persons_container">
 
         <!-- person start  -->
         <div class="person_container">
@@ -567,13 +590,29 @@
             </h4>
         </div> <!-- person end -->
 
+    </div>
+    <!--two block container END-->
+
+
     </div><!-- container equipo end  -->
+
+</section><!-- three step method end -->
+
+
+
+
+
 
 
     <!-- divider start -->
     <div class="inner-divider"></div><!-- divider end -->
 
-    
+
+
+ 
+    <!-- Siguenos start-->
+    <section id="siguenos"> 
+
     <div id="footer_redes">
 <!-- line start -->
 <div class="the-line" bis_skin_checked="1"></div><!-- line end -->
@@ -598,20 +637,105 @@
         </div>
         </a>
 
+  
+
          <!-- divider start -->
     <div class="inner-divider"></div><!-- divider end -->
           <!-- line start -->
 <div class="the-line" bis_skin_checked="1"></div><!-- line end -->
     </div>
 
- 
+
+
+</section> <!-- Siguenos end-->
+
+
+
+  <!-- divider start -->
+  <div class="inner-divider-half" bis_skin_checked="1"></div><!-- divider end -->
+    
+    
+
+
+<!-- three step method start   COLAB-->
+<section id="colab">
+    <!-- divider start -->
+    <div class="inner-divider"></div><!-- divider end -->
+    <!-- container start -->
+    <div class="container sections">
+        <!-- row start -->
+        <div class="row">
+            <!-- col start -->
+            <div class="col-lg-12">
+                <!-- page title start -->
+                <h2 class="section-heading">
+                    Aliados
+                </h2><!-- page title end -->
+                <!-- divider start -->
+                <div class="inner-divider-ultra-half"></div><!-- divider end -->
+                <!-- page subtitle start -->
+                <h2 class="section-subheading">
+                    <span>Y Colaboradores</span>
+                </h2><!-- page subtitle end -->
+            </div><!-- col end -->
+        </div><!-- row end -->
+        <!-- divider start -->
+        <div class="inner-divider-half"></div><!-- divider end -->
+
+    </div><!-- container end -->
+
+
+ <!-- divider start -->
+ <div class="inner-divider"></div><!-- divider end -->
+
+      <!--container colab   start  -->
+
+    <div id="container_colab">
+
+        <div class="row-2-colab">
+<!-- colab1 start-->
+            <div id="colab1" class="colab" >
+            
+              <div id="img_colab1" class="img_colab" onclick="openNewTab('https://www.instagram.com/casa.ladirectriz/')" >  
+              </div>
+              
+            
+
+               <span id="colab1_title"> </span> 
+            </div><!-- colab1 end-->
+
+<!--colab separator start-->
+<div id="separator_colab">
+
+</div><!--colab separator start-->
+
+<!-- colab2 start-->
+            <div id="colab2" class="colab">
+                <div id="img_colab2" class="img_colab" onclick="openNewTab('https://www.instagram.com/artefactoproducciones/')">
+                </div>
+                <span id="colab2_title"></span> 
+            </div>
+  
+
+        </div><!-- colab2 end-->
+
+    </div>  <!-- end container colab start   -->
+
+   <!-- divider start -->
+   <div class="inner-divider"></div><!-- divider end -->
+
+</section><!-- three step method COLABend -->
+
+
+
     <!---
 <div id="container_contactanos">
     <iframe src="././contactanos/" id="iframe_contactanos" frameborder="0"  scrolling="no"></iframe>
   </div>
 -->
 
-
+ <!-- divider start -->
+ <div class="inner-divider-half" bis_skin_checked="1"></div><!-- divider end -->
     <!--conatactanos start -->
 
     <section id="contacto"> 
@@ -759,7 +883,38 @@
   <!-- divider start -->
   <div class="inner-divider"></div><!-- divider end -->
 
-    <script src="././script.js"></script>
+    
+  
+   
+    <!--button flotante star-->
+    <div id="button-flotante-holder" onclick="button_call()">
+    <spanb id="button_text"></span>
+</div> <!--button flotante end-->
+
+ <!--buttons Column flotantes star-->
+     
+     <div id="c_button1">
+       <span></span>Envíanos un Coreo <div id="button1"></div>
+     </div>
+     <div id="c_button2">
+        <span>Escríbenos a whatsapp</span><div id="button2"></div>
+     </div>
+          
+    
+  
+  <!--buttons Column flotantes end-->
+
+
+
+<div id="overlay">
+
+
+    
+</div>
+
+
+
+<script src="././script.js"></script>
 </body>
 
 </html>

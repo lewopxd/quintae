@@ -4,8 +4,16 @@
 
 body {
     background-color: rgb(255, 255, 255);
-    
+  
 }
+
+body.scrolDisabled {
+ position: fixed; 
+  overflow-y: scroll;
+ 
+  
+}
+ 
 #Logo_navbar {
    
     max-height: 50px; /* 10% de la altura original */
@@ -104,11 +112,28 @@ video {
     width: 100%;
   }
   
+  
   .person_container {
     flex: 1;
+     
   }
-  
+  .group_persons_container{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+  } 
+
+  .img_person {
+    border-radius: 50%; /* Para hacer la imagen circular */
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.336); /* Cambia los valores según tu preferencia */
+    max-width: 180px;
+     
+  }
+
   @media (max-width: 769px) {
+
+
     #equipo_container {
         display: flex;
         justify-content: space-between;
@@ -116,20 +141,125 @@ video {
         width: 100%;
       }
       
+      
       .person_container {
         flex: 1;
          
         margin-bottom: 50px;
       }
 
+      .img_person {
+        border-radius: 50%; /* Para hacer la imagen circular */
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.336); /* Cambia los valores según tu preferencia */
+        max-width: 130px;
+         
+      }
   }
 
 
-  .img_person {
-    border-radius: 50%; /* Para hacer la imagen circular */
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.336); /* Cambia los valores según tu preferencia */
+ /*      colab   start*/
+
+ #container_colab{
+  display : flex;
+  background-color: rgba(0, 255, 255, 0);
+  justify-content: space-around;
+  align-items: center;
+
+ }
+ .row-2-colab{
+ 
+  display: flex;
+  justify-content: space-between;
+background-color: #3fdf3900;
+flex-direction: row;
+
+ }
+ .colab{
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(253, 32, 253, 0);
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+ }
+#separator_colab{
+background-color: rgba(0, 255, 255, 0);
+height: 0px;
+}
+
+ /* Estilos base de la tarjeta */
+#colab1 {
+ 
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
+  
+  position: relative;
+  overflow: hidden;
+}
+
+ 
+
+/* Estilos del título */
+#colab1_title {
+  display: block;
+  font-family: 'Raleway', sans-serif;
+    
+    line-height: 1.5;
+    font-style: normal;
+  padding: 10px;
+  font-size: 0px;
+  transition: font-size 0.3s ease; /* Transición suave */
+  color: #333333;
+  text-align: center;
+  font-weight: 550;
+}
+
+ 
+ 
+ .img_colab{
+  background-color: #f8090900;
+  cursor: pointer;
+ }
+
+ @media (max-width: 769px) {
+
+.row-2-colab{
+  flex-direction: column;
+}
+
+#separator_colab{
+  height: 50px;
+}
+
+
+ }
+ #img_colab1{
+ width: 200px;
+ height: 200px;
+ background-image: url("././images/logo_directriz_svg.svg");
+/*background-image: var(--img_url_ladirectriz_svg_css);*/
+background-size: 200px 200px;
+   
+
+ }
+
+ #img_colab2{
+  width: 200px;
+  height: 200px;
+  background-image: url("././images/artefacto.svg");
+ /*background-image: var(--img_url_ladirectriz_svg_css);*/
+ background-size: 200px 200px;
+    
+ 
   }
  
+
+
+/*      colab   end*/
+
+
 
   #footer_redes{
     font-size: 30px;
@@ -200,7 +330,7 @@ color: #000000;
   flex-direction:row;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 769px) {
   .contact_container {
     display: flex;
     width: 100vw; /* Ancho de la pantalla */
@@ -411,19 +541,151 @@ font-size: 14px;
 }
 
  /* lock images */
+ 
+/*end lock images*/
 
-.img {
-  position: relative;
+
+ .minimundivider{
+  width: 100%;
+  height: 5px;
+ }
+
+ @media (max-width: 769px) {
+  .minimundivider{
+    width: 100%;
+    height: 15px;
+    background-color: rgba(0, 255, 255, 0);
+   }
+  
 }
 
-.img::after {
-  content: "";
-  position: absolute;
+
+/*  Boton flotante*/
+#button-flotante-holder {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 20px; /* Ajusta la distancia desde abajo */
+  right: 20px; /* Ajusta la distancia desde la derecha */
+  background-color: rgb(211, 19, 19);
+  color: white;
+   background-image: url(././images/chat2_white.png);
+   background-size: 30px 30px;
+   background-repeat: no-repeat;
+ 
+   background-position: center;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5); /* Ajusta la sombra según sea necesario */
+  cursor: pointer;
+  z-index: 9999; /* Asegura que esté siempre por encima de otros elementos */
+
+ 
+ 
+  transform: translateY(100px); /* Inicialmente fuera de la pantalla */
+  transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Animación de transición más suave */
+
+  opacity: 100%;
+
+}
+
+#button-flotante-holder.visible {
+  transform: translateY(0); /* Movemos hacia arriba para que sea visible */
+}
+
+#c_button1, #c_button2 {
+  width: 200px;
+  height: 50px;
+  position: fixed;
+  bottom: 20px; /* Ajusta la distancia desde abajo */
+  right: 20px; /* Ajusta la distancia desde la derecha */
+  background-color: rgba(211, 19, 19, 0);
+  border: none;
+  border-radius: 3px;
+   
+  cursor: pointer;
+  z-index: 9999; /* Asegura que esté siempre por encima de otros elementos */
+
+ 
+   color: #ffffffb9;
+  transform: translateY(100px); /* Inicialmente fuera de la pantalla */
+  transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Animación de transición más suave */
+
+  opacity: 100%;
+  display: flex;
+  justify-content: flex-end;  
+  text-align: end;
+
+}
+
+#button1, #button2{
+  width: 50px;
+  height: 50px;
+  
+  background-color: rgb(211, 19, 19);
+  margin-left: 15px;
+
+  color: white;
+   background-image: url(././images/whatsapp_white.png);
+   background-size: 30px 30px;
+   background-repeat: no-repeat;
+ 
+   background-position: center;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5); /* Ajusta la sombra según sea necesario */
+  cursor: pointer;
+}
+
+#button1{
+  background-image: url(././images/correo_white.png);
+}
+#c_button1{
+ bottom: 100px; /* Ajusta la distancia desde abajo */ 
+  z-index: 9998; /* Asegura que esté siempre por encima de otros elementos */ 
+  transform: translateY(80px); /* Inicialmente fuera de la pantalla */
+  transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Animación de transición más suave */
+  opacity: 0;
+}
+
+#c_button2{
+  bottom: 180px;
+  z-index: 9998; /* Asegura que esté siempre por encima de otros elementos */ 
+  transform: translateY(160px); /* Inicialmente fuera de la pantalla */
+  transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Animación de transición más suave */
+  opacity: 0;
+ 
+}
+
+#c_button1.visible, #c_button2.visible {
+  transform: translateY(0); /* Movemos hacia arriba para que sea visible */
+  opacity: 100%; /* Hace que el elemento sea transparente */
+   
+}
+
+
+
+
+ 
+section, nav{
+  filter: grayscale(0%);
+  filter: blur(0px);
+}
+
+.filter-div {
+  
+  filter: blur(5px) grayscale(100%); /* Aplica un filtro de desenfoque inicial con un radio de 5px */
+}
+
+ 
+#overlay{
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0); /* Capa transparente */
-
+  height: 150%;
+  background-color: rgba(0, 0, 0, 0.774); /* Negro con un 50% de opacidad */
+  z-index: 9997; /* Por encima del div con z-index 999 */
+  display: none;
 }
-/*end lock images*/
+

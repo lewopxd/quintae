@@ -1,7 +1,17 @@
 
+var scrollTop_var;
+
+var $body = $('body'),
+    scrollDisabled = false,
+    scrollTop;
+
 window.onload = function () {
   console.info("hello world");
 preventImages();
+
+// Establecer el estado inicial (desactivado)
+toggle.activado = true;
+  
 };
 
 function submit() {
@@ -201,4 +211,142 @@ imagenes.forEach(function(imagen) {
   });
 });
 
+}
+
+function instainfo(){   
+}
+ 
+
+function openNewTab(url) {
+  window.open(url, '_blank');
+}
+
+ 
+
+window.addEventListener('scroll', function() {
+
+  var winnerSection = document.getElementById('winner');
+  var divOculto = document.getElementById('button-flotante-holder');
+
+  // Obtener la posición vertical de la parte superior de la sección "Winner"
+  var winnerPosition = winnerSection.getBoundingClientRect().top;
+
+  // Obtener la posición vertical actual del scroll
+  var scrollPosition = window.scrollY ;
+
+  // Mostrar el div oculto si el scroll está más abajo de la sección "Winner"
+  if (scrollPosition > winnerPosition) {
+    divOculto.classList.add('visible');
+     
+  } else {
+    
+    divOculto.classList.remove('visible');
+  }
+});
+
+
+function button_call(){
+
+  const over = document.getElementById("overlay");
+  const currentDisplay = over.style.display;
+  over.style.display = currentDisplay === 'block' ? 'none' : 'block';
+
+toggle();  //funcion para activar y desactivar la barra desplazamiento
+
+}
+
+
+ // Función toggle que alterna entre activar y desactivar
+function toggle() {
+  // Verificar el estado actual y llamar a la función correspondiente
+  if (toggle.activado) {
+    ocultar_screen();
+    scrollDisable();
+    mostrarBotones();
+  } else {
+  mostrar_screen();
+   scrollEnable();
+   ocultarBotones();
+  }
+  
+  // Alternar el estado
+  toggle.activado = !toggle.activado;
+}
+
+function mostrarBotones(){
+   //botones
+var b1 = document.getElementById("c_button1");
+b1.classList.add("visible");
+var b2 = document.getElementById("c_button2");
+b2.classList.add("visible");
+}
+
+
+function ocultarBotones(){
+  var b1 = document.getElementById("c_button1");
+  b1.classList.remove("visible");
+  var b2 = document.getElementById("c_button2");
+  b2.classList.remove("visible");
+}
+
+function mostrar_screen() {
+
+
+
+// Seleccionar todos los elementos <section>
+const secciones = document.querySelectorAll('section');
+const navs = document.querySelectorAll('nav');
+// Iterar sobre cada elemento <section> y agregar la clase deseada
+secciones.forEach(seccion => {
+  seccion.classList.remove('filter-div');
+ 
+});
+navs.forEach(nav => {
+  nav.classList.remove('filter-div');
+     
+});
+
+}
+
+function ocultar_screen() {
+ 
+ 
+// Seleccionar todos los elementos <section>
+const secciones = document.querySelectorAll('section');
+const navs = document.querySelectorAll('nav');
+// Iterar sobre cada elemento <section> y agregar la clase deseada
+secciones.forEach(seccion => {
+  seccion.classList.add('filter-div');
+     
+});
+
+navs.forEach(nav => {
+  nav.classList.add('filter-div');
+     
+});
+ 
+
+
+
+
+}
+
+
+function scrollDisable() {
+   
+  scrollTop = $(window).scrollTop();
+
+  $body.addClass('scrolDisabled')
+      .css({
+      top: -1 * scrollTop
+  });
+  
+}
+
+function scrollEnable() {
+ 
+  $body.removeClass('scrolDisabled');
+    $(window).scrollTop(scrollTop);
+
+  
 }
