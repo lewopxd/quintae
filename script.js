@@ -1,6 +1,8 @@
 
 var scrollTop_var;
 
+var screenisblack=false;
+
 var $body = $('body'),
     scrollDisabled = false,
     scrollTop;
@@ -224,7 +226,7 @@ function openNewTab(url) {
  
 
 window.addEventListener('scroll', function() {
-
+if(!screenisblack){
   var winnerSection = document.getElementById('winner');
   var divOculto = document.getElementById('button-flotante-holder');
 
@@ -242,17 +244,28 @@ window.addEventListener('scroll', function() {
     
     divOculto.classList.remove('visible');
   }
+
+
+}
 });
 
 
 function button_call(){
+ if(!esDispositivoMovil()){
+  hide3button();
+ } 
 
+ try{
   const over = document.getElementById("overlay");
   const currentDisplay = over.style.display;
   over.style.display = currentDisplay === 'block' ? 'none' : 'block';
 
 toggle();  //funcion para activar y desactivar la barra desplazamiento
-
+document.getElementById("button-flotante-holder").classList.toggle('activo');
+ }catch {
+  console.error(e);
+ }
+  
 }
 
 
@@ -263,10 +276,12 @@ function toggle() {
     ocultar_screen();
     scrollDisable();
     mostrarBotones();
+    screenisblack=true;
   } else {
   mostrar_screen();
    scrollEnable();
    ocultarBotones();
+   screenisblack=false;
   }
   
   // Alternar el estado
@@ -279,6 +294,9 @@ var b1 = document.getElementById("c_button1");
 b1.classList.add("visible");
 var b2 = document.getElementById("c_button2");
 b2.classList.add("visible");
+
+var b3 = document.getElementById("c_button3");
+b3.classList.add("visible");
 }
 
 
@@ -287,6 +305,9 @@ function ocultarBotones(){
   b1.classList.remove("visible");
   var b2 = document.getElementById("c_button2");
   b2.classList.remove("visible");
+
+  var b3 = document.getElementById("c_button3");
+  b3.classList.remove("visible");
 }
 
 function mostrar_screen() {
@@ -349,4 +370,105 @@ function scrollEnable() {
     $(window).scrollTop(scrollTop);
 
   
+}
+
+function overlayclick(){
+  document.getElementById("button-flotante-holder").click();
+}
+
+
+function gotowhatsapp(){
+
+  overlayclick();
+  detectarDispositivo();
+}
+
+function esDispositivoMovil() {
+   
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+function detectarDispositivo() {
+  var url1 ="https://wa.me/573214960609?text=Hola%20Quinta%20Esencia%2C%20quisiera%20ponerme%20en%20contacto%20con%20ustedes.";
+  var url2 = "https://web.whatsapp.com/send?phone=573214960609&text=Hola%20Quinta%20Esencia%2C%20quisiera%20ponerme%20en%20contacto%20con%20ustedes.";
+ 
+ 
+  
+
+  if (esDispositivoMovil()) {
+    console.log("La página se está ejecutando en un dispositivo móvil.");
+     
+    window.open(url1, '_blank');
+  } else {
+    console.log("La página se está ejecutando en una computadora.");
+   
+    window.open(url2, '_blank');
+  }
+
+
+}
+
+function gotocall(){
+  //solo funciona en el mobil
+ url_col =  "tel:3214960609";
+url = "tel:+573214960609";
+
+ 
+
+if(isUserFromColombia){
+console.log("from colombia");
+url = url_col;
+}else{
+  console.log("not from colombia");
+}
+
+ if(esDispositivoMovil()){
+  overlayclick();
+  window.open(  url, '_blank');
+ }else{
+
+        
+ }
+}
+function gotomail(){
+
+  
+
+
+ //al parecer solo funciona en safari
+ url_contacts = "data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3A;Contacto%0ATEL%3A+5732149606069%0AEND%3AVCARD";
+ 
+
+ // solo funciona en el mobil
+ url_mail_pref = "mailto:teatro5esencia@gmail.com?subject=Queremos%20ponernos%20en%20contacto&body=Hola%20Quinta%20Esencia"
+  if(esDispositivoMovil()){
+    overlayclick();
+    window.open(  url_mail_pref, '_blank');
+  }else{
+    overlayclick();
+    var seccion = document.getElementById('contacto');
+    seccion.scrollIntoView({ behavior: 'smooth' });
+  }
+
+}
+
+
+function isUserFromColombia(callback) {
+  fetch('http://ip-api.com/json')
+      .then(response => response.json())
+      .then(data => {
+          if (data.countryCode === 'CO') {
+              callback(true);
+          } else {
+              callback(false);
+          }
+      })
+      .catch(error => console.error('Hubo un error:', error));
+}
+
+
+
+
+function hide3button(){
+  document.getElementById("c_button3").style.display = "none";
 }

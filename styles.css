@@ -8,7 +8,7 @@ body {
 }
 
 body.scrolDisabled {
- position: fixed; 
+  position: fixed; 
   overflow-y: scroll;
  
   
@@ -586,14 +586,19 @@ font-size: 14px;
   transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Animación de transición más suave */
 
   opacity: 100%;
+  transition: background-image 1s ease; /* Transición de la imagen de fondo */
 
+}
+#button-flotante-holder.activo {
+  background-image: url('././images/close_white.png'); /* URL de la segunda imagen */
+  background-color: #00000000;
 }
 
 #button-flotante-holder.visible {
   transform: translateY(0); /* Movemos hacia arriba para que sea visible */
 }
 
-#c_button1, #c_button2 {
+#c_button1, #c_button2, #c_button3 {
   width: 200px;
   height: 50px;
   position: fixed;
@@ -607,7 +612,7 @@ font-size: 14px;
   z-index: 9999; /* Asegura que esté siempre por encima de otros elementos */
 
  
-   color: #ffffffb9;
+   color: #ffffffea;
   transform: translateY(100px); /* Inicialmente fuera de la pantalla */
   transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Animación de transición más suave */
 
@@ -618,7 +623,7 @@ font-size: 14px;
 
 }
 
-#button1, #button2{
+#button1, #button2, #button3{
   width: 50px;
   height: 50px;
   
@@ -640,6 +645,10 @@ font-size: 14px;
 #button1{
   background-image: url(././images/correo_white.png);
 }
+
+#button3{
+  background-image: url(././images/llamada-telefonica2_white.png);
+}
 #c_button1{
  bottom: 100px; /* Ajusta la distancia desde abajo */ 
   z-index: 9998; /* Asegura que esté siempre por encima de otros elementos */ 
@@ -657,7 +666,16 @@ font-size: 14px;
  
 }
 
-#c_button1.visible, #c_button2.visible {
+#c_button3{
+  bottom: 260px;
+  z-index: 9998; /* Asegura que esté siempre por encima de otros elementos */ 
+  transform: translateY(240px); /* Inicialmente fuera de la pantalla */
+  transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Animación de transición más suave */
+  opacity: 0;
+ 
+}
+
+#c_button1.visible, #c_button2.visible, #c_button3.visible {
   transform: translateY(0); /* Movemos hacia arriba para que sea visible */
   opacity: 100%; /* Hace que el elemento sea transparente */
    
@@ -687,5 +705,21 @@ section, nav{
   background-color: rgba(0, 0, 0, 0.774); /* Negro con un 50% de opacidad */
   z-index: 9997; /* Por encima del div con z-index 999 */
   display: none;
+ justify-content: center;
+ /* background-image: url(././images/5E_LOGO_minimal_light.png);*/
 }
 
+#onBlack_text{
+
+  position: relative;
+    font-size: 20px;
+    font-weight: 200;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    color: rgb(255, 255, 255);
+    background: none;
+    padding: 9px 40px 0px;
+    margin-top: 10px;
+    border-radius: 0px;
+}
