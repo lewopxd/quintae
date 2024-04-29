@@ -14,10 +14,12 @@ preventImages();
 // Establecer el estado inicial (desactivado)
 toggle.activado = true;
    
-  getUserIPandLocation();
+ 
 
+
+ getUserIPandLocation();
    
-
+ //console.log("is user from colombia:" + isUserFromColombia());
  
   
 };
@@ -459,88 +461,88 @@ function gotomail(){
 }
 
 
-function isUserFromColombia(callback) {
-  fetch('http://ip-api.com/json')
-      .then(response => response.json())
-      .then(data => {
-          if (data.countryCode === 'CO') {
-              callback(true);
-          } else {
-              callback(false);
-          }
-      })
-      .catch(error => console.error('Hubo un error:', error));
+function isUserFromColombia() {
+  return new Promise((resolve, reject) => {
+    fetch('https://ipapi.co/json/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.country === 'CO') {
+                console.log("from colombia");
+                resolve(true);
+            } else {
+              console.log("not from colombia");
+                resolve(false);
+            }
+        })
+        .catch(error => reject(error));
+});
 }
 
-
-
-
+ 
 function hide3button(){
   document.getElementById("c_button3").style.display = "none";
 }
 
 
 
-
+ 
  
 
 
- 
 function getUserIPandLocation() {
-  fetch('http://ip-api.com/json')
+  fetch('https://ipapi.co/json')
       .then(response => response.json())
       .then(data => {
           // el objeto "data" devuelto contiene mucha información útil. 
-
+          // console.log(response);
           var date= obtenerFechaGMTmenos5();
-          var time = obtenerHoraGMTmenos5();
+          var time = "(GMT-5,BOG) "+obtenerHoraGMTmenos5();
 
-          let ip = data.query; // esto es la IP
+          let ip = data.ip; // esto es la IP
           let city = data.city; // esto es la ciudad
-          let region = data.regionName; // esto es la región
-          let country = data.country; // esto es el país 
-          let lat = data.lat;
-          let long = data.lon;
+          let region = data.region; // esto es la región
+          let country = data.country_name; // esto es el país 
+         
+          let lat = data.latitude;
+          let long = data.longitude;
           let url_map = "https://www.google.com/maps/?q="+lat+","+long;
 
-          // puedes llamar al callback con estos datos
+          let browser = getBrowserInfo();
+          let os = getOSInfo();
+          let device = getDeviceInfo();
+
 /*
-         console.log(date); 
-         console.log(time);
-         console.log(ip);
-         console.log(city);
-         console.log(region);
-         console.log(country);
-         console.log(lat);
-         console.log(long);
-         console.log(url_map);
-       */ 
-
-      
-         
+          
+          console.log(ip);
+          console.log(city);
+          console.log(region);
+          console.log(country);
+          console.log(lat);
+          console.log(long);
+          console.log(url_map);
+          console.log(".....");      
         
-
-         postData(date, time, ip, city, region, country, lat, long, url_map);
+*/
+         postData(date, time, ip, city, region, country, lat, long, url_map, browser, os, device);
 
       })
       .catch(error => console.error('Hubo un error:', error));
 
     }
 
- 
-
+  
 
     // La función recibe date y time como argumentos
-async function postData(date, time, ip, city, region, country, lat, long, url_map ) {
+async function postData(date, time, ip, city, region, country, lat, long, url_map, browser, os, device ) {
   try{
 
     
     
   // Preparando los datos a enviar
-  let data = { DATE: date, TIME: time , IP: ip, CITY: city,	REGION: region,	COUNTRY: country,	LAT: lat,	LONG: long,	URL_MAP: url_map };
+  let data = { DATE: date, TIME: time , IP: ip, CITY: city,	REGION: region,	COUNTRY: country,	LAT: lat,	LONG: long,	URL_MAP: url_map, BROWSER: browser, OS: os, DEVICE: device };
   
   // Ejecutando el POST
-  let response = await fetch('https://script.google.com/macros/s/AKfycbyO-isHfF-g0iwYPShwHePpuuq0WCzYethONHDiZqtJvNkpOVY9I0Z_XQSvNzgY52LM/exec', {
+  let response = await fetch('https://script.google.com/macros/s/AKfycbwhemyScE-37d4Za0y2s-8BReelAEZCQEaeU2ewvWAv6o4XxVlcueIBBlM0q8EutZfplg/exec', {
     method: 'POST', 
     mode: 'no-cors', 
     cache: 'no-cache', 
@@ -594,41 +596,78 @@ function doPost(e){
 
 // obtener fecha 
 function obtenerFechaGMTmenos5() {
-  // Obtener la fecha actual en UTC
-  const fechaActual = new Date();
+   // Crear un objeto Date
+   var date = new Date(); 
 
-  // Ajustar la zona horaria a GMT-5 (hora estándar de Colombia)
-  fechaActual.setUTCHours(fechaActual.getUTCHours() - 5);
+   // Configurar la zona horaria a GMT-5
+   var options = { 
+       timeZone: "America/Bogota", 
+       year: 'numeric', 
+       month: '2-digit',
+       day: '2-digit'
+   };
 
-  // Formatear la fecha en formato legible
-  const options = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    timeZone: 'America/Bogota' // Hora estándar de Colombia
-  };
-
-  return fechaActual.toLocaleString('es-CO', options);
+   // Devolver la fecha en formato yyyy/mm/dd
+   return date.toLocaleDateString("es-CO", options);
 }
 
 //    obtener hora
 
 function obtenerHoraGMTmenos5() {
-  // Obtener la hora actual en UTC
-  const horaActual = new Date();
+   // Crear un objeto Date
+   var date = new Date(); 
 
-  // Ajustar la zona horaria a GMT-5 (hora estándar de Colombia)
-  horaActual.setUTCHours(horaActual.getUTCHours() - 5);
+   // Configurar la zona horaria a GMT-5
+   var options = { 
+       timeZone: "America/Bogota", 
+       hour: '2-digit', 
+       minute: '2-digit', 
+       second: '2-digit' 
+   };
 
-  // Formatear la hora en formato legible
-  const options = {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-    timeZone: 'America/Bogota' // Hora estándar de Colombia
-  };
-
-  return horaActual.toLocaleString('es-CO', options);
+   // Devolver la hora en formato hh:mm:ss
+   return date.toLocaleTimeString("es-CO", options);
 }
 
+
+function getBrowserInfo() {
+  var ua = navigator.userAgent, tem, 
+  M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+  if(/trident/i.test(M[1])){
+      tem =  /\brv[ :]+(\d+)/g.exec(ua) || [];
+      return 'IE, V.' + (tem[1] || '');
+  }
+  if(M[1]=== 'Chrome'){
+      tem = ua.match(/\bOPR|Edge\/(\d+)/)
+      if(tem != null) return 'Nombre: Opera, Versión: ' + tem[1];
+  }   
+  M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+  if((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1]);
+  return '' + M[0] + ', V.' + M[1];
+}
+
+function getOSInfo() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  if (userAgent.indexOf('windows') !== -1) return 'Windows';
+  if (userAgent.indexOf('macintosh') !== -1) return 'Macintosh';
+  if (userAgent.indexOf('ipad') !== -1) return 'iPad';
+  if (userAgent.indexOf('iphone') !== -1) return 'iPhone';
+  if (userAgent.indexOf('ipod') !== -1) return 'iPod';
+  if (userAgent.indexOf('android') !== -1) return 'Android';
+  if (userAgent.indexOf('linux') !== -1) return 'Linux';
+  return 'Unknown';
+}
+
+function getDeviceInfo() {
+var device = "Unknown";
+var agent = navigator.userAgent.toLowerCase();
+
+if(agent.indexOf("android") >= 0) device = "Android";
+if(agent.indexOf("iphone") >= 0) device = "iPhone";
+if(agent.indexOf("ipad") >= 0) device = "iPad";
+if(agent.indexOf("windows phone") >= 0) device = "Windows Phone";
+if(agent.indexOf("windows nt") >= 0) device = "Windows PC";
+if(agent.indexOf("macintosh") >= 0) device = "Macintosh";
+
+return device;
+}
