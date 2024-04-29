@@ -698,18 +698,52 @@ section, nav{
 }
 
  
-#overlay{
+#overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 150%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.774); /* Negro con un 50% de opacidad */
   z-index: 9997; /* Por encima del div con z-index 999 */
   display: none;
- justify-content: center;
- /* background-image: url(././images/5E_LOGO_minimal_light.png);*/
+  justify-content: center;
+  align-items: center; /* Centrado vertical */
 }
+
+#qr_call_card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  width: 320px;
+  height: 320px;
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); /* Sombra */
+  opacity: 0; /* Inicialmente invisible */
+  transition: opacity 0.5s ease; /* Transición suave de 0.5 segundos */
+}
+
+#qr_call_card.active {
+  opacity: 1; /* Mostrar tarjeta con opacidad completa */
+}
+
+
+#qr_call_card_img {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+   
+  width: 300px;
+  height: 300px;
+background-image: url(././images/5E_CONTACT_qr-code_LOGO.svg);
+background-size: 300px 300px;
+ 
+}
+
+
+
 
 #onBlack_text{
 

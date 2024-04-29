@@ -259,8 +259,9 @@ if(!screenisblack){
 
 
 function button_call(){
+  
  if(!esDispositivoMovil()){
-  hide3button();
+  //hide3button();
  } 
 
  try{
@@ -286,10 +287,18 @@ function toggle() {
     mostrarBotones();
     screenisblack=true;
   } else {
+       let cardx = document.getElementById("qr_call_card");
+       if (cardx.classList.contains('active')) {
+        cardx.classList.remove("active");
+       }else{
+
+       }
+    
   mostrar_screen();
    scrollEnable();
    ocultarBotones();
    screenisblack=false;
+   
   }
   
   // Alternar el estado
@@ -386,7 +395,7 @@ function overlayclick(){
 
 
 function gotowhatsapp(){
-
+  document.getElementById("qr_call_card").classList.remove("active");
   overlayclick();
   detectarDispositivo();
 }
@@ -423,6 +432,8 @@ url = "tel:+573214960609";
 
  
 
+ 
+
 if(isUserFromColombia){
 console.log("from colombia");
 url = url_col;
@@ -435,12 +446,20 @@ url = url_col;
   window.open(  url, '_blank');
  }else{
 
+
+  let card = document.getElementById("qr_call_card");
+
+  if (card.classList.contains('active')) {
+  document.getElementById("qr_call_card").classList.remove("active");
+  }else{
+    document.getElementById("qr_call_card").classList.add("active");
+  }
         
  }
 }
 function gotomail(){
 
-  
+  document.getElementById("qr_call_card").classList.remove("active");
 
 
  //al parecer solo funciona en safari
