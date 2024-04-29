@@ -13,6 +13,12 @@ preventImages();
 
 // Establecer el estado inicial (desactivado)
 toggle.activado = true;
+   
+  getUserIPandLocation();
+
+   
+
+ 
   
 };
 
@@ -472,3 +478,157 @@ function isUserFromColombia(callback) {
 function hide3button(){
   document.getElementById("c_button3").style.display = "none";
 }
+
+
+
+
+ 
+
+
+ 
+function getUserIPandLocation() {
+  fetch('http://ip-api.com/json')
+      .then(response => response.json())
+      .then(data => {
+          // el objeto "data" devuelto contiene mucha información útil. 
+
+          var date= obtenerFechaGMTmenos5();
+          var time = obtenerHoraGMTmenos5();
+
+          let ip = data.query; // esto es la IP
+          let city = data.city; // esto es la ciudad
+          let region = data.regionName; // esto es la región
+          let country = data.country; // esto es el país 
+          let lat = data.lat;
+          let long = data.lon;
+          let url_map = "https://www.google.com/maps/?q="+lat+","+long;
+
+          // puedes llamar al callback con estos datos
+/*
+         console.log(date); 
+         console.log(time);
+         console.log(ip);
+         console.log(city);
+         console.log(region);
+         console.log(country);
+         console.log(lat);
+         console.log(long);
+         console.log(url_map);
+       */ 
+
+      
+         
+        
+
+         postData(date, time, ip, city, region, country, lat, long, url_map);
+
+      })
+      .catch(error => console.error('Hubo un error:', error));
+
+    }
+
+ 
+
+
+    // La función recibe date y time como argumentos
+async function postData(date, time, ip, city, region, country, lat, long, url_map ) {
+  try{
+
+    
+    
+  // Preparando los datos a enviar
+  let data = { DATE: date, TIME: time , IP: ip, CITY: city,	REGION: region,	COUNTRY: country,	LAT: lat,	LONG: long,	URL_MAP: url_map };
+  
+  // Ejecutando el POST
+  let response = await fetch('https://script.google.com/macros/s/AKfycbyO-isHfF-g0iwYPShwHePpuuq0WCzYethONHDiZqtJvNkpOVY9I0Z_XQSvNzgY52LM/exec', {
+    method: 'POST', 
+    mode: 'no-cors', 
+    cache: 'no-cache', 
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+     
+    body: new URLSearchParams(data).toString() 
+  });
+  //imprimiendo respuesta del servidor
+ 
+//console.log("se realizo intento de post  a gscript");
+}catch{
+  console.error("No fue posible enviar los datos a gscript");
+}
+}
+
+
+/*  
+
+// funcion de google script
+
+function doPost(e){
+   
+   
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName('sheet1'); 
+
+    var date = e.parameter.DATE;
+    var time = e.parameter.TIME;
+    var ip = e.parameter.IP;
+    var city = e.parameter.CITY;
+    var region = e.parameter.REGION;
+    var country = e.parameter.COUNTRY;
+    var lat = e.parameter.LAT;
+    var long = e.parameter.LONG;
+    var url_map = e.parameter.URL_MAP;
+    
+    
+    sheet.appendRow([date, time, ip, city, region, country, lat, long, url_map]);
+  
+ 
+  
+}
+
+*/
+ 
+
+
+
+// obtener fecha 
+function obtenerFechaGMTmenos5() {
+  // Obtener la fecha actual en UTC
+  const fechaActual = new Date();
+
+  // Ajustar la zona horaria a GMT-5 (hora estándar de Colombia)
+  fechaActual.setUTCHours(fechaActual.getUTCHours() - 5);
+
+  // Formatear la fecha en formato legible
+  const options = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    timeZone: 'America/Bogota' // Hora estándar de Colombia
+  };
+
+  return fechaActual.toLocaleString('es-CO', options);
+}
+
+//    obtener hora
+
+function obtenerHoraGMTmenos5() {
+  // Obtener la hora actual en UTC
+  const horaActual = new Date();
+
+  // Ajustar la zona horaria a GMT-5 (hora estándar de Colombia)
+  horaActual.setUTCHours(horaActual.getUTCHours() - 5);
+
+  // Formatear la hora en formato legible
+  const options = {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZone: 'America/Bogota' // Hora estándar de Colombia
+  };
+
+  return horaActual.toLocaleString('es-CO', options);
+}
+
