@@ -1,0 +1,302 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+
+    height:  100%;
+    overflow-x: hidden;
+}
+
+body{
+    background-color: rgb(255, 255, 255);
+}
+
+.full-screen-div {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   /* background-color: rgba(173, 216, 230, 0);
+    background-image: url(/images/SINGLE-bg.jpg);*/
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; /* Centra la imagen */
+    background-color: #fff;
+}
+#first-page{
+     
+    background-image: url(/images/SINGLE-bg.jpg);
+}
+.full-screen-div-capa {
+    width: 100%;
+    height: 100%;
+   /* background-color: rgba(0, 0, 0, 0.753);*/ 
+   background-color: rgb(255, 255, 255);
+   
+}
+#image-capa{
+    background-color: rgba(0, 0, 0, 0.753); 
+}
+
+.full-container{
+    width: 100%;
+    height: 100%;
+    
+   /* background-color: rgba(0, 0, 0, 0.753);*/ 
+   background-color: rgba(255, 255, 255, 0);
+}
+ 
+.grid-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* Filas para header, main y footer */
+    height: 100%; /* Asegura que el contenedor ocupe toda la altura de la pantalla */
+}
+
+.header-container {
+    grid-row: 1; /* Ubica el header en la primera fila */
+    background-color: rgba(240, 128, 128, 0);
+    text-align: center;
+    padding: 0px;
+    height: 40px;
+}
+
+ 
+.main-container {
+    grid-area: main;
+    background-color: rgba(144, 238, 144, 0);
+    display: flex;
+    justify-content: center; /* Centra horizontalmente el main-inner-container */
+    align-items: center; /* Centra verticalmente el main-inner-container */
+    color: black;
+}
+
+
+.main-inner-container {
+    width: 500px;
+    height: 100%;
+    background-color: rgba(255, 255, 224, 0);
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-1-container {
+    flex: 0 0 40%; /* Ocupa el 20% del alto del parent */
+    background-color: rgba(173, 216, 230, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-2-container {
+    flex: 0 0 60%; /* Ocupa el 80% del alto del parent */
+    background-color: rgba(240, 128, 128, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-container {
+    grid-row: 3; /* Ubica el footer en la tercera fila */
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 0px;
+    height: 30px;
+    color: #f5f5f5c4;
+    font-size: small;
+    background-color: #1d1d1d;
+    padding-top: 5px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 100px 1fr 100px;
+    grid-template-areas: 
+        "header header header"
+        "main main main"
+        "footer footer footer";
+}
+
+.header-container {
+    grid-area: header;
+}
+
+.main-container {
+    grid-area: main;
+}
+
+.footer-container {
+    grid-area: footer;
+}
+
+
+/*------------[ CARD ]---------------*/
+
+
+.matrix {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 40px);
+    gap: 5px;
+    max-width: 100%;
+    max-height: 100%;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.matrix-numero-container{
+    width: 40px;
+    height: 40px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+   
+    
+    position: relative;
+
+}
+.matrix-numero,
+.matrix-numero-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.matrix-numero{
+    border: 1px solid #000;
+    border-radius: 20%;
+}
+.matrix-numero-img {
+   
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+   
+}
+.matrix-numero.vendido{
+    border: 1px solid #2b2b2b44;
+    background-color: rgba(0, 255, 255, 0);
+     
+}
+.matrix-numero-img.vendido1{
+    background-image: url(../../images/coin_leo.png);
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+}
+.matrix-numero-img.vendido2{
+    background-image: url(../../images/coin_paula.png);
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+}
+.matrix-numero-img.vendido3{
+    background-image: url(../../images/coin_nico.png);
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+}
+.matrix-numero-img.vendido4{
+    background-image: url(../../images/coin_cami.png);
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+}
+.matrix-numero-img.vendido0{
+    background-image: url(../../images/coin.png);
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+}
+.matrix-numero-text {
+    font-size: 16px;
+     
+}
+.matrix-numero-text.vendido {
+   color: #2b2b2b44;
+     
+}
+/*Diseño pagina 1*/
+#container-page1{
+    background-color: rgba(0, 255, 255, 0);
+    position:  relative;
+ 
+    align-items: center;
+    justify-content: center;
+    
+}
+#page-1-title{
+    bottom: 150px;
+    position: absolute;
+    font-family: 'Oswald', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 115px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin: -14px auto -5px auto;
+    width: 100%;
+    line-height: 100%;
+    z-index: 1;
+    background-color: #00000000;
+}
+
+/*---------[ new Card ]----------*/
+
+
+/*---------[ Wide screen ]----------*/
+@media (min-width: 768px) {
+        body{
+            background-color: rgb(58, 58, 58);
+        }
+
+
+        .main-inner-container {
+            width: 60%;
+           
+        }
+}
+
+/*---------[ Mobile screen ]----------*/
+@media (max-width: 769px) {
+    body{
+        background-color: rgb(255, 255, 255);
+    }
+ .main-container{
+    height: fit-content;
+ }
+ .content-2-container{
+    height: fit-content;
+ }
+ .matrix{
+    margin-top: 20px;
+    margin-bottom: 20px;
+ }
+    .main-inner-container {
+        width: 100%;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    #page-1-title{
+        font-size: 65px;
+       
+    font-style: normal;
+    font-weight: 700;
+     
+    
+    }
+}

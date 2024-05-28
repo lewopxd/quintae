@@ -1,0 +1,706 @@
+{
+    "boletas": [
+      {
+        "numero": "00",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "01",
+        "vendido": true,
+        "nombre": "alguien",
+        "telefono": "3214960060",
+        "responsable": "leo"
+      },
+      {
+        "numero": "02",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "03",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "04",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "05",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "06",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "07",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "08",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "09",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "10",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "11",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "12",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "13",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "14",
+        "vendido": true,
+        "nombre": "Camilo Merchán",
+        "telefono": "3214965987",
+        "responsable": "paula"
+      },
+      {
+        "numero": "15",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "16",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "17",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "18",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "19",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "20",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "21",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "22",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "23",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "24",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "25",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "26",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "27",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "28",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "29",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "30",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "31",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "32",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "33",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "34",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "35",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "36",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "37",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "38",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "39",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "40",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "41",
+        "vendido": true,
+        "nombre": null,
+        "telefono": null,
+        "responsable": "nico"
+      },
+      {
+        "numero": "42",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "43",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "44",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "45",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "46",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "47",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "48",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "49",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "50",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "51",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "52",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "53",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "54",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "55",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "56",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "57",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "58",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "59",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "60",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "61",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "62",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "63",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "64",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "65",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "66",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "67",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "68",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "69",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "70",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "71",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "72",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "73",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "74",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "75",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "76",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "77",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "78",
+        "vendido": true,
+        "nombre": null,
+        "telefono": null,
+        "responsable": "cami"
+      },
+      {
+        "numero": "79",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "80",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "81",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "82",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "83",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "84",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "85",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "86",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "87",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "88",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "89",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "90",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "91",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "92",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "93",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "94",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "95",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "96",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "97",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "98",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      },
+      {
+        "numero": "99",
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
+      }
+    
+    ]
+  }
+  
