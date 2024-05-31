@@ -4,13 +4,13 @@ var filedata = null;
 var newfiledata = null;
 var hidex = true;
 var al =  Math.floor(Math.random() * (3300 - 2100 + 1)) + 2100;
-var timeToLoad =0;
+var timeToLoad =2000;
 var vector_selled = [];
 var vector_No_selled = [];
 var ticketsToBuy = 1; //1 si se usa selector de cantidad de tiquetes
 var vector_tickets_selected = [];
 var maxTicketsToBuy  = 100;
-var testingapp = true;
+var testingapp = false;
 var valueTicket = 25000;
 var msgBuilder = "";
 var firstAcceptClick = false;
@@ -60,7 +60,7 @@ function setLimitInput(){
   setTimeout(() => {
   var input = document.getElementById("n-tickets");
   var vec = vector_No_selled;
-  console.log(vec.length); 
+  
 
   input.setAttribute("max", (vector_No_selled.length-1));
   input.setAttribute("min", (1));
@@ -152,7 +152,7 @@ function manageClick(i){
    }
    
 
-   console.log(vector_tickets_selected);
+ 
 
   let div = document.getElementById("matrix-numero-"+i);
   let div_T = document.getElementById("matrix-numero-text-"+i);
@@ -167,7 +167,7 @@ function manageClick(i){
    vector_tickets_selected = vector_tickets_selected.filter(function(item) {
     return item !== i;
   });
-   console.log(vector_tickets_selected);
+ 
   }else{
 
     
@@ -196,18 +196,18 @@ telefono = boleta.telefono;
      if(hidex){
         nombre = formatString (nombre,1);
        }
-       nom.innerText = nombre;
+       nom.textContent = nombre;
    }else{
-    nom.innerText = "Nombre:";
+    nom.textContent = "Nombre:";
    }
 
    if(telefono!=null && num){
     if(hidex){
-        telefono = formatString (telefono,2);
+        telefono = "Tel: "+formatString (telefono,1);
        }
-    tel.innerText = telefono;
+    tel.textContent = telefono;
   }else{
-   tel.innerText = "Teléfono:";
+   tel.textContent = "Teléfono:";
   }
  
 }
@@ -520,7 +520,7 @@ function ticketsToBuyChanged(){
     
     if(vector_tickets_selected.length>0){
    vector_tickets_selected = [];
-   console.log(vector_tickets_selected);
+   
      clearAll();
       testButtonComprar();
     }
@@ -551,7 +551,7 @@ function testButtonComprar(){
   let el = document.getElementById("button-buy");
 
   let selected = vector_tickets_selected.length
- console.log("selected: "+selected + "       from: "+ ticketsToBuy);
+ 
   if(selected<1){
      el.classList.add("desactive");
      r=false;
@@ -611,11 +611,15 @@ document.getElementById('accept-button').addEventListener('click', function() {
    document.getElementById("modal-content").style.display = "block";
    document.getElementById("modal-title").style.display = "none";
 
+   document.getElementById("modal-buttons").style.flexDirection = "row-reverse";
+
+
    firstAcceptClick = true;
   }else{
       document.getElementById("cancel-button").click();
       document.getElementById("modal-title").style.display = "block";
       enviarWp();
+      document.getElementById("modal-buttons").style.flexDirection = "row";
       firstAcceptClick = false;
   }
 
@@ -628,6 +632,7 @@ document.getElementById('cancel-button').addEventListener('click', function() {
   overlay.style.display = "none";
   document.getElementById("modal-content").style.display  = "none";
   document.getElementById("modal-title").style.display = "block";
+  document.getElementById("modal-buttons").style.flexDirection = "row";
   firstAcceptClick=false;
 });
 
