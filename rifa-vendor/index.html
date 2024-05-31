@@ -25,17 +25,16 @@
 
 
         <!-- style start -->
-        <link href="../../fonts.css" media="all" rel="stylesheet" type="text/css">
-    <link href="../../rifa/style.css" media="all" rel="stylesheet" type="text/css">
-    <link href="../../rifa/card.css" media="all" rel="stylesheet" type="text/css">
+        <link href="fonts.css" media="all" rel="stylesheet" type="text/css">
+    <link href="style.css" media="all" rel="stylesheet" type="text/css">
+    <link href="card.css" media="all" rel="stylesheet" type="text/css">
 </head>
 
 
 <body>
-  
   <div id="overlay">
     <div class="modal-card" id="modal-card-2">
-     <div id="modal-title"><span id="modal-title-a" >Comprar ticket:</span>  <span id="modal-title-b" >   </span></div> 
+     <div id="modal-title"><span id="modal-title-a" >ticket:</span>  <span id="modal-title-b" >   </span>?</div> 
      <div id="modal-content">
       <p id="p-tickets"><span id="tickets-card"></span><span id="COP">.COP</span></p>
       <p id="p-ticketsN"><span id="tickets-card-N"></span></p>
@@ -43,34 +42,47 @@
       <p id="p-nequi"> <span id="nequi-card">Puedes realizar el pago a través de Nequi, daviplata o transfiYá al número:</span> <span id="number-nequi-card">321 496 06 09</span></p>
       <p id="p-nequi2"><span>haz click en el botón aceptar para continuar en nuestro chat de whatsapp.</span></p> 
        </div> 
+       <div id="modal-content2">
+        <div id="modal-content2-innerContainer">
+           <!-- Fila 0 -->
+           <div id="content2-Tickets-div">
+            <span id="content2-Tickets">Ticket: </span>   <span id="content2-Tickets-value"> </span>
+             
+        </div>
+          <!-- Fila 1 -->
+          <div id="content2-Nombre-div">
+              <span id="content2-Nombre">Nombre: </span>
+              <input type="text" id="content2-Nombre-input" class="content2-input">
+          </div>
+          <!-- Fila 2 -->
+          <div id="content2-Numero-div">
+              <span id="content2-Numero">Número: </span>
+              <input type="text" id="content2-Numero-input"  class="content2-input">
+          </div>
+          <!-- Fila 3 -->
+          <div id="content2-Vendedor-select-div">
+              <span>Vendedor: </span>
+              <select id="content2-Vendedor-select">
+                  <option value="paula">paula</option>
+                  <option value="nico">nico</option>
+                  <option value="cami">cami</option>
+                  <option value="leo">leo</option>
+              </select>
+          </div>
+          <!-- Fila 5 -->
+          <div id="content2-Vendedor-sure">
+            <span>¿Está seguro?</span>
+          </div>
+      </div>
+         </div> 
      <div class="modal-buttons" id="modal-buttons">
           <button id="accept-button">Aceptar</button>
           <button id="cancel-button">Cancelar</button>
       </div>
   </div>
-  </div>  
-  <div id="overlay-secur" >
-     
-      <div class="card-secur">
-          <p>¿Ingresar a modo vendedor?</p>
-          <button class="button button-accept" id="btn-accpet-secur">Aceptar</button>
-          <button class="button button-cancel" id="btn-cancel-secur">Cancelar</button>
-      </div>
+
    
-  </div>
-  <div id="overlay-secure-pswd">
-    <div class="overlay-secure-pswd-card" id="overlay-secure-pswd-card-id">
-        <label for="overlay-secure-pswd-input">Password:</label>
-        <input type="password" id="overlay-secure-pswd-input" class="overlay-secure-pswd-input">
-        <div>
-            <button class="overlay-secure-pswd-button overlay-secure-pswd-button-accept" id="btn-accept-pswd">Aceptar</button>
-            <button class="overlay-secure-pswd-button overlay-secure-pswd-button-cancel" id="btn-cancel-pswd">Cancelar</button>
-        </div>
-    </div>
-</div>
-  <div id="overlay-frame" >
-    <iframe id="frm"></iframe>
-  </div>
+  </div>  
     <section id="inicio">
     <div class="full-screen-div" id="first-page">
         <div class="full-screen-div-capa" id="image-capa">
@@ -108,6 +120,7 @@
               <span>DONACIONES:&nbsp;</span><span>&nbsp;- 3214960609 &nbsp;</span> <div id="nequi-icon"></div> <span>&nbsp;|&nbsp;</span>
                              <div id="davi-icon"></div> <span> </span> 
                             </div>
+                            <div banner2-donaciones-inner> <span>Modo vendedor</span></div>
                             </div>
             <div class="main-container">
               
@@ -144,7 +157,7 @@
                                   
                                 </div>
                                 <div class="card cardRight">
-                                  <div class="eye" id="eye-go"></div>
+                                  <div class="eye"></div>
                                   <div class="number">
                                     <h3 id="big-number-red">01</h3>
                                     <div class="number-contain">
@@ -162,7 +175,7 @@
 
                         </div>
                         <div class="content-2-container">
-                          <div id="bar-upper"><span>Tickets a comprar: </span>
+                          <div id="bar-upper"><span>Tickets a vender: </span>
                             <button id="less-tickets">&lt;</button>
                           <input type="number" id="n-tickets" value="1" pattern="[0-9]*" oninput="this.value = Math.max(1, this.value)" readonly> 
                           <button id="more-tickets">&gt;</button>
@@ -170,7 +183,7 @@
                             <option value="1">1</option>
                         </select>
                           </div>
-                         <div id="upper-text-container"><span id="upper-text"> Selecciona tu número:</span></div>
+                         <div id="upper-text-container"><span id="upper-text"> Selecciona el número:</span></div>
                           <div class="matrix" id="matrix"></div>
                           
                         </div>
@@ -179,7 +192,7 @@
                                     <span>Probar suerte</span>
                                   </div>
                                   <div id="button-buy">
-                                    <span>Comprar</span>
+                                    <span>Guardar</span>
                                   </div>
                         </div>
                     </div>
@@ -197,10 +210,8 @@
     </div>
 
 </section>
-
-
-<button id="botonSuperiorDerecha">x</button>
-    <script src="../../rifa/app.js"></script>
+    <script type="module" src="app.js"></script>
+    <script type="module" src="app2.js"></script>
 </body>
 
 

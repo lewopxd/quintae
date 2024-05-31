@@ -6,15 +6,18 @@
 }
 :root {
     --color-red: #e84c3d;
+    --color-black : rgb(22, 22, 22);
+    --color-font1 : white;
 }
 html, body {
 
     height:  100%;
     overflow-x: hidden;
+     color: var(--color-font1);;
 }
 
 body{
-    background-color: rgb(255, 255, 255);
+    background-color: var(--color-black);
 }
 
 .full-screen-div {
@@ -28,21 +31,21 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center; /* Centra la imagen */
-    background-color: #fff;
+    background-color: var(--color-black);
 }
 #first-page{
      
-    background-image: url(/images/SINGLE-bg.jpg);
+    background-image: url(SINGLE-bg.jpg);
 }
 .full-screen-div-capa {
     width: 100%;
     height: 100%;
    /* background-color: rgba(0, 0, 0, 0.753);*/ 
-   background-color: rgb(255, 255, 255);
+   background-color: var(--color-black);
    
 }
 #image-capa{
-    background-color: rgba(0, 0, 0, 0.753); 
+    background-color: var(--color-black);
 }
 
 .full-container{
@@ -61,7 +64,7 @@ body{
 
 .header-container {
     grid-row: 1; /* Ubica el header en la primera fila */
-    background-color: rgba(240, 128, 128, 0);
+    background-color: var(--color-black);
     text-align: center;
     padding: 0px;
     height: 40px;
@@ -70,18 +73,18 @@ body{
  
 .main-container {
     grid-area: main;
-    background-color: rgba(144, 238, 144, 0);
+    background-color: var(--color-black);
     display: flex;
     justify-content: center; /* Centra horizontalmente el main-inner-container */
     align-items: center; /* Centra verticalmente el main-inner-container */
-    color: black;
+    color: var(--color-font1);
 }
 
 
 .main-inner-container {
     width: 500px;
     height: 100%;
-    background-color: rgba(255, 255, 224, 0);
+    background-color: var(--color-black);
     text-align: center;
     padding: 20px;
     display: flex;
@@ -99,7 +102,7 @@ body{
 
 .content-1-container {
     flex: 0 0 40%; /* Ocupa el 20% del alto del parent */
-    background-color: rgba(173, 216, 230, 0);
+    background-color: var(--color-black);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -107,7 +110,7 @@ body{
 
 .content-2-container {
    /* flex: 0 0 60%; /* Ocupa el 80% del alto del parent */
-    background-color: rgba(240, 128, 128, 0);
+   background-color: var(--color-black);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -141,7 +144,7 @@ body{
 }
 .footer-container {
     grid-row: 3; /* Ubica el footer en la tercera fila */
-    background-color: rgb(255, 255, 255);
+    background-color: var(--color-black);
     text-align: center;
     padding: 0px;
     height: 30px;
@@ -183,13 +186,13 @@ body{
     max-width: 100%;
     max-height: 100%;
     justify-content: center;
-    background-color: rgba(110, 12, 12, 0);
+    background-color: var(--color-black);
 }
 
 .matrix-numero-container{
     width: 40px;
     height: 40px;
-    background-color: rgb(255, 255, 255);
+    background-color:var(--color-black);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -209,17 +212,23 @@ body{
    
 }
 .matrix-numero{
-    border: 1px solid #000000da;
+    border: 1px solid var(--color-font1);
     border-radius: 20%;
-    
+   background-color: rgba(255, 255, 255, 0.089);;
 }
 .matrix-numero.active{
-    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.63);
+    box-shadow: 2px 2px 3px rgba(216, 216, 216, 0.63);
     box-shadow: 0px 0px 5px var(--color-red);
-    border: 1px solid rgba(0, 0, 0, 0.616);
-    background-color: var(--color-red);
+    border: 1px solid rgba(255, 0, 0, 0.815);
+    background-color:  #e84b3d34
     
     
+}
+
+
+#listaTickets, #n-tickets{
+background-color: var(--color-black);
+color: var(--color-font1);
 }
 
 .matrix-numero.active.animation{
@@ -257,27 +266,27 @@ body{
      
 }
 .matrix-numero-img.vendido1{
-    background-image: url(../../images/coin_leo.png);
+    background-image: url(images/coin_leo.png);
     background-size: 40px 40px;
     background-repeat: no-repeat;
 }
 .matrix-numero-img.vendido2{
-    background-image: url(../../images/coin_paula.png);
+    background-image: url(images/coin_paula.png);
     background-size: 40px 40px;
     background-repeat: no-repeat;
 }
 .matrix-numero-img.vendido3{
-    background-image: url(../../images/coin_nico.png);
+    background-image: url(images/coin_nico.png);
     background-size: 40px 40px;
     background-repeat: no-repeat;
 }
 .matrix-numero-img.vendido4{
-    background-image: url(../../images/coin_cami.png);
+    background-image: url(images/coin_cami.png);
     background-size: 40px 40px;
     background-repeat: no-repeat;
 }
 .matrix-numero-img.vendido0{
-    background-image: url(../../images/coin.png);
+    background-image: url(images/coin.png);
     background-size: 40px 40px;
     background-repeat: no-repeat;
 }
@@ -286,12 +295,12 @@ body{
      
 }
 .matrix-numero-text.vendido {
-   color: #2b2b2b44;
+    color: var(--color-font1);
      
 }
 /*Diseño pagina 1*/
 #container-page1{
-    background-color: rgba(0, 255, 255, 0);
+    background-color: var(--color-black);
     position:  relative;
  
     align-items: center;
@@ -389,11 +398,71 @@ background-color: rgba(0, 255, 255, 0);
 #button-buy{
     margin-left: 20px    ;
 }
-
+#button-lucky{
+    display: none;
+}
 #button-buy.desactive{
     background-color: #8b8b8bd8;
 }
 
+
+/*-------------[ content2 ]-----------------------------*/
+#modal-content2{
+    display:  none;
+    background-color:  transparent;
+    width: auto;
+    height: auto;
+     margin-bottom: 30px;
+     margin-bottom: 20px;
+}
+
+#modal-content2-innerContainer{
+   
+    display: flex;
+    flex-direction: column;
+}
+.content2-input{
+    padding: 3px;
+}
+#content2-Vendedor-select{
+    padding: 3px;
+}
+#content2-Tickets-value{
+    color: var(--color-red);
+    font-weight: bold;
+}
+
+#content2-Tickets-div, #content2-Nombre-div, #content2-Numero-div, #content2-Vendedor-select-div{
+    margin-bottom: 10px;
+
+    
+}
+
+#content2-Nombre-input, #content2-Numero-input, #content2-Vendedor-select{
+    background-color:  rgba(0, 0, 0, 0);
+    color: var(--color-font1);
+}
+
+#content2-Vendedor-select:focus option:checked {
+    background-color: #030303; /* Color de fondo deseado */
+}
+#content2-Vendedor-select:focus  {
+    background-color: #030303; /* Color de fondo deseado */
+}
+
+
+#content2-Vendedor-sure{
+     color: #e84c3d;
+     font-weight: bold;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    display: none;
+}
+
+#inicio{
+    display: none;
+}
 /*-------------[ BANNER1]---------------------*/
 #banner1-donaciones{
     width: 100vw;
@@ -411,6 +480,14 @@ background-color: rgba(0, 255, 255, 0);
     width: auto;
     display: inline-flex;
     animation: correrCinta 20s linear infinite;
+    display: none;
+}
+
+#banner2-donaciones-inner{
+    width: auto;
+    display: inline-flex;     
+    display: flex;
+   
 }
 
 @keyframes correrCinta {
@@ -447,7 +524,7 @@ background-color: rgba(0, 255, 255, 0);
     left: 0;              /* Alineado con el borde izquierdo */
     width: 100%;          /* Ancho completo de la ventana */
     height: 100%;         /* Alto completo de la ventana */
-    background-color: rgba(148, 147, 147, 0.562); /* Fondo semi-transparente */
+    background-color: rgba(5, 5, 5, 0.952); /* Fondo semi-transparente */
     z-index: 1000;        /* Asegura que está por encima de todo */
     display: flex;
     justify-content: center;
@@ -463,7 +540,7 @@ background-color: rgba(0, 255, 255, 0);
 .modal-card {
     width: auto;
     height: auto;
-    background-color: white;
+    background-color:   rgba(2, 2, 2, 0);
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.589);
     padding: 20px;
     display: flex;
@@ -471,6 +548,8 @@ background-color: rgba(0, 255, 255, 0);
     justify-content: space-between;
     align-items: center;
     border-radius: 8px;
+    
+    border: 1px solid rgba(255, 255, 255, 0.445);
     
 }
 
@@ -529,159 +608,10 @@ margin-bottom: 10px;
 #COP{
     font-size: 10px;
 }
-
-/*----------[ OVERLAY SECUR]-----------*/
-/* Estilos para la tarjeta y el overlay */
-#overlay-secur {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999; /* Asegura que esté por encima de otros elementos */
-    display: none;
-}
-
-.card-secur {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
-}
-
-/* Estilos para los botones */
-.button {
-    margin-top: 10px;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.button-accept {
-    background-color: #4caf50; /* Verde */
-    color: #fff;
-}
-
-.button-cancel {
-    background-color: #f44336; /* Rojo */
-    color: #fff;
-    margin-left: 10px;
-}
-
-
-/*-----------[OVERLAY PSWSD]----------------------*/
-#overlay-secure-pswd {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999; /* Asegura que esté por encima de otros elementos */
-    display: none;
-}
-
-.overlay-secure-pswd-card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
-}
-
-/* Estilos para los botones */
-.overlay-secure-pswd-button {
-    margin-top: 10px;
-    padding: 8px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.overlay-secure-pswd-button-accept {
-    background-color: #4caf50; /* Verde */
-    color: #fff;
-}
-
-.overlay-secure-pswd-button-cancel {
-    background-color: #f44336; /* Rojo */
-    color: #fff;
-    margin-left: 10px;
-}
-
-/* Estilo para el input */
-.overlay-secure-pswd-input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    50% { transform: translateX(10px); }
-    75% { transform: translateX(-10px); }
-    100% { transform: translateX(0); }
-}
-
-.shake {
-    animation: shake 0.2s;
-}
-/*---------[ OVERLAY FRAME ]----------*/
-
-#overlay-frame{
-    position: fixed;      /* Fijo en la ventana */
-    top: 0;               /* Alineado con el borde superior */
-    left: 0;              /* Alineado con el borde izquierdo */
-    width: 100%;          /* Ancho completo de la ventana */
-    height: 100%;         /* Alto completo de la ventana */
-    background-color: rgb(15, 15, 15); /* Fondo semi-transparente */
-    z-index: 1000;        /* Asegura que está por encima de todo */
-    display: none;
-}
-
-iframe {
-    width: 100%;
-    height: 100%;
-    border: none; /* Elimina el borde del iframe */
-}
-
-/*---------[   button Top          ]-----------*/
-#botonSuperiorDerecha {
-    position: fixed;
-    top: 20px; /* Ajusta según la distancia deseada desde la parte superior */
-    right: 20px; /* Ajusta según la distancia deseada desde el lado derecho */
-    width: 50px; /* Tamaño del botón */
-    height: 50px; /* Tamaño del botón */
-    border-radius: 50%; /* Hace que el botón sea redondo */
-    background-color: #e84b3d48;
-    color: #fff; /* Color del texto del botón */
-    font-size: 24px; /* Tamaño del texto del botón */
-    border: none; /* Quita el borde del botón */
-    cursor: pointer; /* Cambia el cursor al pasar por encima del botón */
-    z-index: 9999; /* Asegura que esté por encima de otros elementos */
-    color:  #f8301e;
-    border: 1px solid #f8301e;
-    display: none;
-  }
-
 /*---------[ Wide screen ]----------*/
 @media (min-width: 768px) {
         body{
-            background-color: rgb(58, 58, 58);
+            background-color: var(--color-black);
         }
 
 
@@ -730,6 +660,7 @@ iframe {
         width: auto;
         display: inline-flex;
         animation: none;
+        display: none;
       
     }
 }
@@ -737,7 +668,7 @@ iframe {
 /*---------[ Mobile screen ]----------*/
 @media (max-width: 769px) {
     body{
-        background-color: rgb(255, 255, 255);
+        background-color: var(--color-black);
     }
  .main-container{
     height: fit-content;

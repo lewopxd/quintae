@@ -1,10 +1,31 @@
- 
+   //---------------[   FIREBASE      ]-----------------------------------------
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+
+import { getStorage, ref, uploadString, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-storage.js";
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBZoGbzX_oGbF4rJX6ZmWgrVnaw4VSFhNQ",
+    authDomain: "nyl8-e8917.firebaseapp.com",
+    databaseURL: "https://nyl8-e8917-default-rtdb.firebaseio.com",
+    projectId: "nyl8-e8917",
+    storageBucket: "nyl8-e8917.appspot.com",
+    messagingSenderId: "543397236830",
+    appId: "1:543397236830:web:92deac723c3a5e72d3a4cf",
+    measurementId: "G-RRV77YMTY5"
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+
+  //---------------[         ]-----------------------------------------
 
 var filedata = null;
 var newfiledata = null;
-var hidex = true;
+var hidex = false;
 var al =  Math.floor(Math.random() * (3300 - 2100 + 1)) + 2100;
-var timeToLoad =2000;
+var timeToLoad = 0;
 var vector_selled = [];
 var vector_No_selled = [];
 var ticketsToBuy = 1; //1 si se usa selector de cantidad de tiquetes
@@ -14,9 +35,8 @@ var testingapp = false;
 var valueTicket = 25000;
 var msgBuilder = "";
 var firstAcceptClick = false;
-var justThis = atob('cmFiYXQyNA==');
-
-var counClcikerSecure = 0;
+var secondAcceptClick = false;
+var actualVendor=null;
 
 window.addEventListener('load', function() {
     console.log("Hola Mundo");
@@ -44,19 +64,24 @@ function manageSections(){
   return new Promise((resolve, reject) => {
  
  
+const params = new URLSearchParams(window.location.search);
 
+
+ 
+if (params.get('auth') === 'true') {
+   
   setTimeout(() => {
     document.getElementById('inicio').style.display = 'none';
     document.getElementById('rifa').style.display = 'block';
-    const iframe = document.getElementById('frm');
-        const url = "../../rifa-vendor/"+atob("P2F1dGg9dHJ1ZQ==");
-        iframe.src = url;
     setLimitInput();
     setListOptions();
      testButtonComprar();
  resolve(); // Llamada a resolve para completar la promesa
 }, timeToLoad);
-
+}else{
+  document.getElementById('inicio').style.display = 'block';
+  window.location.href = window.location.origin;
+}
   
 });
 }
@@ -407,8 +432,9 @@ what = "vendido1"
     if(div3){
     div3.classList.add(what);
     }
-            
-
+    div1.style.opacity = 0;      
+      div2.style.opacity = 0.2;
+      div3.style.opacity = 0.2;
   }
 
 
@@ -516,11 +542,11 @@ document.getElementById('listaTickets').addEventListener('change', function(even
 function ticketsToBuyChanged(){
     if(ticketsToBuy>1){
      document.getElementById("button-lucky").style.display = "none";
-     document.getElementById("upper-text").textContent = "Selecciona tu(s) número(s):";
+     document.getElementById("upper-text").textContent = "Selecciona lo(s) número(s):";
 
     }else{
       document.getElementById("button-lucky").style.display = "flex";
-      document.getElementById("upper-text").textContent = "Selecciona tu número:";
+      document.getElementById("upper-text").textContent = "Selecciona el número:";
     }
 
     
@@ -579,18 +605,27 @@ document.getElementById('button-buy').addEventListener('click', function() {
 
     if(vector_tickets_selected.length>1){
       let spanA = document.getElementById("modal-title-a");
-      spanA.textContent = "Comprar tickets: ";
+      spanA.textContent = "¿Guardar tickets: ";
     }else{
       let spanA = document.getElementById("modal-title-a");
-      spanA.textContent = "Comprar ticket: ";
+      spanA.textContent = "¿Guardar ticket: ";
     }
      let span = document.getElementById("modal-title-b");
-     span.textContent = "No. "+convertirVecATexto (vector_tickets_selected);
+     span.textContent = "No. "+convertirVecATexto (vector_tickets_selected)+"";
 
     let overlay = document.getElementById("overlay");
     overlay.style.display = "flex";
       
      // enviarWp();
+let vendorx = obtenerValorCookieVendor();
+    
+      if(vendorx!=null){
+          if(vendorx!="none"){
+              
+            establecerSeleccionPorDefecto(vendorx);
+          }
+      }
+
   }
  
 });
@@ -613,8 +648,14 @@ document.getElementById('accept-button').addEventListener('click', function() {
     document.getElementById("total-card-value").textContent = convertirADineroTexto(total);
     msgBuilder = msgBuilder + "Total: "+convertirADineroTexto(total);
     
- 
-   document.getElementById("modal-content").style.display = "block";
+    document.getElementById("content2-Tickets-value").textContent = vector_tickets_selected.join(", ");
+    if(vector_tickets_selected.length>1){
+      document.getElementById("content2-Tickets").textContent = "Tickets: ";
+    }else{
+      document.getElementById("content2-Tickets").textContent = "Ticket: ";
+    }
+
+   document.getElementById("modal-content2").style.display = "flex";
    document.getElementById("modal-title").style.display = "none";
 
    document.getElementById("modal-buttons").style.flexDirection = "row-reverse";
@@ -622,24 +663,39 @@ document.getElementById('accept-button').addEventListener('click', function() {
 
    firstAcceptClick = true;
   }else{
+
+    if(!secondAcceptClick){
+document.getElementById("content2-Vendedor-sure").style.display = "flex";
+secondAcceptClick = true;
+    }else{
       document.getElementById("cancel-button").click();
       document.getElementById("modal-title").style.display = "block";
-      enviarWp();
+      document.getElementById("modal-content2").style.display = "none";
+      document.getElementById("content2-Vendedor-sure").style.display = "none";
+
+      manageeSendToFire();
       document.getElementById("modal-buttons").style.flexDirection = "row";
       firstAcceptClick = false;
+      secondAcceptClick = false;
+    }
+
   }
 
 
 
 });
 
+
+
 document.getElementById('cancel-button').addEventListener('click', function() {
   let overlay = document.getElementById("overlay");
   overlay.style.display = "none";
-  document.getElementById("modal-content").style.display  = "none";
+  document.getElementById("modal-content2").style.display  = "none";
   document.getElementById("modal-title").style.display = "block";
   document.getElementById("modal-buttons").style.flexDirection = "row";
+  document.getElementById("content2-Vendedor-sure").style.display = "none";
   firstAcceptClick=false;
+  secondAcceptClick = false;
 });
 
 
@@ -730,129 +786,139 @@ function convertirADineroTexto(numero) {
 
 
 
+function manageeSendToFire(){
+  console.log(filedata);
 
-document.getElementById('eye-go').addEventListener('click', function() {
- counClcikerSecure++;
-  startAsyncCounter();
+  var Named= document.getElementById("content2-Nombre-input").value;
+  var Numerd= document.getElementById("content2-Numero-input").value;
+  var Vendord= document.getElementById("content2-Vendedor-select").value;
 
-  if(counClcikerSecure==3){
-     
-    if(existeCookieUserAuth()){
-      document.getElementById("overlay-frame").style.display = "flex";
-      document.getElementById("botonSuperiorDerecha").style.display = "block";
-    }else{
-    document.getElementById("overlay-frame").style.display = "none";
-     document.getElementById("overlay-secur").style.display ="flex";
-     counClcikerSecure = 0;
-    }
-}
+  actualVendor = Vendord;
 
+   if(Named==""){
+Named = "null";
+   }
 
-});
+   if(Numerd==""){
+    Numerd = "null";
+       }
 
-
-
-
-document.getElementById('btn-cancel-secur').addEventListener('click', function() {
-  
-  document.getElementById("overlay-secur").style.display ="none";
-  counClcikerSecure = 0;
- });
-
-
- document.getElementById('btn-accpet-secur').addEventListener('click', function() {
-  
-  document.getElementById("overlay-secur").style.display ="none"; 
-  counClcikerSecure = 0;
-
-  document.getElementById("overlay-secure-pswd").style.display ="flex";  
-
- });
-
- document.getElementById('btn-cancel-pswd').addEventListener('click', function() {
-  
-  document.getElementById("overlay-secure-pswd").style.display ="none"; 
-  counClcikerSecure = 0;
- 
-
- });
-
-
- document.getElementById('btn-accept-pswd').addEventListener('click', function() {
-  var x = document.getElementById("overlay-secure-pswd-input").value;
-  if(x==justThis){
-      
-     document.getElementById("overlay-secure-pswd").style.display = "none";
-     document.getElementById("overlay-frame").style.display = "flex"; 
-     document.getElementById("botonSuperiorDerecha").style.display = "block"; 
-   createCookieAuth();
-
-  }else{
-    navigator.vibrate(200); 
-
-    var el =  document.getElementById('overlay-secure-pswd-card-id');
-
-  
-     
-        el.classList.remove("shake");
-        void el.offsetWidth;
-        el.classList.add("shake");
+  for (let index = 0; index < vector_tickets_selected.length; index++) {
     
-    
+    console.log(vector_tickets_selected[index]+"   "+Named+"    "+Numerd+"     "+Vendord);
+    editarBoleta(vector_tickets_selected[index], Named, Numerd, Vendord);
   }
   
-  counClcikerSecure = 0;
- 
-
- });
-
-
-
-
- async function startAsyncCounter() {
-  await new Promise((resolve) => {
-      setTimeout(() => {
-          resolve();
-      }, 1900); // 3000 milisegundos = 3 segundos
-  });
-   counClcikerSecure = 0;
+     updateFile(crearArchivoJson());
 }
 
 
 
-function existeCookieUserAuth() {
+function editarBoleta(numero, nuevoNombre, nuevoTelefono, nuevoResponsable) {
+  // Encontrar el objeto con el número específico
+  let boleta = filedata.boletas.find(b => b.numero === numero);
+  if (boleta) {
+    // Modificar los valores según sea necesario
+    boleta.vendido = true;
+    boleta.nombre = nuevoNombre;
+    boleta.telefono = nuevoTelefono;
+    boleta.responsable = nuevoResponsable;
+  } else {
+    console.log("Boleta no encontrada.");
+  }
+}
+
+
+function updateFile(file) {
+  const storage = getStorage(app);
+
+  // Create a storage reference from our storage service
+  const FileRef = ref(storage, 'data_raffle.json');
+
+  // Raw string is the default if no format is provided
+  const metadatos = {
+    type: 'application/json',
+    lastModified: Date.now(),
+    lastModifiedDate: new Date(),
+    name: 'data_raffle.json',
+    contentEncoding: 'identity',
+    contentDisposition: "inline; filename*=utf-8''data_raffle.json",
+
+  };
+
+   
+    uploadBytes(FileRef, file, metadatos).then((snapshot) => {
+       
+      console.log('Uploaded file');
+      // Recargar la página
+      var date = new Date();
+      date.setFullYear(date.getFullYear() + 100); // Añadir 100 años a la fecha actual
+      var expires = "expires=" + date.toUTCString();
+    
+     
+     
+      document.cookie = "vendor="+actualVendor+"; " + expires + "; path=/";
+
+           location.reload();
+    });
+   
+  
+
+}
+
+
+function crearArchivoJson() {
+  // Objeto JSON original
+  const jsonOriginal =  filedata;
+   
+
+  // Convertir el objeto JSON a cadena de texto con formato
+  const jsonActualizado = JSON.stringify(jsonOriginal, null, 2);
+
+  // Crear un Blob con el contenido JSON
+  const blob = new Blob([jsonActualizado], { type: 'application/json' });
+
+  // Crear metadatos para el archivo
+
+
+
+
+  // Devolver el objeto File
+  return blob;
+}
+
+
+
+function obtenerValorCookieVendor() {
   // Obtener todas las cookies
   var cookies = document.cookie.split(';');
-  var exist = false;
-  // Recorrer todas las cookies para buscar la que tiene el valor 'user=auth'
+  
+  // Recorrer todas las cookies para buscar la que tiene el nombre 'vendor'
   for(var i = 0; i < cookies.length; i++) {
       var cookie = cookies[i].trim();
-      if (cookie.startsWith("user=") && cookie.includes("auth")) {
-          var exist = true;
-          console.log("cookie_existe? "+exist+" --");  
-          createCookieAuth(); 
-          return true; // Se encontró la cookie 'user=auth'
+      if (cookie.startsWith("vendor=")) {
+          // Extraer y devolver el valor de la cookie
+          return cookie.substring("vendor=".length, cookie.length);
       }
   }
-
-
-
-   exist = false;
-  console.log("cookie_existe? "+exist+"---");  
   
-  return false; // No se encontró la cookie 'user=auth'
-}
-
-function createCookieAuth(){
-  var date = new Date();
-  date.setMonth(date.getMonth() + 2); // Añadir 2 meses a la fecha actual
-  var expires = "expires=" + date.toUTCString();
-  
-  document.cookie = "user=auth; " + expires + "; path=/";
+  return "none"; // La cookie 'vendor' no existe, devuelve 'none'
 }
 
 
-document.getElementById('botonSuperiorDerecha').addEventListener('click', function() {
-  document.getElementById("overlay-frame").style.display = "none"; 
-  document.getElementById("botonSuperiorDerecha").style.display = "none"; 
-});
+
+
+function establecerSeleccionPorDefecto(valor) {
+    // Obtener el elemento select
+    var select = document.getElementById("content2-Vendedor-select");
+
+    // Iterar sobre las opciones del select
+    for (var i = 0; i < select.options.length; i++) {
+        // Verificar si el valor de la opción es igual al valor deseado
+        if (select.options[i].value === valor) {
+            // Establecer la opción como seleccionada
+            select.options[i].selected = true;
+            break; // Salir del bucle una vez que se ha establecido la selección
+        }
+    }
+}
