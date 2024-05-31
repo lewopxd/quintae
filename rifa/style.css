@@ -1,9 +1,12 @@
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
+:root {
+    --color-red: #e84c3d;
+}
 html, body {
 
     height:  100%;
@@ -103,13 +106,39 @@ body{
 }
 
 .content-2-container {
-    flex: 0 0 60%; /* Ocupa el 80% del alto del parent */
+   /* flex: 0 0 60%; /* Ocupa el 80% del alto del parent */
     background-color: rgba(240, 128, 128, 0);
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
+#bar-upper{
+    margin-top: 20px;
+    
+}
+#upper-text-container{
+    width: 100%;
+    margin-top: 20px;
+    font-size: 12px;
+    font-weight:  lighter;
+    color: var#797878;
+
+    justify-content: left;
+    margin-left: 15px;
+    display: flex;
+
+}
+
+#n-tickets{
+    padding: 2px;
+    padding-right: 0;
+    padding-left: 8px;
+    font-size: 14px;
+    width: 45px;
+    justify-content: center;
+}
 .footer-container {
     grid-row: 3; /* Ubica el footer en la tercera fila */
     background-color: rgb(255, 255, 255);
@@ -154,7 +183,7 @@ body{
     max-width: 100%;
     max-height: 100%;
     justify-content: center;
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgba(110, 12, 12, 0);
 }
 
 .matrix-numero-container{
@@ -177,10 +206,43 @@ body{
   left: 0;
   width: 100%;
   height: 100%;
+   
 }
 .matrix-numero{
-    border: 1px solid #000;
+    border: 1px solid #000000da;
     border-radius: 20%;
+    
+}
+.matrix-numero.active{
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.63);
+    box-shadow: 0px 0px 5px var(--color-red);
+    border: 1px solid rgba(0, 0, 0, 0.616);
+    background-color: var(--color-red);
+    
+    
+}
+
+.matrix-numero.active.animation{
+    animation: glowAnimation 1s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+@keyframes glowAnimation {
+    0% {
+        box-shadow: 0px 0px 0px var(--color-red);
+         
+    }
+    50% {
+        box-shadow: 0px 0px 50px var(--color-red);
+         
+    }
+    100% {
+        box-shadow: 0px 0px 0px var(--color-red);
+        
+    }
+}
+.matrix-numero-text.active{
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    z-index: 999;
 }
 .matrix-numero-img {
    
@@ -254,9 +316,218 @@ body{
     background-color: #00000000;
 }
 
-/*---------[ new Card ]----------*/
 
+/*---------[   LOADER    ]--------------*/
+#loader-container-holder{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(127, 255, 212, 0);
+    position: relative;
+     
+     
+}
+.loaders-container {
+    position: absolute;
+    bottom: 290px;
+background-color: rgba(0, 255, 255, 0);
+    padding: 0px;
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 0;
+      /* Centrar horizontalmente */
+      left: 50%;
+      transform: translateX(-50%);
 
+    .container {
+      position: relative;
+      display: inline-block;
+      box-sizing: border-box;
+      padding: 30px;
+      width: 25%;
+      height: 140px;
+    }
+  }
+  
+  
+.circle {
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    border: 5px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #FFF;
+    animation: spin 1s infinite linear;
+  }   
+  @keyframes spin { 
+    100% { 
+      transform: rotate(360deg); 
+    } 
+  } 
+  
+  
+/*---------[ bottom bouttons ]----------*/
+#bottom-buttons-container{
+    background-color: rgba(0, 255, 255, 0);
+
+    display: inline-flex;
+    justify-content: center;
+}
+
+#button-lucky, #button-buy{
+    width: 100px;
+    height: 40px;
+    background-color: #e84c3d;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    justify-content: center;
+     align-items: center;
+     box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.432);
+}
+#button-buy{
+    margin-left: 20px    ;
+}
+
+#button-buy.desactive{
+    background-color: #8b8b8bd8;
+}
+
+/*-------------[ BANNER1]---------------------*/
+#banner1-donaciones{
+    width: 100vw;
+    background-color: #ff00001a;
+   
+    position: relative;
+    font-size: 12px;
+    padding-top: 3px;
+    padding-left: 3px;
+    border: 1px solid red;
+   
+}
+
+#banner1-donaciones-inner{
+    width: auto;
+    display: inline-flex;
+    animation: correrCinta 20s linear infinite;
+}
+
+@keyframes correrCinta {
+    0% {
+        transform: translateX(100vw);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+#nequi-icon{
+    background-image: url(nequi.png);
+    background-size: 35px 12px;
+    width: 40px;
+    background-position: bottom;
+    margin-bottom: 1.4px;
+    background-repeat: no-repeat;
+}
+
+#davi-icon{
+    background-image: url(daviplata2.png);
+    background-size: 55px 10px;
+    width: 55px;
+    height: 10px;
+    background-position: bottom;
+    margin-top: 1px;
+    background-repeat: no-repeat;
+}
+/*---------[ OVERLAY ]--------------*/
+#overlay {
+    position: fixed;      /* Fijo en la ventana */
+    top: 0;               /* Alineado con el borde superior */
+    left: 0;              /* Alineado con el borde izquierdo */
+    width: 100%;          /* Ancho completo de la ventana */
+    height: 100%;         /* Alto completo de la ventana */
+    background-color: rgba(148, 147, 147, 0.562); /* Fondo semi-transparente */
+    z-index: 1000;        /* Asegura que está por encima de todo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+   
+}
+
+#modal-title-b{
+    color: var(--color-red);
+    font-weight: bold;
+}
+.modal-card {
+    width: auto;
+    height: auto;
+    background-color: white;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.589);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    
+}
+
+#modal-title {
+    margin: 0;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    
+}
+
+.modal-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    
+}
+
+#accept-button, #cancel-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#accept-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#cancel-button {
+    background-color: #f44336;
+    color: white;
+}
+#modal-content{
+    margin-bottom: 40px;
+    display: none;
+    flex-direction: column;
+}
+#p-total{
+margin-bottom: 10px;
+  
+}
+
+#p-nequi, #p-nequi2{
+    font-size: 13px;
+    color: #464444d7;
+}
+
+#number-nequi-card{
+    font-weight: bold;
+    color: #252525d7;
+}
+#COP{
+    font-size: 10px;
+}
 /*---------[ Wide screen ]----------*/
 @media (min-width: 768px) {
         body{
@@ -268,6 +539,49 @@ body{
             width: 60%;
            
         }
+
+        #bottom-buttons-container{
+          margin-top: 30px;
+        }
+
+
+        #listaTickets{
+            display: none;
+          }
+
+        #bar-upper{
+            margin-bottom: 20px;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+    #cardWrap{
+        margin: 0;
+        
+    }
+.content-1-container{
+    flex:none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+    #upper-text-container{
+        margin-top: 0;
+    }
+
+    .header-container{
+        display: none;
+    }
+    #banner1-donaciones{
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+    #banner1-donaciones-inner{
+        width: auto;
+        display: inline-flex;
+        animation: none;
+      
+    }
 }
 
 /*---------[ Mobile screen ]----------*/
@@ -282,7 +596,7 @@ body{
     height: fit-content;
  }
  .matrix{
-    margin-top: 20px;
+    margin-top: 2px;
     margin-bottom: 20px;
  }
     .main-inner-container {
@@ -299,4 +613,81 @@ body{
      
     
     }
+
+
+
+    .loaders-container {
+        position: absolute;
+        bottom: 400px;
+    background-color: rgba(0, 255, 255, 0);
+        padding: 0px;
+        margin: 0 auto;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        font-size: 0;
+          /* Centrar horizontalmente */
+          left: 50%;
+          transform: translateX(-50%);
+    
+        .container {
+          position: relative;
+          display: inline-block;
+          box-sizing: border-box;
+          padding: 30px;
+          width: 25%;
+          height: 140px;
+        }
+      }
+      
+      
+    .circle {
+        box-sizing: border-box;
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        border-top-color: #FFF;
+        animation: spin 1s infinite linear;
+      }   
+
+
+#button-lucky, #button-buy{
+     height: 50px;
+     margin-top: 20px;
+     margin-bottom: 20px;
+    }
+
+    #button-buy{
+        margin-left: 50px;
+       
+    }
+   
+    #less-tickets, #n-tickets, #more-tickets{
+        display: none;
+    }
+    
+
+    #listaTickets{
+        font-size: 18px;
+        height: 25px;
+        margin-left: 5px;
+        padding-left: 10px;
+        padding-right: 5px;
+    }
+
+
+
+    #accept-button, #cancel-button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        height: 40px;
+    }
+  #cancel-button{
+    margin-left: 50px;
+  }
+
+  
 }

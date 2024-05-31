@@ -9,10 +9,10 @@
       },
       {
         "numero": "01",
-        "vendido": true,
-        "nombre": "alguien",
-        "telefono": "3214960060",
-        "responsable": "leo"
+        "vendido": false,
+        "nombre": null,
+        "telefono": null,
+        "responsable": null
       },
       {
         "numero": "02",
@@ -86,10 +86,10 @@
       },
       {
         "numero": "12",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "13",
@@ -101,9 +101,9 @@
       {
         "numero": "14",
         "vendido": true,
-        "nombre": "Camilo Merchán",
-        "telefono": "3214965987",
-        "responsable": "paula"
+        "nombre": null,
+        "telefono": null,
+        "responsable": "leo"
       },
       {
         "numero": "15",
@@ -121,10 +121,10 @@
       },
       {
         "numero": "17",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "18",
@@ -149,10 +149,10 @@
       },
       {
         "numero": "21",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "22",
@@ -191,17 +191,17 @@
       },
       {
         "numero": "27",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "28",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "29",
@@ -289,10 +289,10 @@
       },
       {
         "numero": "41",
-        "vendido": true,
+        "vendido": false,
         "nombre": null,
         "telefono": null,
-        "responsable": "nico"
+        "responsable": null
       },
       {
         "numero": "42",
@@ -303,10 +303,10 @@
       },
       {
         "numero": "43",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "44",
@@ -366,10 +366,10 @@
       },
       {
         "numero": "52",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "53",
@@ -485,10 +485,10 @@
       },
       {
         "numero": "69",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "70",
@@ -520,10 +520,10 @@
       },
       {
         "numero": "74",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "75",
@@ -548,10 +548,10 @@
       },
       {
         "numero": "78",
-        "vendido": true,
+        "vendido": false,
         "nombre": null,
         "telefono": null,
-        "responsable": "cami"
+        "responsable": null
       },
       {
         "numero": "79",
@@ -646,10 +646,10 @@
       },
       {
         "numero": "92",
-        "vendido": false,
+        "vendido": true,
         "nombre": null,
         "telefono": null,
-        "responsable": null
+        "responsable": "paula"
       },
       {
         "numero": "93",

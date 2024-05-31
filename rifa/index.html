@@ -32,6 +32,24 @@
 
 
 <body>
+  <div id="overlay">
+    <div class="modal-card" id="modal-card-2">
+     <div id="modal-title"><span id="modal-title-a" >Comprar ticket:</span>  <span id="modal-title-b" >   </span></div> 
+     <div id="modal-content">
+      <p id="p-tickets"><span id="tickets-card"></span><span id="COP">.COP</span></p>
+      <p id="p-ticketsN"><span id="tickets-card-N"></span></p>
+      <p id="p-total"> <span id="total-card">Total:</span> <span id="total-card-value"></span></p> 
+      <p id="p-nequi"> <span id="nequi-card">Puedes realizar el pago al número de Nequi:</span> <span id="number-nequi-card">321 496 06 09</span></p>
+      <p id="p-nequi2"><span>haz click en el botón aceptar para continuar a nuestro chat de whatsapp.</span></p> 
+       </div> 
+     <div class="modal-buttons">
+          <button id="accept-button">Aceptar</button>
+          <button id="cancel-button">Cancelar</button>
+      </div>
+  </div>
+
+   
+  </div>  
     <section id="inicio">
     <div class="full-screen-div" id="first-page">
         <div class="full-screen-div-capa" id="image-capa">
@@ -39,19 +57,43 @@
                 <div>
                     <span id="page-1-title">QUINTA ESENCIA</span>
                 </div>
+
+                <div id="loader-container-holder">
+                  <div class="loaders-container">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+
             </div>
-        </div>  
+             
+
+        </div> 
+        
+       
+
     </div>
+    
+
+
 </section>
-<section id="rifa">
+<section id="rifa" style="display: none;">
     <div class="full-screen-div">
       <div class="full-screen-div-capa">
       <div class="full-container">
         <div class="grid-container">
-            <div class="header-container"></div>
+            <div class="header-container" style="display: none;"></div>
+            <div id="banner1-donaciones">
+              <div id="banner1-donaciones-inner">
+              <span>DONACIONES:&nbsp;</span><span>&nbsp;- 3214960609 &nbsp;</span> <div id="nequi-icon"></div> <span>&nbsp;|&nbsp;</span>
+                             <div id="davi-icon"></div> <span> </span> 
+                            </div>
+                            </div>
             <div class="main-container">
+              
                 <div class="main-inner-container">
+                  
                     <div class="content-container">
+                      
                         <div class="content-1-container">
                             
                             <div class="cardWrap">
@@ -64,7 +106,7 @@
                                   <div class="name">
                                     <h2>Lotería de Boyacá</h2>
                                     <span>Juega con 2 últimos digitos</span>
-                                  </div>
+                                  </div>i
                                   <div class="seat">
                                     <h2>15</h2>
                                     <span>día</span>
@@ -99,7 +141,25 @@
 
                         </div>
                         <div class="content-2-container">
-                            <div class="matrix" id="matrix"></div>
+                          <div id="bar-upper"><span>Tickets a comprar: </span>
+                            <button id="less-tickets">&lt;</button>
+                          <input type="number" id="n-tickets" value="1" pattern="[0-9]*" oninput="this.value = Math.max(1, this.value)" readonly> 
+                          <button id="more-tickets">&gt;</button>
+                          <select id="listaTickets">
+                            <option value="1">1</option>
+                        </select>
+                          </div>
+                         <div id="upper-text-container"><span id="upper-text"> Selecciona tu número:</span></div>
+                          <div class="matrix" id="matrix"></div>
+                          
+                        </div>
+                        <div id="bottom-buttons-container">
+                                  <div id="button-lucky">
+                                    <span>Probar suerte</span>
+                                  </div>
+                                  <div id="button-buy">
+                                    <span>Comprar</span>
+                                  </div>
                         </div>
                     </div>
                 </div>
