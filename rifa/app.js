@@ -633,15 +633,15 @@ document.getElementById('accept-button').addEventListener('click', function() {
   
 
    if(!isinvendor){
-    document.getElementById("modal-buttons").style.flexDirection = "row";
-    document.getElementById("modal-buttons").style.display= "none";
-    document.getElementById("modal-x-button").style.display= "block";
+    manageBoldOpsBefore();
     calculateBoldValues();
   }
 
 
    firstAcceptClick = true;
   }else{
+    
+    
       document.getElementById("cancel-button").click();
       document.getElementById("modal-title").style.display = "block";
       enviarWp();
@@ -652,6 +652,37 @@ document.getElementById('accept-button').addEventListener('click', function() {
     
 
 });
+
+function manageBoldOpsBefore(){
+  document.getElementById("loader-container-holder2").style.display = "flex";
+  
+    document.getElementById("modal-buttons").style.flexDirection = "row";
+    document.getElementById("modal-buttons").style.display= "none";
+    document.getElementById("modal-x-button").style.display= "none";
+
+    document.getElementById("modal-content").style.display = "none";
+    
+
+}
+  function manageBoldOpsAfter(){
+    esperar(800)
+    .then(() => {
+      document.getElementById("modal-x-button").style.display= "block";
+
+    document.getElementById("modal-content").style.display = "block";
+    document.getElementById("loader-container-holder2").style.display = "none";
+    });
+  }
+
+  function esperar(time) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, time);
+    });
+  }
+
+
 
 document.getElementById('cancel-button').addEventListener('click', function() {
   let overlay = document.getElementById("overlay");
@@ -905,51 +936,45 @@ document.getElementById("modal-x-button").click();
 });
 
 
-function calculateBoldValues(){
-console.log("calculando ... bold");
-var Ntickets = vector_tickets_selected.length;
-console.log("Ntiquets: "+Ntickets );
+function calculateBoldValues() {
+  console.log("calculando ... bold");
+  var Ntickets = vector_tickets_selected.length;
 
+  var ticketsString = vector_tickets_selected.join(', ');
 
-var ticketsString = vector_tickets_selected.join(', ');
-console.log(ticketsString);
+  var sAux = "";
+  if (Ntickets > 1) {
+    sAux = "s";
+  }
 
+  var idBuilder = builID(vector_tickets_selected);
+  var costoBold = (((3.29 * (valueTicket * Ntickets)) / 100) + 900) + ajustePeso;
+  var calculateTotalBold = aproximarEnteroSiguiente((valueTicket * Ntickets) + costoBold);
+  var descrptionString = "[ (" + Ntickets + ") Ticket" + sAux + ": No. " + ticketsString + " ] + IVA"
 
-var sAux = "";
-if (Ntickets>1){
-sAux="s";
+  order_id = idBuilder;
+  currency = "COP";
+  amount = calculateTotalBold;
+  description = descrptionString;
+
+  const urlp = "https://nyl8-e8917.web.app/bold/transactioner/bfun.js"
+
+  callBFun(urlp, idBuilder, calculateTotalBold, "COP")
+    .then(hash => {
+      // console.log('Hash obtenido:', hash);
+      integrity_signature = hash;
+
+      return insertarParametrosEnScript("bold-script", order_id, currency, amount, api_key, integrity_signature, redirection_url, tax, description);
+    })
+    .then(() => {
+      console.log('Parámetros insertados en el script');
+      manageBoldOpsAfter();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 }
 
- 
-
-var idBuilder = builID(vector_tickets_selected);
-var costoBold = (((3.29* (valueTicket * Ntickets)) / 100)+900)+ajustePeso;
-var calculateTotalBold = aproximarEnteroSiguiente((valueTicket * Ntickets) + costoBold); 
-var descrptionString = "[ ("+Ntickets+") Ticket"+sAux+": No. "+ticketsString+" ] + IVA"
-
-order_id = idBuilder;
-currency = "COP";
-amount = calculateTotalBold;
-description = descrptionString;
-
-const urlp = "https://nyl8-e8917.web.app/bold/transactioner/bfun.js"
- 
-callBFun(urlp, idBuilder, calculateTotalBold, "COP")
-  .then(hash => {
-    console.log('Hash obtenido:', hash);
-    integrity_signature = hash;
-    
-    insertarParametrosEnScript("bold-script", order_id, currency, amount, api_key, integrity_signature, redirection_url, tax, description);
-
-
-  })
-  .catch(error => {
-    console.error('Error:', error);
-     
-  });
-
-
-}
 
 
 function callBFun(url, id, monto, divisa) {
@@ -968,7 +993,7 @@ function callBFun(url, id, monto, divisa) {
       eval(js); // Ejecuta el JavaScript obtenido
       
       // Llama a la función en el sitio B y devuelve la promesa resultante
-      console.log("id: "+ id +"   monto: "+monto+"    divisa: "+divisa);
+      //console.log("id: "+ id +"   monto: "+monto+"    divisa: "+divisa);
       return bFunBuilder(id, monto, divisa);
     })
     .then(hash => {
@@ -1017,7 +1042,7 @@ function insertarParametrosEnScript(scriptId, orderId, currency, amount, apiKey,
     boldScriptElement.setAttribute('data-tax', `vat-${tax}`);
     boldScriptElement.setAttribute('data-description', description);
     
-    console.log('Parámetros actualizados en el script exitosamente.');
+    //console.log('Parámetros actualizados en el script exitosamente.');
   } else {
     console.error('No se encontró ningún elemento con el ID:', scriptId);
   }

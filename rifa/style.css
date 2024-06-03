@@ -745,6 +745,48 @@ align-items: center;
 #whatsapp-pay-text2{
 font-weight: bold;
 }
+
+#loader-container-holder2{
+    background-color: #0d796d00;
+    display: flex;
+    margin: 0;
+    display: none;
+}
+#wrapper {
+    width: 100px;
+    height: 100px;
+    min-width: 100px;
+    min-height: 1px;
+    margin: 0px auto;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  /* SPINNER */
+  
+  .spinner {
+    margin: 0px;
+    display: block;
+    float: left;
+    border: 25px solid  var(--color-red);
+    width: 1px;
+    height: 1px;
+    border-radius: 50px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    animation-name: spinx;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+  
+  @keyframes spinx {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(720deg) scale(0.6); -webkit-filter: blur(3px); }
+    100% { transform: rotate(0deg) scale(1); }
+  }
+  
+  
 /*---------[ Wide screen ]----------*/
 @media (min-width: 768px) {
         body{
