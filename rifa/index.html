@@ -34,18 +34,28 @@
 
 
 <body>
-  
+  <msg id="msg" value="none"></msg>
   <div id="overlay">
     <div class="modal-card" id="modal-card-2">
+      <div id="modal-x-button-container"> <div id="modal-x-button">x</div> </div>
      <div id="modal-title"><span id="modal-title-a" >Comprar ticket:</span>  <span id="modal-title-b" >   </span></div> 
      <div id="modal-content">
       <p id="p-tickets"><span id="tickets-card"></span><span id="COP">.COP</span></p>
       <p id="p-ticketsN"><span id="tickets-card-N"></span></p>
       <p id="p-total"> <span id="total-card">Total:</span> <span id="total-card-value"></span></p> 
-      <p id="p-nequi"> <span id="nequi-card">Puedes realizar el pago a través de Nequi, daviplata o transfiYá al número:</span> <span id="number-nequi-card">321 496 06 09</span></p>
-      <p id="p-nequi2"><span>haz click en el botón aceptar para continuar en nuestro chat de whatsapp.</span></p> 
-       </div> 
+      <p id="p-nequi"> <span id="nequi-card">Puedes pagar directamente con cualquier medio de pago a través de bold.</span> <span id="number-nequi-card"></span></p>
+      <p id="p-nequi2"> o realizar la compra a través de nuestro chat de whatsapp.<span></span></p> 
+      <div id="button-PAY">
+        <script id="bold-script" data-bold-button="dark-L"></script>
+      </div>
+      <div id="WhatsApp-PAY-container">
+      <div id="WhatsApp-PAY">
+      <span> Pagar por</span> <span id="whatsapp-pay-text2">&nbsp;whatsapp</span>
+      </div>
+    </div>
+    </div> 
      <div class="modal-buttons" id="modal-buttons">
+    
           <button id="accept-button">Aceptar</button>
           <button id="cancel-button">Cancelar</button>
       </div>
@@ -200,15 +210,7 @@
 
 </section>
 
-<script
- data-bold-button
- data-order-id="TOO"
- data-currency="COP"
- data-amount="25000"
- data-api-key="EnG1c5xFDEtIzC2PIuzkPt6SX1ijXxlMnVWC98xSZhc"
- data-integrity-signature="113c431194d61f207cd8e827fdb50151fd7fa38bf5cffcd4095e70a023815ab8"
- data-redirection-url="http://192.168.20.40:5500/rifa/pagos/respuesta/index.html"
- ></script>
+
 
 
 <button id="botonSuperiorDerecha">x</button>

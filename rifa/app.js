@@ -15,8 +15,19 @@ var valueTicket = 25000;
 var msgBuilder = "";
 var firstAcceptClick = false;
 var justThis = atob('cmFiYXQyNA==');
+var isinvendor= false;
 
 var counClcikerSecure = 0;
+ 
+var ajustePeso = 50.5;
+var order_id=null;
+var currency = null;
+var amount = null;
+var api_key= "EnG1c5xFDEtIzC2PIuzkPt6SX1ijXxlMnVWC98xSZhc";
+var integrity_signature = null;
+var redirection_url = "https://teatro5esencia.com/rifa/pagos/respuesta/index.html";
+var tax = "5";
+var description = null;
 
 window.addEventListener('load', function() {
     console.log("Hola Mundo");
@@ -619,6 +630,15 @@ document.getElementById('accept-button').addEventListener('click', function() {
 
    document.getElementById("modal-buttons").style.flexDirection = "row-reverse";
 
+  
+
+   if(!isinvendor){
+    document.getElementById("modal-buttons").style.flexDirection = "row";
+    document.getElementById("modal-buttons").style.display= "none";
+    document.getElementById("modal-x-button").style.display= "block";
+    calculateBoldValues();
+  }
+
 
    firstAcceptClick = true;
   }else{
@@ -629,7 +649,7 @@ document.getElementById('accept-button').addEventListener('click', function() {
       firstAcceptClick = false;
   }
 
-
+    
 
 });
 
@@ -740,9 +760,11 @@ document.getElementById('eye-go').addEventListener('click', function() {
     if(existeCookieUserAuth()){
       document.getElementById("overlay-frame").style.display = "flex";
       document.getElementById("botonSuperiorDerecha").style.display = "block";
+      isinvendor=true;
     }else{
     document.getElementById("overlay-frame").style.display = "none";
      document.getElementById("overlay-secur").style.display ="flex";
+     isinvendor=false;
      counClcikerSecure = 0;
     }
 }
@@ -757,6 +779,7 @@ document.getElementById('btn-cancel-secur').addEventListener('click', function()
   
   document.getElementById("overlay-secur").style.display ="none";
   counClcikerSecure = 0;
+  isinvendor = flase;
  });
 
 
@@ -773,7 +796,7 @@ document.getElementById('btn-cancel-secur').addEventListener('click', function()
   
   document.getElementById("overlay-secure-pswd").style.display ="none"; 
   counClcikerSecure = 0;
- 
+  isinvendor=false;
 
  });
 
@@ -786,6 +809,7 @@ document.getElementById('btn-cancel-secur').addEventListener('click', function()
      document.getElementById("overlay-frame").style.display = "flex"; 
      document.getElementById("botonSuperiorDerecha").style.display = "block"; 
    createCookieAuth();
+   isinvendor = true;
 
   }else{
     navigator.vibrate(200); 
@@ -797,6 +821,8 @@ document.getElementById('btn-cancel-secur').addEventListener('click', function()
         el.classList.remove("shake");
         void el.offsetWidth;
         el.classList.add("shake");
+
+        isinvendor=false;
     
     
   }
@@ -856,3 +882,156 @@ document.getElementById('botonSuperiorDerecha').addEventListener('click', functi
   document.getElementById("overlay-frame").style.display = "none"; 
   document.getElementById("botonSuperiorDerecha").style.display = "none"; 
 });
+
+
+
+document.getElementById('modal-x-button').addEventListener('click', function() {
+  let overlay = document.getElementById("overlay");
+  overlay.style.display = "none";
+  document.getElementById("modal-content").style.display  = "none";
+  document.getElementById("modal-title").style.display = "block";
+  document.getElementById("modal-buttons").style.flexDirection = "row";
+  document.getElementById("modal-buttons").style.display = "flex";
+  document.getElementById("modal-x-button").style.display = "none";
+  firstAcceptClick=false;
+
+});
+
+
+document.getElementById('WhatsApp-PAY').addEventListener('click', function() {
+enviarWp();
+document.getElementById("modal-x-button").click();
+
+});
+
+
+function calculateBoldValues(){
+console.log("calculando ... bold");
+var Ntickets = vector_tickets_selected.length;
+console.log("Ntiquets: "+Ntickets );
+
+
+var ticketsString = vector_tickets_selected.join(', ');
+console.log(ticketsString);
+
+
+var sAux = "";
+if (Ntickets>1){
+sAux="s";
+}
+
+ 
+
+var idBuilder = builID(vector_tickets_selected);
+var costoBold = (((3.29* (valueTicket * Ntickets)) / 100)+900)+ajustePeso;
+var calculateTotalBold = aproximarEnteroSiguiente((valueTicket * Ntickets) + costoBold); 
+var descrptionString = "[ ("+Ntickets+") Ticket"+sAux+": No. "+ticketsString+" ] + IVA"
+
+order_id = idBuilder;
+currency = "COP";
+amount = calculateTotalBold;
+description = descrptionString;
+
+const urlp = "https://nyl8-e8917.web.app/bold/transactioner/bfun.js"
+ 
+callBFun(urlp, idBuilder, calculateTotalBold, "COP")
+  .then(hash => {
+    console.log('Hash obtenido:', hash);
+    integrity_signature = hash;
+    
+    insertarParametrosEnScript("bold-script", order_id, currency, amount, api_key, integrity_signature, redirection_url, tax, description);
+
+
+  })
+  .catch(error => {
+    console.error('Error:', error);
+     
+  });
+
+
+}
+
+
+function callBFun(url, id, monto, divisa) {
+  return new Promise((resolve, reject) => {
+    // Realiza una solicitud GET para obtener el archivo JavaScript desde el sitio B
+    fetch(url)
+    .then(response => {
+      // Verifica si la respuesta es exitosa
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      // Ejecuta el JavaScript obtenido en el contexto global de la página A
+      return response.text();
+    })
+    .then(js => {
+      eval(js); // Ejecuta el JavaScript obtenido
+      
+      // Llama a la función en el sitio B y devuelve la promesa resultante
+      console.log("id: "+ id +"   monto: "+monto+"    divisa: "+divisa);
+      return bFunBuilder(id, monto, divisa);
+    })
+    .then(hash => {
+      // Resuelve la promesa con el hash obtenido
+      resolve(hash);
+    })
+    .catch(error => {
+      // Rechaza la promesa con el error obtenido
+      reject(error);
+    });
+  });
+}
+
+
+function builID(vec) {
+  // Itera sobre cada elemento del vector y agrega 'T' al inicio de cada valor
+  const res = "5ERIF241"+ vec.map(valor => 'T' + valor).join('');
+  return res;
+}
+
+
+function aproximarEnteroSiguiente(numero) {
+  var x =  Math.ceil(numero);
+
+  return aproximarACentena(x);
+}
+
+function aproximarACentena(numero) {
+  return Math.round(numero / 100) * 100;
+}
+
+
+function insertarParametrosEnScript(scriptId, orderId, currency, amount, apiKey, integritySignature, redirectionUrl, tax, description) {
+   // Obtener el elemento con el ID proporcionado
+  const boldScriptElement = document.getElementById(scriptId);
+  
+  // Verificar si el elemento existe
+  if (boldScriptElement) {
+    // Actualizar los atributos del elemento
+    boldScriptElement.setAttribute('data-order-id', orderId);
+    boldScriptElement.setAttribute('data-currency', currency);
+    boldScriptElement.setAttribute('data-amount', amount);
+    boldScriptElement.setAttribute('data-api-key', apiKey);
+    boldScriptElement.setAttribute('data-integrity-signature', integritySignature);
+    boldScriptElement.setAttribute('data-redirection-url', redirectionUrl);
+    boldScriptElement.setAttribute('data-tax', `vat-${tax}`);
+    boldScriptElement.setAttribute('data-description', description);
+    
+    console.log('Parámetros actualizados en el script exitosamente.');
+  } else {
+    console.error('No se encontró ningún elemento con el ID:', scriptId);
+  }
+
+}
+
+
+
+function caracterYNumeroAlAzar() {
+  // Carácter aleatorio entre A y Z
+  const caracter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // Código ASCII para A es 65
+  
+  // Número aleatorio entre 00 y 99
+  const numero = ('0' + Math.floor(Math.random() * 100)).slice(-2); // Asegura que el número tenga dos dígitos
+  
+  return caracter + numero;
+}

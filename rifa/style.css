@@ -474,6 +474,32 @@ background-color: rgba(0, 255, 255, 0);
     
 }
 
+#modal-x-button-container{
+     
+    display: flex;
+    width: 100%;
+    justify-content: right;
+}
+
+#modal-x-button{
+     cursor: pointer;
+    margin-top: 0px;
+    margin-right: 10px;
+    width: auto;
+    font-size: 20px;
+    border: 1px solid rgba(197, 13, 13, 0);
+    padding: 5px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 50%;
+     display: none;
+    color: rgb(197, 13, 13);;
+    background-color: rgba(197, 13, 13, 0);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.356);
+    font-weight: normal;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* Sistema de fuentes */
+}
+
 #modal-title {
     margin: 0;
     font-size: 16px;
@@ -488,6 +514,7 @@ background-color: rgba(0, 255, 255, 0);
     display: flex;
     
     justify-content: space-around;
+    
     
 }
 
@@ -677,7 +704,47 @@ iframe {
     border: 1px solid #f8301e;
     display: none;
   }
+/*---------[   bold button pay          ]-------*/
+#button-PAY{
+    display: flex;
+    background-color: #79787800;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    
+}
 
+#WhatsApp-PAY-container{
+background-color: #7a7a7a00;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+ 
+
+#WhatsApp-PAY{
+    background: linear-gradient(90deg, #12aa4a 0%, #0d796c 100%); /* Degradado verde tipo WhatsApp */
+    color: white;
+    font-size: 14.5px;
+    font-weight: normal;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 34px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin-top: 20px;   
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* Sistema de fuentes */
+    
+
+} 
+
+#whatsapp-pay-text2{
+font-weight: bold;
+}
 /*---------[ Wide screen ]----------*/
 @media (min-width: 768px) {
         body{
@@ -806,6 +873,7 @@ iframe {
      height: 50px;
      margin-top: 20px;
      margin-bottom: 20px;
+     cursor: pointer;
     }
 
     #button-buy{

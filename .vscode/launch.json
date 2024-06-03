@@ -2,6 +2,20 @@
     "version": "0.2",
     "configurations": [
       {
+        
+        "name": "Launch Chrome on Android Device",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:5500",
+      "webRoot": "${workspaceFolder}",
+      "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application/brave.exe",
+      "runtimeArgs": [
+        "--remote-debugging-ip=192.168.20.43",
+        "--remote-debugging-port=42293"
+      ],
+      "userDataDir": false
+      },
+      {
         "name": "Launch in Brave",
         "type": "chrome",
         "request": "launch",
