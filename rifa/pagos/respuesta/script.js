@@ -25,6 +25,8 @@ var vector_tickets_selected =[];
 
 window.addEventListener('load', function() {
 
+   
+
     const { orderId, status } = obtenerValoresDeURL();
     console.log(orderId +"  "+status);
 
@@ -32,23 +34,39 @@ window.addEventListener('load', function() {
         
     vector_tickets_selected = getVectorT(orderId);
     console.log(vector_tickets_selected);
+  
+    document.getElementById("card-title").textContent ="Gracias!!";
+    document.getElementById("card-subtitle").textContent ="El pago ha sido recibido con éxito.";
+    document.getElementById("card-subtitle2").textContent = "Orden de compra: "+orderId;
+    document.getElementById("card-subtitle3").textContent = vectorToString(vector_tickets_selected);
     readData()
     .then(() => {
           
        
         console.log(filedata);
        manageeSendToFire("","","bold");
+       removeparms();
 
     }).catch(error => {
       console.error("Error al leer datos", error);
   });
 
     }else{
-        //no se realizó transacción
+         
+        removeparms();
+        window.location.href = "../../../rifa";
     }
 });
 
+function removeparms(){
+// Obtener la URL actual sin los parámetros de consulta y la terminación "/index.html"
+let urlWithoutParams = window.location.origin + window.location.pathname;
+urlWithoutParams = urlWithoutParams.replace(/\/index\.html$/, "");
 
+// Reemplazar la URL actual en el historial sin parámetros de consulta y la terminación "/index.html"
+window.history.replaceState({}, document.title, urlWithoutParams);
+
+}
 
 function obtenerValoresDeURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -72,12 +90,11 @@ function obtenerValoresDeURL() {
         throw new Error(`Error al obtener el archivo JSON: ${response.statusText}`);
       }
       const data = await response.json();
-      // Acción a realizar inmediatamente después de leer el archivo JSON
-     // console.log("Archivo JSON leído exitosamente:", data);
+       
       return data;
     } catch (error) {
       console.error("Hubo un problema con la solicitud fetch:", error);
-      throw error; // Rethrow the error for further handling if needed
+      throw error;  
     }
   }
 
@@ -128,9 +145,11 @@ function obtenerValoresDeURL() {
   
      
       uploadBytes(FileRef, file, metadatos).then((snapshot) => {
-           console.log("file_updated");
+       //    console.log("file_updated");
         
            //  location.reload();
+
+
       });
      
     
@@ -139,7 +158,7 @@ function obtenerValoresDeURL() {
 
 
   function manageeSendToFire(nombre, telefono, vendedor){
-    console.log(filedata);
+   // console.log(filedata);
   
     var Named= nombre;
     var Numerd= telefono;
@@ -157,7 +176,7 @@ function obtenerValoresDeURL() {
   
     for (let index = 0; index < vector_tickets_selected.length; index++) {
       
-      console.log(vector_tickets_selected[index]+"   "+Named+"    "+Numerd+"     "+Vendord);
+    //  console.log(vector_tickets_selected[index]+"   "+Named+"    "+Numerd+"     "+Vendord);
       editarBoleta(vector_tickets_selected[index], Named, Numerd, Vendord);
     }
     
@@ -197,3 +216,23 @@ function obtenerValoresDeURL() {
       console.log("Boleta no encontrada.");
     }
   }
+
+
+
+  function vectorToString(vector) {
+    // Usa el método join() para unir todos los elementos del vector con una coma como separador
+    let aux = "Ticket "
+    if(vector.length>1){
+aux = "Tickets: "
+    }
+    return "("+vector.length+") "+aux + "No. "+ vector.join(", ");
+  }
+
+
+  document.getElementById("accept-b").addEventListener("click", function() {
+     
+    window.location.href = "../../../rifa";
+
+  });
+
+ 
