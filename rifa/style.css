@@ -690,19 +690,20 @@ iframe {
 #botonSuperiorDerecha {
     position: fixed;
     top: 20px; /* Ajusta según la distancia deseada desde la parte superior */
-    right: 20px; /* Ajusta según la distancia deseada desde el lado derecho */
+    left: 5px; /* Ajusta según la distancia deseada desde el lado derecho */
     width: 50px; /* Tamaño del botón */
     height: 50px; /* Tamaño del botón */
     border-radius: 50%; /* Hace que el botón sea redondo */
-    background-color: #e84b3d48;
+    background-color: var(--color-red);
     color: #fff; /* Color del texto del botón */
     font-size: 24px; /* Tamaño del texto del botón */
     border: none; /* Quita el borde del botón */
     cursor: pointer; /* Cambia el cursor al pasar por encima del botón */
     z-index: 9999; /* Asegura que esté por encima de otros elementos */
-    color:  #f8301e;
-    border: 1px solid #f8301e;
+    color:  white;
+    border: 1px solid var(--color-red);
     display: none;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   }
 /*---------[   bold button pay          ]-------*/
 #button-PAY{

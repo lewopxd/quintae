@@ -37,7 +37,7 @@ var msgBuilder = "";
 var firstAcceptClick = false;
 var secondAcceptClick = false;
 var actualVendor=null;
-
+var actualSelectedNumber =null;
 window.addEventListener('load', function() {
     console.log("Hola Mundo");
      
@@ -178,6 +178,7 @@ function manageClick(i){
       vector_tickets_selected.push(i); 
     }else{
       vector_tickets_selected[vector_tickets_selected.length-1] = i;
+       
     }
     
    }
@@ -194,7 +195,8 @@ function manageClick(i){
   if(div.classList.contains("active")){
    div.classList.remove("active");
    div_T.classList.remove("active");
-
+   actualSelectedNumber = null;
+   document.getElementById("big-number-red").textContent ="--";
    vector_tickets_selected = vector_tickets_selected.filter(function(item) {
     return item !== i;
   });
@@ -208,7 +210,8 @@ let nom = document.getElementById("nombrex");
 let tel = document.getElementById("telefonox");
 
   highBox(i);
- 
+ actualSelectedNumber = i;
+ document.getElementById("error-text").style.display = "none";
 
 num.innerText = i;
 let boleta = (getBoletaByNumero(filedata, i));
@@ -264,6 +267,7 @@ if(!vector_selled.includes(i)  ){
     
     if(!vector_tickets_selected.includes(str)){
     elemento.classList.remove("active");
+    actualSelectedNumber = null;
     }
     
   });
@@ -274,7 +278,7 @@ if(!vector_selled.includes(i)  ){
     
     if(!vector_tickets_selected.includes(str)){
     elemento.classList.remove("active");
-
+   actualSelectedNumber = null;
     }
   });
 }
@@ -922,3 +926,87 @@ function establecerSeleccionPorDefecto(valor) {
         }
     }
 }
+
+
+function waitThen(time, accion) {
+  setTimeout(accion, time);
+}
+
+document.getElementById("cardDdownloader-button").addEventListener("click", function() {
+
+if (actualSelectedNumber ==  null){
+  navigator.vibrate(200); // Vibra durante 200 milisegundos (ms)
+  document.getElementById("error-text").style.display = "block";
+} else{
+  document.getElementById("error-text").style.display = "none";
+  var name = "T"+actualSelectedNumber;
+  document.getElementById("loader-container-holder2").style.display ="flex";  
+  document.getElementById("cardDownloader-icon").style.display ="none";
+  document.getElementById("cardDownloader-text").style.display ="none";
+  
+  // Crear una copia del div
+  const originalDiv = document.getElementById("card-container");
+  const copyDiv = originalDiv.cloneNode(true);
+
+  // Función para escalar un elemento
+  function scaleElement(element, scale) {
+    const computedStyle = window.getComputedStyle(element);
+
+    element.style.width = parseFloat(computedStyle.width) * scale + "px";
+    element.style.height = parseFloat(computedStyle.height) * scale + "px";
+    element.style.fontSize = parseFloat(computedStyle.fontSize) * scale + "px";
+    element.style.lineHeight = parseFloat(computedStyle.lineHeight) * scale + "px";
+
+    // Ajustar padding y margin
+    element.style.paddingTop = parseFloat(computedStyle.paddingTop) * scale + "px";
+    element.style.paddingRight = parseFloat(computedStyle.paddingRight) * scale + "px";
+    element.style.paddingBottom = parseFloat(computedStyle.paddingBottom) * scale + "px";
+    element.style.paddingLeft = parseFloat(computedStyle.paddingLeft) * scale + "px";
+
+    element.style.marginTop = parseFloat(computedStyle.marginTop) * scale + "px";
+    element.style.marginRight = parseFloat(computedStyle.marginRight) * scale + "px";
+    element.style.marginBottom = parseFloat(computedStyle.marginBottom) * scale + "px";
+    element.style.marginLeft = parseFloat(computedStyle.marginLeft) * scale + "px";
+  }
+
+  // Ajustar el tamaño de la copia y de todos sus elementos internos
+  const scaleValue = 4;
+  scaleElement(copyDiv, scaleValue);
+  const children = copyDiv.querySelectorAll('*');
+  children.forEach(child => scaleElement(child, scaleValue));
+
+  // Ocultar la copia en la página
+  copyDiv.style.position = "absolute";
+  copyDiv.style.left = "-9999px";
+  document.body.appendChild(copyDiv);
+
+  // Capturar la copia del div
+  html2canvas(copyDiv, {
+    backgroundColor: null, // Esto asegura que el fondo sea transparente
+    useCORS: true, // Permitir el uso de CORS si hay imágenes externas
+    scale: scaleValue // Escalar el canvas
+  }).then(function(canvas) {
+    // Crear un enlace de descarga
+    var enlace = document.createElement('a');
+    enlace.href = canvas.toDataURL('image/png');
+    enlace.download = name+".png";
+
+    // Simular un clic en el enlace para iniciar la descarga
+    enlace.click();
+
+    // Eliminar la copia del div después de capturar
+    document.body.removeChild(copyDiv);
+
+    waitThen(100, function() {
+       
+      document.getElementById("loader-container-holder2").style.display ="none";  
+      document.getElementById("cardDownloader-icon").style.display ="flex";
+      document.getElementById("cardDownloader-text").style.display ="flex";
+
+    });
+
+
+  });
+
+}
+});

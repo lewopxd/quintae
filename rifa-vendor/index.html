@@ -28,6 +28,8 @@
         <link href="fonts.css" media="all" rel="stylesheet" type="text/css">
     <link href="style.css" media="all" rel="stylesheet" type="text/css">
     <link href="card.css" media="all" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 </head>
 
 
@@ -129,8 +131,8 @@
                     <div class="content-container">
                       
                         <div class="content-1-container">
-                            
-                            <div class="cardWrap">
+                            <div id="card-container">
+                            <div class="cardWrap" id="cardWrap">
                                 <div class="card cardLeft">
                                 <div class="title-big"> <h1>Gana <span>$500.0000</span><span id="minicero">,00</span> <span id="minicop">COP.</span></h1></div> 
                                   <div class="title">
@@ -140,7 +142,7 @@
                                   <div class="name">
                                     <h2>Lotería de Boyacá</h2>
                                     <span>Juega con 2 últimos digitos</span>
-                                  </div>i
+                                  </div>
                                   <div class="seat">
                                     <h2>15</h2>
                                     <span>día</span>
@@ -157,9 +159,9 @@
                                   
                                 </div>
                                 <div class="card cardRight">
-                                  <div class="eye"></div>
+                                  <div class="eye"> <img id="img-eye" src="logo_light.svg"></div>
                                   <div class="number">
-                                    <h3 id="big-number-red">01</h3>
+                                    <h3 id="big-number-red">--</h3>
                                     <div class="number-contain">
                                     <span id="nombrex">Nombre:</span>
                                     <p></p>
@@ -172,7 +174,20 @@
                                 </div>
                               
                               </div>
-
+                            </div>
+                            
+<div id="cardDownloader-container">
+ 
+  <div id="cardDdownloader-button">
+    <div id="loader-container-holder2">
+      <div id="wrapper">
+        <span class="spinner"></span>
+      </div>
+    </div>
+  <div id="cardDownloader-icon"></div>
+  <span id="cardDownloader-text">Descargar ticket</span>
+  </div>
+  </div>  <span id="error-text">*Selecciona el número del ticket a descargar</span>
                         </div>
                         <div class="content-2-container">
                           <div id="bar-upper"><span>Tickets a vender: </span>

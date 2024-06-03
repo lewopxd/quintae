@@ -78,6 +78,7 @@ body{
     justify-content: center; /* Centra horizontalmente el main-inner-container */
     align-items: center; /* Centra verticalmente el main-inner-container */
     color: var(--color-font1);
+    
 }
 
 
@@ -86,11 +87,14 @@ body{
     height: 100%;
     background-color: var(--color-black);
     text-align: center;
-    padding: 20px;
+    padding: 0px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-top: 15px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .content-container {
@@ -98,6 +102,8 @@ body{
     height: 100%;
     display: flex;
     flex-direction: column;
+   
+   
 }
 
 .content-1-container {
@@ -106,6 +112,10 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    flex-direction: column;
+    
+    
 }
 
 .content-2-container {
@@ -115,6 +125,9 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding-left: 10px;
+    padding-right: 10px;
+     
 }
 
 #bar-upper{
@@ -175,6 +188,47 @@ body{
     grid-area: footer;
 }
 
+/*------------- WRAPER-----------*/
+#loader-container-holder2{
+    background-color: #0d796d00;
+    display: flex;
+    margin: 0;
+    display: none;
+    background-color: #00ff0800;
+}
+#wrapper {
+    width: 100px;
+    height: 100px;
+    min-width: 100px;
+    min-height: 1px;
+    margin: 0px auto;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  /* SPINNER */
+  
+  .spinner {
+    margin: 0px;
+    display: block;
+    float: left;
+    border: 25px solid  white;
+    width: 1px;
+    height: 1px;
+    border-radius: 50px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    animation-name: spinx;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+  
+  @keyframes spinx {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(720deg) scale(0.6); -webkit-filter: blur(3px); }
+    100% { transform: rotate(0deg) scale(1); }
+  }
 
 /*------------[ CARD ]---------------*/
 
@@ -608,6 +662,47 @@ margin-bottom: 10px;
 #COP{
     font-size: 10px;
 }
+
+
+#cardDownloader-container{
+    background-color: #4caf4f00;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+   
+}
+
+  
+#error-text{
+    margin-top: 5px;
+    color: rgb(243, 96, 96);
+    font-size: 13px;
+    display: none;
+  }
+
+#cardDdownloader-button{
+    background-color: var(--color-red);
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    padding: 5px;
+    padding-right: 10px;
+    border-radius: 10px;
+
+}
+
+
+#cardDownloader-icon{
+    background-color: #00030000;
+   width: 20px;
+   height: 20px;
+   margin-right: 10px;
+   background-image: url(images/download-icon.svg);
+   background-size: 20px 20px;
+   background-repeat: no-repeat;
+    
+}
+
 /*---------[ Wide screen ]----------*/
 @media (min-width: 768px) {
         body{
@@ -640,9 +735,21 @@ margin-bottom: 10px;
         
     }
 .content-1-container{
-    flex:none;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0px;
+    margin-bottom: 10px;
+     
+}
+
+#button-buy{
+    margin-top: 0;
+    z-index: 99999;
+    bottom: 5px;
+}
+
+#grid-container{
+    height: auto;
 }
     #upper-text-container{
         margin-top: 0;
@@ -662,6 +769,14 @@ margin-bottom: 10px;
         animation: none;
         display: none;
       
+    }
+
+    #cardDownloader-container{
+        margin-top: 10px;
+    }
+
+    #cardDdownloader-button{
+        margin-top: 0px;
     }
 }
 
