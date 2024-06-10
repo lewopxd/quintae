@@ -29,7 +29,9 @@
     <link href="../../rifa/style.css" media="all" rel="stylesheet" type="text/css">
     <link href="../../rifa/card.css" media="all" rel="stylesheet" type="text/css">
 
-    <script src="https://checkout.bold.co/library/boldPaymentButton.js"></script> 
+  <!--  <script src="https://checkout.bold.co/library/boldPaymentButton.js"></script> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 
@@ -41,6 +43,7 @@
      <div id="modal-title"><span id="modal-title-a" >Comprar ticket:</span>  <span id="modal-title-b" >   </span></div> 
      
      <div id="loader-container-holder2">
+      <span id="error-loader-spinner"></span>
       <div id="wrapper">
         <span class="spinner"></span>
        
@@ -67,7 +70,12 @@
           <button id="accept-button">Aceptar</button>
           <button id="cancel-button">Cancelar</button>
       </div>
+
+      <div id="modal-card-alert">
+        <div><span id="alert-modal-text">Recuerda regresar aqui para guardar tu ticket</span></div>
+   </div>
   </div>
+ 
   </div>  
   <div id="overlay-secur" >
      
@@ -147,7 +155,7 @@
                                   <div class="name">
                                     <h2>Lotería de Boyacá</h2>
                                     <span>Juega con 2 últimos digitos</span>
-                                  </div>i
+                                  </div>
                                   <div class="seat">
                                     <h2>15</h2>
                                     <span>día</span>

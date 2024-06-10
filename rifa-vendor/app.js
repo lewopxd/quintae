@@ -211,6 +211,8 @@ let tel = document.getElementById("telefonox");
 
   highBox(i);
  actualSelectedNumber = i;
+ // Envía el valor al documento principal
+window.parent.postMessage(actualSelectedNumber, '*');
  document.getElementById("error-text").style.display = "none";
 
 num.innerText = i;
@@ -814,9 +816,23 @@ Named = "null";
   }
   
      updateFile(crearArchivoJson());
+      updateDom();
+     
+
+
 }
 
+function updateDom(){
+  readData();
+  manageSections();
+  if(actualSelectedNumber!=null){
+    console.log(actualSelectedNumber);
 
+      document.getElementById("matrix-numero-img-"+actualSelectedNumber).click();
+  
+   
+  }
+}
 
 function editarBoleta(numero, nuevoNombre, nuevoTelefono, nuevoResponsable) {
   // Encontrar el objeto con el número específico

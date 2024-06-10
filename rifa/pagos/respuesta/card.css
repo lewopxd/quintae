@@ -1,0 +1,220 @@
+:root {
+  --color-red: #e84c3d;
+  --color-black : rgb(22, 22, 22);
+  --color-font1 : white;
+}
+.cardWrap {
+  width: 95vw;
+  margin: 3em auto;
+  background-color: rgba(245, 245, 245, 0);
+  font-family: sans-serif;
+  margin-top: 0;
+  margin-bottom: 0 ;
+   margin-left: 10px;
+   margin-right: 10px;
+   border-radius: 8px;
+   display: flex;
+}
+/*---------[ Wide screen ]----------*/
+@media (min-width: 768px) {
+.cardWrap {
+  width: 35vw;
+}
+}
+
+#card-container{
+background-color: #ffffff;
+padding-top: 10px;
+padding-bottom: 10px;
+border-radius: 10px;
+padding-left: 5px;
+padding-right: 5px;
+ 
+}
+.card {
+  background: linear-gradient(to bottom, var(--color-red) 0%, var(--color-red) 26%, #eeeeee 26%, #eaebeb 100%);
+  height: 11.2em;
+  float: left;
+  position: relative;
+  padding-left: 1em;
+  padding-right: 1em;
+ 
+  margin-top: 0;
+  margin-bottom: 0 ;
+  border: 1px solid rgba(255, 255, 255, 0.397);
+}
+
+.cardLeft {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  width: 65%;
+}
+
+.cardRight {
+  width: 35%;
+  border-left: 0.18em dashed rgb(255, 255, 255);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  position: relative;
+}
+
+.cardRight:before,
+.cardRight:after {
+  content: "";
+position: absolute;
+display: block;
+width: 0.9em;
+height: 0.45em; /* Cambiar la altura a la mitad para un semicírculo horizontal */
+background: rgb(255, 255, 255);
+border-radius: 0.9em 0.9em 0 0; /* Aplicar border-radius para semicírculo superior */
+left: -0.5em;
+margin-top: -8px;
+}
+
+.cardRight:before {
+  top: -0.4em;
+  border-radius: 0 0 0.9em 0.9em; /* Aplicar border-radius para semicírculo inferior */
+  top: 0.45em; /* Ajustar la posición para el semicírculo inferior */
+  
+}
+
+.cardRight:after {
+  bottom: -1px;
+  
+}
+
+h1 {
+  font-size: 1.1em;
+  margin-top: 0;
+}
+
+h1 span {
+  font-weight: normal;
+}
+
+.title, .name, .seat, .time, .valor {
+  text-transform: uppercase;
+  font-weight: normal;
+text-align: center;
+  
+}
+
+
+.title h2, .name h2, .seat h2, .time h2, .valor h2{
+  font-size: 0.9em;
+  color: #525252;
+ 
+}
+
+.title span, .name span, .seat span, .time span, .valor span{
+  font-size: 0.7em;
+  color: #999999;
+}
+
+.nn-nn{
+  text-transform: uppercase;
+  font-weight: normal;
+  text-align: center;
+  font-size: 0.9em;
+  color: #525252;
+  font-weight: bold;
+  margin-bottom: 0;
+  margin-top: 5px;
+
+}
+.title {
+  margin: 2em 0 0 0;
+}
+
+.name, .seat {
+  margin: 0.1em 0 0 0;
+}
+
+.time {
+  margin: 0.1em 0 0 1em;
+}
+
+.valor{
+  margin: 0.1em 0 0 0em;
+  float: right;
+}
+.valor mil{
+  font-size: 0.67em;
+}
+
+.seat, .time {
+  float: left;
+}
+
+.eye {
+  position: relative;
+  width: 35px;
+  height: 35px;
+  
+   background-color: #00000000;
+  margin: 0 auto;
+  
+margin-top: 5px;
+  
+  z-index: 1;
+}
+
+#img-eye{
+  width: 35px;
+  height: 35px;
+  pointer-events: none;
+}
+ .title-big{
+  margin-top: 1em;
+  font-size: 1em;
+  color: white;
+ }
+
+.number {
+  text-align: center;
+  text-transform: uppercase;
+}
+.number-contain{
+  display: flex;
+  background-color: #e84b3d00;
+   justify-content: left;
+   align-items: start;
+   flex-direction: column;
+}
+
+#minicero, #minicop{
+  font-size: 12px;
+}
+
+.number h3 {
+  color: #e84c3d;
+  margin: 0.9em 0 0 0;
+  font-size: 2.5em;
+}
+
+.number span {
+
+  color: #999999;
+  font-size: 11px;
+  background-color: rgba(0, 255, 255, 0);
+}
+
+#barcode-container{
+  background-color: rgba(0, 255, 255, 0);
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.barcode {
+   background-image: url(images/barcode.png);
+   width: 70px;
+   height: 6px;
+   background-size: 70px 6px;
+   background-repeat: no-repeat;
+   
+}
+
+h2{
+  
+margin-bottom: 0px;
+}

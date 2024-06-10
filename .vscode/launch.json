@@ -1,29 +1,14 @@
 {
-    "version": "0.2",
-    "configurations": [
+  "version": "0.2",
+  "configurations": [
       {
-        
-        "name": "Launch Chrome on Android Device",
-      "request": "launch",
-      "type": "chrome",
-      "url": "http://localhost:5500",
-      "webRoot": "${workspaceFolder}",
-      "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application/brave.exe",
-      "runtimeArgs": [
-        "--remote-debugging-ip=192.168.20.43",
-        "--remote-debugging-port=42293"
-      ],
-      "userDataDir": false
-      },
-      {
-        "name": "Launch in Brave",
-        "type": "chrome",
-        "request": "launch",
-        "url": "http://localhost:5500", // Reemplaza PORT con el número del puerto de tu aplicación
-        "webRoot": "${workspaceFolder}",
-        "userDataDir": "C:\\Users\\Leo\\AppData\\Local\\Temp\\.vscode\\chromeProfile",
-        "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application/brave.exe" // Reemplaza "/ruta/a/brave.exe" con la ruta de instalación de Brave en tu sistema
+          "name": "Launch in Brave",
+          "type": "chrome",
+          "request": "launch",
+          "url": "http://localhost:5500/rifa",
+          "webRoot": "${workspaceFolder}",
+          "userDataDir": "C:\\Users\\Leo\\AppData\\Local\\Temp\\.vscode\\chromeProfile",
+          "runtimeExecutable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe"
       }
-    ]
-  }
-  
+  ]
+}

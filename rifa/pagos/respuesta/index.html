@@ -6,23 +6,76 @@
     <title>Compra realizada</title>
 
     <link href="style.css" media="all" rel="stylesheet" type="text/css">
+    <link href="card.css" media="all" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+<div id="bg"></div>
+    <div class="upper-container" id="upper-container">
 
-    <div class="upper-container">
-        <div class="thnks-card">
-            <h2><spn id="card-title"></spna></h2>
-            <p><span id="card-subtitle"></span></p>
-            <p><span id="card-subtitle2"></span></p>
-            <p><span id="card-subtitle3"></span></p>
+      <div id="downloader-mega-container">
+        <div id="all-cards-holder">
+        </div>
+           
+        <div id="cardDownloader-container-holder">
+       <div id="cardDownloader-container">
+ 
+  <div id="cardDdownloader-button">
+    <div id="loader-container-holder2">
+      <div id="wrapper">
+        <span class="spinner"></span>
+      </div>
+    </div>
+  <div id="cardDownloader-icon"></div>
+  <span id="cardDownloader-text">Descargar ticket</span>
+  </div>
+  </div>
+
+        </div>
+
+</div>       
+    
+
+            <!---------------------------->
+
+
+        <div class="thnks-card" id="thnks-card-1">
+
+
+           
+
+            <h2>  <div><span id="card-title">Muchas Gracias!!</span></div></h2>
+            <div id="loader-container-holder3">
+                <div id="wrapper3">
+                  <span class="spinner3"></span>
+                </div>
+              </div>
+            <div id="card-subtitle"><span ></span></div>
+            <div id="card-subtitle2"><span ></span></div>
+            <div id="card-subtitle3"><span ></span></div>
+            <!-- Contenedor del formulario -->
+<div id="form-container">
+    <form id="contact-form">
+        <div id="contact-title"><pan></pan></div>
+        <div class="form-group">
+            <label for="name">Tu Nombre:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Tu Teléfono:</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+        <button id="ok-data" type="submit">Guardar</button>
+    </form>
+</div>
             <button id="accept-b">Aceptar</button>
           </div>
       </div>
-       <div class="rifa-container">
-        <iframe src="../../index.html" frameborder="0"></iframe>
-      </div>
+     
       
-
+      <div class="rifa-container">
+      <!--  <iframe src="../../index.html" frameborder="0"></iframe> -->
+      </div>
     <script src="script.js" type="module"></script>
 </body>
 </html>

@@ -22,26 +22,39 @@ const firebaseConfig = {
  const testingapp = false;
  var filedata = null;
 var vector_tickets_selected =[];
+var order = null;
 
 window.addEventListener('load', function() {
 
    
 
     const { orderId, status } = obtenerValoresDeURL();
-    console.log(orderId +"  "+status);
 
+    order = orderId;
+    console.log(orderId +"  "+status);
+     
     if(status=="approved"){
         
     vector_tickets_selected = getVectorT(orderId);
     console.log(vector_tickets_selected);
+
+   // createCards(vector_tickets_selected);
   
-    document.getElementById("card-title").textContent ="Gracias!!";
-    document.getElementById("card-subtitle").textContent ="El pago ha sido recibido con éxito.";
-    document.getElementById("card-subtitle2").textContent = "Orden de compra: "+orderId;
-    document.getElementById("card-subtitle3").textContent = vectorToString(vector_tickets_selected);
+    
+   
     readData()
     .then(() => {
           
+
+
+      document.getElementById("card-title").innerHTML ="Muchas Gracias!<p> ";
+      document.getElementById("card-subtitle").textContent ="El pago ha sido recibido con éxito.";
+      document.getElementById("card-subtitle2").textContent = "Orden de compra: "+orderId;
+      document.getElementById("card-subtitle3").textContent = vectorToString(vector_tickets_selected);
+      document.getElementById("form-container").style.display = "block";
+      document.getElementById("loader-container-holder3").style.display = "none";
+     // document.getElementById("loader-container-holder2").style.display = "none";
+
        
         console.log(filedata);
        manageeSendToFire("","","bold");
@@ -53,7 +66,7 @@ window.addEventListener('load', function() {
 
     }else{
          
-        removeparms();
+       removeparms();
         window.location.href = "../../../rifa";
     }
 });
@@ -145,7 +158,7 @@ function obtenerValoresDeURL() {
   
      
       uploadBytes(FileRef, file, metadatos).then((snapshot) => {
-       //    console.log("file_updated");
+           console.log("file_updated");
         
            //  location.reload();
 
@@ -236,3 +249,189 @@ aux = "Tickets: "
   });
 
  
+
+  // Agregar un evento al formulario para manejar el envío
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevenir el envío del formulario para manejarlo con JavaScript
+
+  // Obtener los valores de los campos del formulario
+  const name = document.getElementById('name').value;
+  const phone = document.getElementById('phone').value;
+
+  // Aquí puedes manejar los datos del formulario, por ejemplo, enviarlos a un servidor o mostrarlos en la consola
+  console.log('Nombre:', name);
+  console.log('Teléfono:', phone);
+  console.log(vector_tickets_selected);
+
+  createCards(vector_tickets_selected, name, phone);
+
+  document.getElementById("cardDownloader-container-holder").style.display ="flex";
+  if(vector_tickets_selected.length > 2){
+document.getElementById("upper-container").style.justifyContent ="unset"; 
+  }
+  
+  document.getElementById("thnks-card-1").style.display ="none"; 
+
+     manageeSendToFire(name, phone, "bold");
+
+
+});
+
+
+
+function createCards(dataArray, name, phone) {
+  // Selecciona el contenedor donde se añadirán las tarjetas
+  const container = document.getElementById('all-cards-holder');
+
+  // Limpiar el contenedor antes de añadir nuevas tarjetas
+  container.innerHTML = '';
+
+  // Iterar sobre el array de datos
+  dataArray.forEach((data, index) => {
+      // Crear un div contenedor para la tarjeta
+      const cardContainer = document.createElement('div');
+      cardContainer.id = 'card-container';
+
+      // Construir el contenido HTML para la tarjeta
+      cardContainer.innerHTML = `
+          <div class="cardWrap" id="cardWrap">
+              <div class="card cardLeft">
+                  <div class="title-big">
+                      <h1>Gana <span>$500.0000</span><span id="minicero">,00</span> <span id="minicop">COP.</span></h1>
+                  </div>
+                  <div class="title">
+                      <h2>Rifa pro-Marruecos</h2>
+                      <span>  </span>
+                  </div>
+                  <div class="name">
+                      <h2>Lotería de Boyacá</h2>
+                      <span>Juega con 2 últimos dígitos</span>
+                  </div>
+                  <div class="seat">
+                      <div class="nn-nn">15</div>
+                      <span>día</span>
+                  </div>
+                  <div class="time">
+                      <div class="nn-nn">JUN</div>
+                      <span>mes</span>
+                  </div>
+                  <div class="valor">
+                      <div class="nn-nn">25<mil>mil</mil></div>
+                      <span>precio</span>
+                  </div>
+              </div>
+              <div class="card cardRight">
+                  <div class="eye">
+                      <img id="img-eye" src="logo_light.svg" alt="Logo">
+                  </div>
+                  <div class="number">
+                      <h3 id="big-number-red">${dataArray[index]}</h3>
+                      <div class="number-contain">
+                          <span id="nombrex">${name}</span>
+                          <span id="telefonox">${phone}</span>
+                      </div>
+                  </div>
+                  <div id="barcode-container">
+                      <div class="barcode"></div>
+                  </div>
+              </div>
+          </div>
+      `;
+
+      // Añadir el nuevo cardContainer al contenedor principal
+      container.appendChild(cardContainer);
+  });
+}
+
+ 
+
+
+document.getElementById("cardDdownloader-button").addEventListener("click", function() {
+
+   
+     
+    var name = order;
+    document.getElementById("loader-container-holder2").style.display ="flex";  
+    document.getElementById("cardDownloader-icon").style.display ="none";
+    document.getElementById("cardDownloader-text").style.display ="none";
+    
+    // Crear una copia del div
+    const originalDiv = document.getElementById("all-cards-holder");
+    const copyDiv = originalDiv.cloneNode(true);
+  
+    // Función para escalar un elemento
+    function scaleElement(element, scale) {
+      const computedStyle = window.getComputedStyle(element);
+  
+      element.style.width = parseFloat(computedStyle.width) * scale + "px";
+      element.style.height = parseFloat(computedStyle.height) * scale + "px";
+      element.style.fontSize = parseFloat(computedStyle.fontSize) * scale + "px";
+      element.style.lineHeight = parseFloat(computedStyle.lineHeight) * scale + "px";
+  
+      // Ajustar padding y margin
+      element.style.paddingTop = parseFloat(computedStyle.paddingTop) * scale + "px";
+      element.style.paddingRight = parseFloat(computedStyle.paddingRight) * scale + "px";
+      element.style.paddingBottom = parseFloat(computedStyle.paddingBottom) * scale + "px";
+      element.style.paddingLeft = parseFloat(computedStyle.paddingLeft) * scale + "px";
+  
+      element.style.marginTop = parseFloat(computedStyle.marginTop) * scale + "px";
+      element.style.marginRight = parseFloat(computedStyle.marginRight) * scale + "px";
+      element.style.marginBottom = parseFloat(computedStyle.marginBottom) * scale + "px";
+      element.style.marginLeft = parseFloat(computedStyle.marginLeft) * scale + "px";
+    }
+  
+    // Ajustar el tamaño de la copia y de todos sus elementos internos
+    const scaleValue = 4;
+    scaleElement(copyDiv, scaleValue);
+    const children = copyDiv.querySelectorAll('*');
+    children.forEach(child => scaleElement(child, scaleValue));
+  
+    // Ocultar la copia en la página
+    copyDiv.style.position = "absolute";
+    copyDiv.style.left = "-9999px";
+    document.body.appendChild(copyDiv);
+  
+    // Capturar la copia del div
+    html2canvas(copyDiv, {
+      backgroundColor: null, // Esto asegura que el fondo sea transparente
+      useCORS: true, // Permitir el uso de CORS si hay imágenes externas
+      scale: scaleValue // Escalar el canvas
+    }).then(function(canvas) {
+      // Crear un enlace de descarga
+      var enlace = document.createElement('a');
+      enlace.href = canvas.toDataURL('image/png');
+      enlace.download = name+".png";
+  
+      // Simular un clic en el enlace para iniciar la descarga
+      enlace.click();
+  
+      // Eliminar la copia del div después de capturar
+      document.body.removeChild(copyDiv);
+  
+      waitThen(100, function() {
+         
+        document.getElementById("loader-container-holder2").style.display ="none";  
+        document.getElementById("cardDownloader-icon").style.display ="flex";
+        document.getElementById("cardDownloader-text").style.display ="flex";
+
+  
+      });
+
+
+      waitThen(200, function() {
+         
+        window.location.href = '././';
+
+  
+      });
+  
+  
+    });
+  
+  
+  });
+
+
+  function waitThen(time, accion) {
+    setTimeout(accion, time);
+  }
