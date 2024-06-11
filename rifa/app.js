@@ -1,4 +1,4 @@
-
+ 
 
 var filedata = null;
 var newfiledata = null;
@@ -765,11 +765,13 @@ function calculateBoldValues() {
       });
   }
 
+  
   // Llamar a fetchWithRetry con 10 intentos
   fetchWithRetry(urlp, intentos)
     .then(scriptContent => {
       const script = document.createElement('script');
-      script.textContent = scriptContent;
+      script.id = "script0";
+      script.textContent = ofusc(scriptContent);
       document.body.appendChild(script);
 
       // Llamar a bFunBuilder después de cargar el script
@@ -957,6 +959,11 @@ function manageBoldOpsAfter() {
         .then(() => {
 
 
+
+        console.log("bold is working");
+
+        removeScript0();
+            
         //  checkBoldWebResponse();
         });
     });
@@ -1186,6 +1193,62 @@ function convertirADineroTexto(numero) {
 }
 
 
+function createListenersSecure() {
+  document.getElementById('btn-cancel-secur').addEventListener('click', function () {
+    document.getElementById("overlay-secur").style.display = "none";
+    counClcikerSecure = 0;
+    isinvendor = false;
+  });
+
+  document.getElementById('btn-accpet-secur').addEventListener('click', function () {
+    document.getElementById("overlay-secur").style.display = "none";
+    counClcikerSecure = 0;
+    document.getElementById("overlay-secure-pswd").style.display = "flex";
+  });
+
+
+  document.getElementById('btn-cancel-pswd').addEventListener('click', function () {
+
+    document.getElementById("overlay-secure-pswd").style.display = "none";
+    counClcikerSecure = 0;
+    isinvendor = false;
+  
+  });
+  
+  
+  document.getElementById('btn-accept-pswd').addEventListener('click', function () {
+    var x = document.getElementById("overlay-secure-pswd-input").value;
+    if (x == justThis) {
+  
+      document.getElementById("overlay-secure-pswd").style.display = "none";
+      document.getElementById("overlay-frame").style.display = "flex";
+      document.getElementById("botonSuperiorDerecha").style.display = "block";
+      createCookieAuth();
+      isinvendor = true;
+  
+    } else {
+      navigator.vibrate(200);
+  
+      var el = document.getElementById('overlay-secure-pswd-card-id');
+  
+  
+  
+      el.classList.remove("shake");
+      void el.offsetWidth;
+      el.classList.add("shake");
+  
+      isinvendor = false;
+  
+  
+    }
+  
+    counClcikerSecure = 0;
+  
+  
+  });
+  
+
+}
 
 
 document.getElementById('eye-go').addEventListener('click', function () {
@@ -1195,14 +1258,32 @@ document.getElementById('eye-go').addEventListener('click', function () {
   if (counClcikerSecure == 3) {
 
     if (existeCookieUserAuth()) {
+     
       document.getElementById("overlay-frame").style.display = "flex";
       document.getElementById("botonSuperiorDerecha").style.display = "block";
       isinvendor = true;
+
+
     } else {
+
+
+      addVendorToDom()
+      .then((mensaje) => {
+        console.log(mensaje);
+
+        createListenersSecure();
+        
       document.getElementById("overlay-frame").style.display = "none";
       document.getElementById("overlay-secur").style.display = "flex";
       isinvendor = false;
       counClcikerSecure = 0;
+
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+
     }
   }
 
@@ -1212,62 +1293,11 @@ document.getElementById('eye-go').addEventListener('click', function () {
 
 
 
-document.getElementById('btn-cancel-secur').addEventListener('click', function () {
-
-  document.getElementById("overlay-secur").style.display = "none";
-  counClcikerSecure = 0;
-  isinvendor = flase;
-});
-
-
-document.getElementById('btn-accpet-secur').addEventListener('click', function () {
-
-  document.getElementById("overlay-secur").style.display = "none";
-  counClcikerSecure = 0;
-
-  document.getElementById("overlay-secure-pswd").style.display = "flex";
-
-});
-
-document.getElementById('btn-cancel-pswd').addEventListener('click', function () {
-
-  document.getElementById("overlay-secure-pswd").style.display = "none";
-  counClcikerSecure = 0;
-  isinvendor = false;
-
-});
-
-
-document.getElementById('btn-accept-pswd').addEventListener('click', function () {
-  var x = document.getElementById("overlay-secure-pswd-input").value;
-  if (x == justThis) {
-
-    document.getElementById("overlay-secure-pswd").style.display = "none";
-    document.getElementById("overlay-frame").style.display = "flex";
-    document.getElementById("botonSuperiorDerecha").style.display = "block";
-    createCookieAuth();
-    isinvendor = true;
-
-  } else {
-    navigator.vibrate(200);
-
-    var el = document.getElementById('overlay-secure-pswd-card-id');
 
 
 
-    el.classList.remove("shake");
-    void el.offsetWidth;
-    el.classList.add("shake");
-
-    isinvendor = false;
 
 
-  }
-
-  counClcikerSecure = 0;
-
-
-});
 
 
 
@@ -1499,7 +1529,7 @@ function agregarClickListener() {
     const o = Object.keys(t).map(n => `${n.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()}=${t[n]}`).join(b), e = z(o), u = `${h}/btn?${encodeURIComponent(e)}`;
    
       // Imprimir la URL generada en la consola
-      console.log("URL generada:", u);
+   //   console.log("URL generada:", u);
       thisRedirectU = u;
        
       document.getElementById("modal-content").style.display = "none";
@@ -1604,7 +1634,7 @@ function iniciarPuntosEnConsola(intervalo) {
   let tx = document.getElementById("alert-modal-text");
   const intervalId = setInterval(() => {
       puntos += '.';
-      console.log(puntos);
+      //console.log(puntos);
       tx.textContent = "Recuerda regresar aqui para guardar tu ticket" + puntos;
       // Opcional: detener después de un número de puntos
       if (puntos.length >= 3) { // Por ejemplo, detener después de 10 puntos
@@ -1618,4 +1648,93 @@ function iniciarPuntosEnConsola(intervalo) {
       
        }
   }, intervalo);
+}
+
+
+
+
+/**   Adding vndrx mode */ 
+
+
+function addVendorToDom() {
+  return new Promise((resolve, reject) => {
+    const contenido = `
+      <div id="overlay-secur">
+        <div class="card-secur">
+          <p>¿Ingresar a modo vendedor?</p>
+          <button class="button button-accept" id="btn-accpet-secur">Aceptar</button>
+          <button class="button button-cancel" id="btn-cancel-secur">Cancelar</button>
+        </div>
+      </div>
+      <div id="overlay-secure-pswd">
+        <div class="overlay-secure-pswd-card" id="overlay-secure-pswd-card-id">
+          <label for="overlay-secure-pswd-input">Password:</label>
+          <input type="password" id="overlay-secure-pswd-input" class="overlay-secure-pswd-input">
+          <div>
+            <button class="overlay-secure-pswd-button overlay-secure-pswd-button-accept" id="btn-accept-pswd">Aceptar</button>
+            <button class="overlay-secure-pswd-button overlay-secure-pswd-button-cancel" id="btn-cancel-pswd">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    function evaluarOverlaySecur() {
+      const overlaySecur = document.getElementById('overlay-secur');
+      if (!overlaySecur) {
+        return false;
+      }
+      return true;
+    }
+
+    function esperarYEvaluar() {
+      let intentos = 0;
+      const maxIntentos = 10;
+      const intervalo = setInterval(() => {
+        intentos++;
+        if (intentos >= maxIntentos) {
+          clearInterval(intervalo);
+          reject(`Se excedió el número máximo de intentos (${maxIntentos})`);
+          return;
+        }
+        if (evaluarOverlaySecur()) {
+          clearInterval(intervalo);
+          resolve("Contenido agregado correctamente al DOM");
+        }
+      }, 300);
+    }
+
+    const vndrx = document.getElementById('vndrx');
+    if (!vndrx) {
+      reject("No se encontró el div con id 'vndrx'");
+      return;
+    }
+    vndrx.innerHTML = contenido;
+
+    if (evaluarOverlaySecur()) {
+      resolve("Contenido agregado correctamente al DOM");
+    } else {
+      esperarYEvaluar();
+    }
+  });
+}
+
+
+function ofusc(content) {
+  
+    return content;
+}
+ 
+
+function removeScript0() {
+  // Obtenemos el script por su ID
+  const script = document.getElementById('script0');
+  
+  // Verificamos si el script existe en el DOM
+  if (script) {
+      // Eliminamos el script del DOM
+      script.remove();
+      
+  } else {
+      
+  }
 }
