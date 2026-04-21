@@ -690,3 +690,72 @@ if(agent.indexOf("macintosh") >= 0) device = "Macintosh";
 
 return device;
 }
+
+
+
+
+(function() {
+    const imgElement = document.getElementById('portada-animada');
+    // Si el elemento no existe en la página actual, detiene la ejecución
+    if (!imgElement) return; 
+
+    const totalFrames = 192;
+    const fps = 24;
+    const interval = 1000 / fps;
+    const frames = [];
+
+    let loadedImages = 0;
+    let currentFrame = 0;
+    let forward = true;
+    let lastTime = performance.now();
+
+    // Precarga de imágenes
+    for (let i = 1; i <= totalFrames; i++) {
+        const img = new Image();
+        img.src = `../../images/animatedPortada/ffout${String(i).padStart(3, '0')}.gif`;
+        img.onload = checkLoad;
+        frames.push(img.src);
+    }
+
+    // Verifica la carga y ejecuta las animaciones nativas de la plantilla
+    function checkLoad() {
+        loadedImages++;
+        if (loadedImages === totalFrames) {
+            
+            // Transiciones de la plantilla (jQuery)
+            if (typeof $ !== 'undefined') {
+                $("#preloader").fadeOut(600);
+                $(".preloader-bg").delay(400).fadeOut(600);
+                $(".fadeIn-element").delay(600).css({ display: "none" }).fadeIn(800);
+            }
+            
+            // Inicia la secuencia
+            requestAnimationFrame(animate);
+        }
+    }
+
+    // Bucle de animación (ping-pong)
+    function animate(timestamp) {
+        const deltaTime = timestamp - lastTime;
+
+        if (deltaTime >= interval) {
+            imgElement.src = frames[currentFrame];
+
+            if (forward) {
+                currentFrame++;
+                if (currentFrame >= totalFrames) {
+                    currentFrame = totalFrames - 2;
+                    forward = false;
+                }
+            } else {
+                currentFrame--;
+                if (currentFrame < 0) {
+                    currentFrame = 1;
+                    forward = true;
+                }
+            }
+            lastTime = timestamp - (deltaTime % interval);
+        }
+        requestAnimationFrame(animate);
+    }
+})();
