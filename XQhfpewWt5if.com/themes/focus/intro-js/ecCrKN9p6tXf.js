@@ -31,17 +31,18 @@ $(function() {
     "use strict";
 	
 	
-    $(window).on("load", function() {
-        // 1. preloader
-        $("#preloader").fadeOut(600);
-        $(".preloader-bg").delay(400).fadeOut(600);
-        // 2. fadeIn.element
-        setTimeout(function() {
-            $(".fadeIn-element").delay(600).css({
-                display: "none"
-            }).fadeIn(800);
-        }, 0);
-    });
+   $(window).on("load", function() {
+    // COMENTADO PARA EVITAR INTERFERENCIA CON PRECARGA DE FRAMES
+    // 1. preloader
+    // $("#preloader").fadeOut(600);
+    // $(".preloader-bg").delay(400).fadeOut(600);
+    // 2. fadeIn.element
+    // setTimeout(function() {
+    //     $(".fadeIn-element").delay(600).css({
+    //         display: "none"
+    //     }).fadeIn(800);
+    // }, 0);
+});
 	
     // 3. navigation
     // 3.1. page scroll
