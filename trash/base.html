@@ -1,0 +1,483 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRASH MACHINE - Compendio Dramatúrgico</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #c0392b;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #1a1a1a;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-serif);
+            line-height: 1.35;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        #main-content {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        #login-form {
+            display: none;
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #login-form input {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            outline: none;
+            font-family: var(--font-sans);
+        }
+
+        #login-form button {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            margin-left: 5px;
+        }
+
+        #trash-icon {
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        #trash-icon:active {
+            transform: scale(0.95);
+        }
+
+        /* Navegación Lateral */
+        aside {
+            width: 300px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            font-family: var(--font-sans);
+        }
+
+        .sidebar-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin-bottom: 0.8rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .sub-nav {
+            margin-left: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            border-left: 1px solid var(--border-color);
+            padding-left: 0.8rem;
+        }
+
+        /* Contenido Principal */
+        main {
+            margin-left: 300px;
+            flex: 1;
+            max-width: 850px;
+            padding: 3rem 2rem;
+            background: white;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: var(--font-sans);
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-family: var(--font-sans);
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-top: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 2rem;
+        }
+
+        p {
+            margin-bottom: 0.8rem;
+            text-align: justify;
+        }
+
+        .doc-meta {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Tablas */
+        .table-container {
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: left;
+            padding: 12px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
+        .block-section {
+            padding: 1.5rem;
+            background: #fdfdfd;
+            border-left: 4px solid var(--primary-color);
+            margin: 2rem 0;
+        }
+
+        .emphasis {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .emphasis-purple {
+            color: #a200ff;
+            font-weight: bold;
+        }
+
+        .emphasis-red {
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: #888;
+            text-align: center;
+        }
+
+        /* Top Navbar (Mobile) */
+        .top-navbar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #000000;
+            color: white;
+            z-index: 1050;
+            align-items: center;
+            padding: 0 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease-in-out;
+            transform: translateY(0);
+        }
+
+        .top-navbar.hidden {
+            transform: translateY(-100%);
+        }
+
+        .top-navbar-title {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        /* Menú y Overlay */
+        .hamburger {
+            display: none;
+            position: absolute;
+            left: 1rem;
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 6px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            .overlay.active {
+                display: block;
+            }
+            .top-navbar {
+                display: flex;
+                justify-content: center;
+            }
+            aside {
+                width: 280px;
+                height: 100vh;
+                position: fixed;
+                z-index: 1000;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                border-right: 1px solid var(--border-color);
+            }
+            aside.open {
+                transform: translateX(0);
+            }
+            main {
+                margin-left: 0;
+                padding: 5rem 1.5rem 2rem 1.5rem; /* Ajuste para la navbar superior */
+            }
+        }
+
+        @media print {
+            aside { display: none; }
+            main { margin-left: 0; padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <svg id="trash-icon" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 80px; height: 80px;">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
+        <div id="login-form">
+            <input type="password" id="pwd-input" placeholder="...">
+            <button id="btn-login">OK</button>
+        </div>
+    </div>
+
+    <!-- Contenedor Principal (Oculto por defecto) -->
+    <div id="main-content">
+        <!-- Top Navbar -->
+        <nav id="top-navbar" class="top-navbar">
+            <button id="menu-toggle" class="hamburger" aria-label="Abrir menú">
+                <svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+            <span class="top-navbar-title">TRASH MACHINE</span>
+        </nav>
+
+        <!-- Overlay para cerrar menú -->
+        <div id="overlay" class="overlay"></div>
+
+        <aside>
+            <div class="sidebar-title">Estructura del Documento</div>
+            <nav>
+                <ul>
+                    <li><a href="#premisa">I. Premisa</a></li>
+                    <li>
+                        <a href="#titulo">II. Título y Tema Central</a>
+                        <div class="sub-nav">
+                            <a href="#cuerpo-basura">El cuerpo como basura</a>
+                            <a href="#supervivencia">Supervivencia como complicidad</a>
+                        </div>
+                    </li>
+                    <li><a href="#mensaje">III. Lo que la obra dice</a></li>
+                    <li>
+                        <a href="#personajes">IV. Personajes</a>
+                        <div class="sub-nav">
+                            <a href="#chica">La Chica del Violín</a>
+                            <a href="#hombre">El Hombre del Carrito</a>
+                            <a href="#mujer">La Mujer</a>
+                        </div>
+                    </li>
+                    <li><a href="#conflictos">V. Los Conflictos</a></li>
+                    <li><a href="#poder">VI. Relación de Poder</a></li>
+                    <li><a href="#revelaciones">VII. Revelaciones</a></li>
+                    <li><a href="#sonido">VIII. Arco del Sonido</a></li>
+                    <li>
+                        <a href="#bloques">IX. Estructura de Bloques</a>
+                        <div class="sub-nav">
+                            <a href="#bloque-intro">Intro</a>
+                            <a href="#bloque-1">Bloque 1</a>
+                            <a href="#flashback-1">Flashback 1</a>
+                            <a href="#bloque-2">Bloque 2</a>
+                            <a href="#bloque-3">Bloque 3</a>
+                            <a href="#bloque-4">Bloque 4</a>
+                            <a href="#flashback-2">Flashback 2</a>
+                            <a href="#bloque-5">Bloque 5</a>
+                            <a href="#bloque-6">Bloque 6</a>
+                            <a href="#bloque-7">Bloque 7</a>
+                            <a href="#bloque-8">Bloque 8</a>
+                            <a href="#bloque-9">Bloque 9</a>
+                            <a href="#bloque-10">Bloque 10</a>
+                        </div>
+                    </li>
+                    <li><a href="#herencia">X. Herencia El Monte Calvo</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main>
+            <header>
+                <h1>TRASH MACHINE</h1>
+                <p class="doc-meta">Compendio dramatúrgico de trabajo / Documento de proceso — para el equipo</p>
+            </header>
+
+            <section id="premisa">
+                <h2>I. PREMISA</h2>
+                <p>Una joven artista de calle —clown y violinista— es citada por su amigo de vida a una cita de trabajo en el exterior. Ella no sabe que ha sido seleccionada aleatoriamente por una red de trata para ser vendida como gestante subrogada forzada. El Hombre del Carrito pertenece a la red no por elección sino por supervivencia: la organización le cobró sus piernas por un error pasado y opera bajo amenaza permanente.</p>
+                <p>Cuando llega La Mujer de la red a cerrar la transacción, el instinto de clown de La Chica del Violín actúa sobre ella. La Mujer la interroga mientras espera el transporte. Ante una pregunta directa responde con la verdad del plan completo. El Hombre del Carrito le pide que haga su número una última vez. La Mujer, que ha visto lo suficiente para saber lo que le espera, decide matarla en lugar de entregarla. Le pide al Hombre del Carrito que empaque el cuerpo en una bolsa de basura. Él le acaricia el cabello. Se lleva el violín. Cada uno sale por su lado. El carro de la basura llega. El recolector tira las bolsas. El sistema sigue.</p>
+            </section>
+
+            <section id="titulo">
+                <h2>II. TÍTULO Y TEMA CENTRAL</h2>
+                <h3>Por qué Trash Machine</h3>
+                <p>El título no es una metáfora decorativa. Es la descripción exacta de lo que la obra muestra: una máquina que procesa seres humanos como si fueran desechos.</p>
+                <p>La obra se centra en un sistema que ve la humanidad y el cuerpo como basura, como desecho. Un sistema que no destruye por odio sino por lógica de mercado: fragmenta el cuerpo, asigna valor diferencial a cada parte, usa lo que sirve y descarta lo que no. La Chica del Violín no es asesinada por maldad — es procesada. Sus manos no tienen valor para la red. Su lengua no tiene valor. Su útero sí. El resto es descarte.</p>
+                <p>Esa lógica es la del capitalismo llevado a su conclusión sobre el cuerpo humano. No es una alegoría ni una exageración — es el funcionamiento documentado de las redes de trata en el mercado global. La obra no denuncia desde afuera: muestra el mecanismo desde adentro, a través de tres personas que el sistema usa y que no tienen poder real para detenerlo.</p>
+
+                <h3 id="cuerpo-basura">El cuerpo como basura</h3>
+                <p>Hay una cadena de imágenes en la obra que construyen esta idea de modo material, no abstracto:</p>
+            <p>El sistema capitalista no odia a sus víctimas. Las procesa. El cuerpo humano se fragmenta, se asigna valor diferencial a cada parte, se descarta lo que no sirve. Nadie en escena es el sistema — los tres personajes son instrumentos de él con márgenes de acción casi nulos.</p>
+            <p>La única humanidad disponible dentro del sistema toma la forma de la traición y del asesinato. Ambos actos de amor. Ambos inútiles.</p>
+            <p>El sistema se lleva el cuerpo. El Hombre del Carrito se lleva la música. El sistema no distingue entre los dos.</p>
+        </section>
+
+        <section id="personajes">
+            <h2>IV. LOS PERSONAJES</h2>
+            
+            <h3 id="chica">LA CHICA DEL VIOLÍN</h3>
+            <p>Artista de calle. Clown y violinista. Fue elegida por el sistema de modo completamente aleatorio y funcional: edad, condición física, perfil de gestante. No hay nada especial en ella para la red. Podría haber sido cualquiera. Eso es lo más brutal.</p>
+            <p>Tiene un instinto de clown que no puede apagar: lee personas, lee espacios, responde a lo que encuentra. Esa es su inteligencia específica y su oficio. Es lo que la hace humana. Es lo que la condena.</p>
+            <p>Su ingenuidad es coherente: el Hombre del Carrito es su amigo de vida, no un conocido. Alguien con quien ha sobrevivido la calle. Ese vínculo no se cuestiona fácilmente. La propuesta de trabajo en el exterior es concreta y necesaria para alguien que vive de tocar en la calle. Lo raro se acumula durante la cita pero cada elemento por separado tiene una lectura inocente disponible.</p>
+            <p>Descubre la traición no por una contradicción verbal sino por su inteligencia específica: un clown sabe exactamente cuándo pierde a su público. Cuando el Hombre del Carrito aparta los ojos en el mejor momento de su música, ella lo lee. Decide irse. No puede.</p>
+            <p>Muere sabiendo lo que le iban a hacer pero ejerciendo lo único que todavía es completamente suyo: su acto.</p>
+
+            <h3 id="hombre">EL HOMBRE DEL CARRITO</h3>
+            <p>Sin piernas, sobre un tablero con ruedas. La red le cobró sus piernas por un error pasado. No las perdió: fueron cobradas. Opera bajo amenaza permanente.</p>
+            <p>Ama genuinamente a La Chica del Violín. La entregó por supervivencia, que dentro de este sistema es lo mismo que la traición. Su único margen de acción es pedirle que toque. Lo hace durante toda la obra — cuatro veces. Al final le pide que haga su número completo creyendo que es el último regalo antes de una separación. No sabe que es un adiós.</p>
+            <p>Cuando La Mujer mata a La Chica del Violín, la muerte lo toma por sorpresa. Su último pedido se convierte retroactivamente en el adiós que no sabía que era.</p>
+            <p>Le piden que empaque el cuerpo en una bolsa de basura. Lo hace. Antes — una sola cosa — le acaricia el cabello. Se lleva el violín. Sale por su lado.</p>
+            <p>El arco completo de su personaje: apartó los ojos porque no podía sostenerla. Y lo último que hizo fue pedirle que lo dejara verla.</p>
+
+            <h3 id="mujer">LA MUJER</h3>
+            <p>Operadora de la red. Posiblemente policía — nunca se dice explícitamente. Llega a cerrar una transacción. Para ella el Hombre del Carrito es un número de caso, un contacto anónimo. Él la conoce a ella de nombre y por reputación dentro de la red. Esa asimetría opera en silencio durante toda la escena: él sabe quién es ella, ella no necesita saber quién es él. Es descarte dentro del descarte.</p>
+            <p>El instinto de clown de La Chica del Violín la saca momentáneamente del procedimiento. La interroga para confirmar datos, llena el tiempo de espera, pero La Chica del Violín responde a quien tiene enfrente — es su instinto — y lo que emerge no era lo que La Mujer esperaba encontrar.</p>
+            <p>Ante una pregunta directa sobre qué le va a pasar, responde con la verdad: sin manos, sin lengua, solo el útero. No como crueldad — como quien no puede sostener la mentira ante alguien que la está mirando de frente.</p>
+            <p>Decide matar en lugar de vender. La lógica no es sentimental: sabe lo que el sistema hará con alguien así en el proceso de domesticarla. Ha visto suficiente. Matar es el único gesto que le queda disponible dentro de la lógica en que opera. No la redime. No la saca del sistema.</p>
+            <p>Le pide al Hombre del Carrito que empaque el cuerpo. Sale por su lado. No se miran.</p>
+        </section>
+
+    
