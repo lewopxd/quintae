@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRASH MACHINE - Estructura Dramatúrgica</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #c0392b;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #1a1a1a;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-serif);
+            line-height: 1.35;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        #main-content {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        #login-form {
+            display: none;
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #login-form input {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            outline: none;
+            font-family: var(--font-sans);
+        }
+
+        #login-form button {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            margin-left: 5px;
+        }
+
+        #trash-icon {
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #trash-icon:active {
+            transform: scale(0.95);
+        }
+
+        /* Navegación Lateral */
+        aside {
+            width: 300px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            font-family: var(--font-sans);
+        }
+
+        /* Ocultar scrollbar pero mantener funcionalidad (opcional, para diseño limpio) */
+        aside::-webkit-scrollbar {
+            width: 6px;
+        }
+        aside::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+
+        .sidebar-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin-bottom: 0.8rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .sub-nav {
+            margin-left: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            border-left: 1px solid var(--border-color);
+            padding-left: 0.8rem;
+        }
+
+        /* Contenido Principal */
+        main {
+            margin-left: 300px;
+            flex: 1;
+            max-width: 850px;
+            padding: 3rem 2rem;
+            background: white;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: var(--font-sans);
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-family: var(--font-sans);
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-top: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 2rem;
+        }
+
+        p {
+            margin-bottom: 0.8rem;
+            text-align: justify;
+        }
+
+        .doc-meta {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Tablas */
+        .table-container {
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: left;
+            padding: 10px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
+        .block-section {
+            padding: 1.5rem;
+            background: #fdfdfd;
+            border-left: 4px solid var(--primary-color);
+            margin: 2rem 0;
+        }
+
+        .emphasis {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .emphasis-purple {
+            color: #a200ff;
+            font-weight: bold;
+        }
+
+        .emphasis-red {
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-bottom: 1px solid transparent;
+            border-top: 1px solid var(--border-color);
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: #888;
+            text-align: center;
+            padding-bottom: 2rem;
+        }
+
+        /* Top Navbar (Mobile) */
+        .top-navbar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #000000;
+            color: white;
+            z-index: 1050;
+            align-items: center;
+            padding: 0 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease-in-out;
+            transform: translateY(0);
+        }
+
+        .top-navbar.hidden {
+            transform: translateY(-100%);
+        }
+
+        .top-navbar-title {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        /* Menú y Overlay */
+        .hamburger {
+            display: none;
+            position: absolute;
+            left: 1rem;
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 6px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            .overlay.active {
+                display: block;
+            }
+            .top-navbar {
+                display: flex;
+                justify-content: center;
+            }
+            aside {
+                width: 280px;
+                height: 100vh;
+                position: fixed;
+                z-index: 1000;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                border-right: 1px solid var(--border-color);
+            }
+            aside.open {
+                transform: translateX(0);
+            }
+            main {
+                margin-left: 0;
+                padding: 5rem 1.5rem 2rem 1.5rem;
+            }
+        }
+
+        @media print {
+            aside { display: none; }
+            main { margin-left: 0; padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <svg id="trash-icon" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 80px; height: 80px;">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
+        <div id="login-form">
+            <input type="password" id="pwd-input" placeholder="...">
+            <button id="btn-login">OK</button>
+        </div>
+    </div>
+
+    <!-- Contenedor Principal (Oculto por defecto) -->
+    <div id="main-content">
+        <!-- Top Navbar -->
+        <nav id="top-navbar" class="top-navbar">
+            <button id="menu-toggle" class="hamburger" aria-label="Abrir menú">
+                <svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+            <span class="top-navbar-title">TRASH MACHINE</span>
+        </nav>
+
+        <!-- Overlay para cerrar menú -->
+        <div id="overlay" class="overlay"></div>
+
+        <aside>
+            <div class="sidebar-title">Estructura del Documento</div>
+            <nav>
+                <ul>
+                    <li><a href="#premisa">I. Premisa</a></li>
+                    <li><a href="#nucleo">II. Núcleo de Convicción Dramática</a></li>
+                    <li>
+                        <a href="#personajes">III. Los Tres Personajes</a>
+                        <div class="sub-nav">
+                            <a href="#eva">Eva Lucía</a>
+                            <a href="#guille">Guillermo</a>
+                            <a href="#mujer">La Mujer</a>
+                        </div>
+                    </li>
+                    <li><a href="#conflicto">IV. Conflicto General</a></li>
+                    <li><a href="#poder">V. La Relación de Poder</a></li>
+                    <li><a href="#escenografia">VI. El Diseño Escenográfico</a></li>
+                    <li><a href="#sonido">VII. El Arco del Sonido</a></li>
+                    <li>
+                        <a href="#estructura">VIII. Estructura Completa</a>
+                        <div class="sub-nav">
+                            <a href="#intro">Intro</a>
+                            <a href="#escena-1">Escena 1</a>
+                            <a href="#escena-2-1">Escena 2 (Parte 1)</a>
+                            <a href="#elipsis">La Máquina</a>
+                            <a href="#escena-2-2">Escena 2 (Parte 2)</a>
+                            <a href="#escena-3">Escena 3</a>
+                            <a href="#escena-4">Escena 4</a>
+                            <a href="#escena-5">Escena 5</a>
+                            <a href="#escena-6">Escena 6</a>
+                        </div>
+                    </li>
+                    <li><a href="#imagenes">IX. Imágenes que sostienen la obra</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main>
+            <header>
+                <h1>TRASH MACHINE</h1>
+                <p class="doc-meta">Estructura dramatúrgica — Documento de trabajo</p>
+            </header>
+
+            <section id="premisa">
+                <h2>PREMISA</h2>
+                <p>Una joven artista de calle —clown y violinista— es citada por su amigo de vida a una cita que él le presenta como una oportunidad de trabajo en España y la solución a sus deudas urgentes. Ella no sabe que ha sido seleccionada aleatoriamente por una red de trata para ser trasladada esa misma noche a un lugar de la ciudad donde será preparada para su explotación en el exterior. El Hombre del Carrito pertenece a la red no por elección sino por supervivencia: la misma mujer que viene esta noche le cobró sus piernas por un error pasado y tiene localizada a su hija.</p>
+                <p>Cuando La Mujer llega, manda a Guille a vigilar el perímetro y se queda sola con Eva. Eva resiste — toca su violín aunque La Mujer le ordena que no. La Mujer dispara al aire. En el silencio que sigue Eva calcula sus opciones y decide irse por voluntad propia — el sistema le resuelve el gota a gota, los documentos, la cajita. Da el primer paso. Sale con el <strong class="emphasis-red">sonido de un carro que se parquea</strong>. Guille regresa. La Mujer actúa sin palabras. Disparo. <strong class="emphasis-red">El recolector de basura recoge todo</strong> — incluyendo una bolsa de la que se riegan pínpones rojos por el suelo. Los recoge con escoba. Blackout lento.</p>
+            </section>
+
+            <section id="nucleo">
+                <h2>NÚCLEO DE CONVICCIÓN DRAMÁTICA</h2>
+                <p>No hay amor ni humanidad que sobreviva ante un sistema para el que el cuerpo es basura.</p>
+            </section>
+
+            <section id="personajes">
+                <h2>LOS TRES PERSONAJES</h2>
+                
+                <h3 id="eva">Eva Lucía — La Chica del Violín</h3>
+                <p>19 años. Artista de calle. Clown y violinista. Viene de un pueblo, sin padre, con una madre violenta, una tía que no sabe de sus problemas. Vive en el paga diario de Don Pacho. Debe 225 mil pesos acumulados. El gota a gota la amenaza de muerte. Vendió su violín una vez para pagar el medicamento de la hija de Guille.</p>
+                <p>Tiene un instinto de clown irrefrenable: lee personas, lee espacios, responde a lo que encuentra. Es lo que la hace humana. Es lo que la condena. Al final toma la decisión más imposible dentro del margen que le queda — elige irse. Por voluntad Propia.</p>
+
+                <h3 id="guille">Guillermo — El Hombre del Carrito</h3>
+                <p>22 años. Exmilitar (Guerrilla o Ejército Nacional). Sin piernas, sobre un tablero con ruedas. La Mujer le cobró las piernas por un error pasado. Tiene una hija pequeña cuya ubicación conoce la organización. Ama genuinamente a Eva. La entregó por supervivencia. Intentó decirle que se fuera — demasiado tarde. La Mujer llegó antes. Muere en el andén sin que Eva lo vea. Sin que el sistema le deba una explicación.</p>
+
+                <h3 id="mujer">La Mujer</h3>
+                <p>Captadora local de la red. Eslabón colombiano de la cadena. Fue quien le cobró las piernas a Guille. Llega a cerrar una transacción. Opera con eficiencia de procedimiento. Le ofrece a Eva exactamente lo que necesita — recuperar sus documentos, pagar sus deudas — porque la red necesita a Eva funcional y sin problemas locales. No es generosidad. Es logística. Mata a Guille sin palabras cuando él regresa. Sale por su lado.</p>
+            </section>
+
+            <section id="conflicto">
+                <h2>CONFLICTO GENERAL</h2>
+                <p>Entre lo orgánico y lo mecánico. Entre la vida irreducible — la música de Eva, el vínculo entre Eva y Guille, el sueño de la carpa y los pínpones — y el sistema que procesa cuerpos con lógica de mercado. Ningún conflicto se resuelve de forma liberadora. Todos se resuelven hacia adentro del sistema. El sistema no destruye la humanidad — la usa.</p>
+            </section>
+
+            <section id="poder">
+                <h2>LA RELACIÓN DE PODER</h2>
+                <p>La Mujer tiene poder absoluto sobre Guille — fue ella quien le cobró las piernas. Para ella Guille es un contacto que ya cumplió su función. Guille la conoce. Ella no necesita conocerlo. Es descarte dentro del descarte.</p>
+            </section>
+
+            <section id="escenografia">
+                <h2>EL DISEÑO ESCENOGRÁFICO</h2>
+                <p>Un andén de parque o calle bogotana. Colorido, desgastado por el tiempo, con pasto y alguna florecita creciendo. Una caneca de basura con cabeza de payaso — objeto real que existió en Bogotá. El andén tiene dos caras: la cara cotidiana que el espectador ve durante toda la primera parte, y la cara de máquina — cinta transportadora, industrial — que se revela cuando la caneca gira durante los flashbacks. Al terminar los flashbacks el andén vuelve a ser andén. El espectador no puede verlo igual después.</p>
+            </section>
+
+            <section id="sonido">
+                <h2>EL ARCO DEL SONIDO</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Momento</th>
+                                <th>El violín</th>
+                                <th>El carro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Intro</td>
+                                <td>No suena — promesa</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Escena 1 primera parte</td>
+                                <td>No suena todavía</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Escena 2 primera parte</td>
+                                <td>No suena — Eva lo abre, mira las cuerdas</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Escena 2 segunda parte</td>
+                                <td>—</td>
+                                <td><strong class="emphasis-red">Primera vez: pasa, nadie lo comenta</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Segunda parte — resistencia de Eva</td>
+                                <td>Suena — acto de rebeldía ante La Mujer</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Disparo al aire</td>
+                                <td>Se interrumpe — silencio definitivo</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Final</td>
+                                <td>—</td>
+                                <td><strong class="emphasis-red">Segunda vez: se parquea, Eva sale</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Final</td>
+                                <td>—</td>
+                                <td><strong class="emphasis-red">Tercera vez: el recolector, los pínpones, la escoba</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="estructura">
+                <h2>ESTRUCTURA COMPLETA</h2>
+                
+                <div class="block-section">
+                    <h3 id="intro">INTRO — "El acto"</h3>
+                    <p>Eva sola en el andén. Abre la caja del violín para pedir dinero — sin tocar. Acto de clown breve sobre la espera. La caja como recipiente vacío. El violín no suena. Es una promesa.</p>
+                </div>
+
+                <h3>PRIMERA PARTE</h3>
+                
+                <div class="block-section">
+                    <h3 id="escena-1">ESCENA 1 — Juegos</h3>
+                    <p>Guille llega tarde. Eva fastidiada. Él la desarma con humor — las llantas nuevas, Rayo McQueen, el juego físico. La dinámica de dos personas con historia larga.</p>
+                    <p>Eva intenta irse. <strong class="emphasis-purple">Primer intento</strong> de Guille: le recuerda los sueños — España, el trabajo, la oportunidad. Eva no cede del todo.</p>
+                    <p>Eva vuelve a intentar irse. <strong class="emphasis-purple">Segundo intento</strong> de Guille: le recuerda el gota a gota, la deuda, la amenaza de muerte, que esta cita es su única salida real.</p>
+                    <p>Eva cede. 15 minutos.</p>
+                    <p>La conversación fluye — el gringo, Don Pacho, los Quipitos, la caída, el muñón, Eva lo curó, el juego de velocidad, la canción. Ya lo extrañaba.</p>
+                    <p>Guille insiste en que toque. Eva va por el violín pero se detiene. Algo en Guille no está bien. Le pregunta si está bien. Guille esquiva. Le pide que toque.</p>
+                    <p>Eva confiesa que necesita irse a resolver. Le debe 15 días a Don Pacho — 15 mil por día, 225 mil en total. Tiene 26 mil 500 contando las monedas. Don Pacho tiene retenidos sus documentos y una cajita de recuerdos del campo. Necesita ese dinero antes de las 9pm.</p>
+                    <p>Guille le pregunta cuánto necesita. Eva se lo dice. Guille le dice que espere — La Mujer le debe dinero de un trabajo, cuando llegue le presta. "No te lo voy a cobrar. Tú me salvaste la vida. Le salvaste la vida a mi hija."</p>
+                    <p>Eva decide quedarse definitivamente.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Quiere</th>
+                                    <th>Porque</th>
+                                    <th>Estrategia</th>
+                                    <th>Pero</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Que Eva se quede</td>
+                                    <td>Necesita entregarla o su hija paga las consecuencias</td>
+                                    <td>Humor y sueños. Luego el gota a gota, la amenaza, la promesa del dinero</td>
+                                    <td>Eva quiere irse a resolver su urgencia</td>
+                                </tr>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Irse a resolver su urgencia</td>
+                                    <td>Debe 225 mil a Don Pacho antes de las 9pm, tiene retenidos documentos y cajita, solo tiene 26 mil 500</td>
+                                    <td>Insiste en irse, luego confiesa la urgencia exacta</td>
+                                    <td>Guille le promete exactamente lo que necesita</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Antes</th>
+                                    <th>Después</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Quiere irse a resolver su urgencia</td>
+                                    <td>Quiere quedarse — La Mujer es la solución a todo</td>
+                                </tr>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Ejecuta con frialdad relativa</td>
+                                    <td>Nombrar a la hija le costó. Algo se rompió</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-2-1">ESCENA 2 — Pasado y sueños / Primera parte</h3>
+                    <p>Eva abre el estuche del violín. Mira las cuerdas. Comenta que cuando tenga dinero no se va a cortar las manos con ese violín.</p>
+                    <p>Guille le pregunta por qué no se fue donde su tía. Eva responde — el pueblo no tiene oportunidades artísticas, no puede volver porque el gota a gota mataría a su tía si supiera de ella. Guille escucha y entiende: Eva no tiene a dónde ir. Si esta noche falla no hay escape posible.</p>
+                    <p>Eva le pregunta si está seguro de que La Mujer va a llegar. Guille esquiva. Pone su música. La invita a bailar. Bailan. Eva vuelve a preguntar. Guille esquiva. Siguen bailando.</p>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="elipsis">— ELIPSIS / LA MÁQUINA —</h3>
+                    <p>La caneca gira. El andén revela su otra cara. Trash metal. Penumbra. Chispas de sierra. La canción: "Guille Guille Guille / extendió sus dos piernitaa..." Voces en off — corales, mecánicas, de procedimiento. Entre ellas una voz de mujer. Fría. Las dos actrices como maquinistas de una máquina invisible — el espectador no sabe que son ellas. Las piernas de Guille en bolsas de basura. La caneca vuelve a girar. El andén regresa.</p>
+                    <p>El espectador guarda la voz de mujer. No sabe todavía a quién pertenece.</p>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-2-2">ESCENA 2 — Pasado y sueños / Segunda parte</h3>
+                    <p>Eva y Guille tirados en el suelo. Aburridos. Son cerca de las 7pm. Eva tiene hasta las 9pm.</p>
+                    <p>Guille propone el juego de convergencia. En el juego salen palabras del pasado de Guille — el batallón, nunca dicho si ejército o guerrilla — y su sueño de ser maratonista, el que más corría.</p>
+                    <p>Eva le pregunta directamente si está seguro de que La Mujer va a llegar. Guille dice que sí. Con demasiada seguridad. Eva lo lee — algo no cuadra.</p>
+                    <p>Guille le dice que ella también tiene sueños. Que todavía puede cumplirlos. Eva hace su monólogo — la carpa gigante 360, sin horarios ni obligaciones, pínpones rojos que los niños se llevan a casa para recordar la función.</p>
+                    <p>Guille la escucha. No puede más. Le dice que se vaya. Ya. Sin explicar por qué.</p>
+                    <p>Eva no entiende. ¿Ahora? ¿Y el dinero? ¿Y La Mujer?</p>
+                    <p>Llega La Mujer. Con la misma voz que el espectador ya conoce.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Quiere</th>
+                                    <th>Porque</th>
+                                    <th>Estrategia</th>
+                                    <th>Pero</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Saber si La Mujer va a llegar</td>
+                                    <td>Tiene hasta las 9pm, Guille es su única carta, no tiene a dónde ir</td>
+                                    <td>Pregunta directamente, busca leer a Guille</td>
+                                    <td>Guille esquiva, no puede decirle la verdad</td>
+                                </tr>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Decirle a Eva que se vaya</td>
+                                    <td>Escucharla lo rompió — el pueblo, la tía, los sueños</td>
+                                    <td>Esquiva con humor, el baile, el juego, hasta que estalla</td>
+                                    <td>Su hija paga las consecuencias si Eva se va</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Antes</th>
+                                    <th>Después</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Quiere que La Mujer llegue pronto. Confía en Guille</td>
+                                    <td>Guille le dijo que se fuera sin explicar. Algo está muy mal. Llega La Mujer</td>
+                                </tr>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Quería decirle que se fuera pero no podía</td>
+                                    <td>Encontró el momento pero llegó tarde</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p><em>Lo que el espectador porta en la segunda parte de esta escena:</em> sabe lo que Guille sabe. Ve a Eva hablar de sus sueños — la carpa, los pínpones — sin saber nada. Ve a Eva decir que no se va a cortar las manos con el violín. La pregunta que porta es una sola: ¿va a poder Guille dejarla ir? Cuando estalla y le dice que se vaya — el espectador entiende que intentó pero no pudo. Y llega La Mujer con la misma voz que ya conoce.</p>
+                </div>
+
+                <h3>SEGUNDA PARTE</h3>
+
+                <div class="block-section">
+                    <h3 id="escena-3">ESCENA 3 — La auditoría</h3>
+                    <p>La Mujer llega. El espacio cambia sin que nadie lo nombre. Guille se achica — conoce esa voz. Eva no sabe todavía.</p>
+                    <p>La Mujer evalúa a Eva con eficiencia de procedimiento. Le ordena a Guille ir a vigilar el perímetro — argumenta que no puede hacer nada si las motos del gota a gota están cerca. Guille obedece. Eva y La Mujer quedan solas.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Quiere</th>
+                                    <th>Porque</th>
+                                    <th>Estrategia</th>
+                                    <th>Pero</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>La Mujer</td>
+                                    <td>Aislar a Eva</td>
+                                    <td>Guille es un estorbo para el procedimiento</td>
+                                    <td>Usa la amenaza del gota a gota como excusa operativa</td>
+                                    <td>Guille duda un instante antes de obedecer</td>
+                                </tr>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Que la transacción avance rápido</td>
+                                    <td>El reloj corre — son las 7pm, tiene hasta las 9pm</td>
+                                    <td>Muestra cooperación</td>
+                                    <td>La Mujer opera a su propio ritmo</td>
+                                </tr>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Cumplir para salvar a su hija</td>
+                                    <td>Si falla el sistema cobra</td>
+                                    <td>Obedece la orden</td>
+                                    <td>Al salir cede todo el control del espacio</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Antes</th>
+                                    <th>Después</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Escudada por su amigo</td>
+                                    <td>Expuesta. Sola con La Mujer</td>
+                                </tr>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Contacto presente</td>
+                                    <td>Elemento excluido</td>
+                                </tr>
+                                <tr>
+                                    <td>La Mujer</td>
+                                    <td>Evaluando</td>
+                                    <td>Con control total del espacio</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-4">ESCENA 4 — El despelleje / La resistencia / El cálculo</h3>
+                    <p>La Mujer le revela a Eva los términos reales: esta noche va a un lugar de la ciudad donde será preparada para el traslado. El violín no puede ir. El clown no puede ir. La red le resuelve el gota a gota, los documentos, la cajita de recuerdos — porque la necesitan funcional y sin problemas locales.</p>
+                    <p>Eva resiste. Toca el violín aunque La Mujer le ordena que no. Es su instinto irrefrenable — lo único que sabe hacer cuando el mundo se le cierra.</p>
+                    <p>La Mujer dispara al aire. El espectador cree que la va a matar. No pasa. Pero el arma es real.</p>
+                    <p>Micro escena del cálculo: Eva busca opciones con el cuerpo — mira hacia donde se fue Guille, mira la salida, mide el espacio. No hay escape. Eva pregunta — no súplica, pregunta concreta. ¿A dónde voy? ¿Cuándo puedo volver? ¿Qué pasa con el gota a gota? Las respuestas de La Mujer cierran cada puerta una por una. Eva entiende que irse con La Mujer resuelve el gota a gota, los documentos, la cajita. Que el sistema que la perseguía aquí no puede alcanzarla allá. Eva da el primer paso. No La Mujer. Eva.</p>
+                    <p>Se escucha el <strong class="emphasis-red">sonido de un carro que se parquea cerca</strong>. Eva sale. El violín queda en la caneca de payaso o en el suelo del andén.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Quiere</th>
+                                    <th>Porque</th>
+                                    <th>Estrategia</th>
+                                    <th>Pero</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>La Mujer</td>
+                                    <td>Que Eva salga esta noche funcional y cooperativa</td>
+                                    <td>La red necesita mercancía sin problemas locales</td>
+                                    <td>Le ofrece exactamente lo que Eva necesita — documentos, gota a gota, cajita</td>
+                                    <td>Eva resiste con su arte antes de ceder</td>
+                                </tr>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Sobrevivir esta noche y resolver sus urgencias</td>
+                                    <td>El gota a gota la mata si se queda, La Mujer resuelve todo si se va</td>
+                                    <td>Resiste, calcula, elige</td>
+                                    <td>No hay salida que no pase por el sistema</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Antes</th>
+                                    <th>Después</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Sujeto que resiste con su arte</td>
+                                    <td>Elige irse — no la llevan, camina</td>
+                                </tr>
+                                <tr>
+                                    <td>La Mujer</td>
+                                    <td>Cerrando la transacción</td>
+                                    <td>Transacción cerrada</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-5">ESCENA 5 — El descarte</h3>
+                    <p>Guille regresa. Cree que cumplió. Que su deuda está saldada. Que su hija está segura.</p>
+                    <p>La Mujer actúa sin palabras. Disparo. El sistema no debe explicaciones a sus instrumentos cuando ya cumplieron su función.</p>
+                    <p>La Mujer sale por su lado.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Antes</th>
+                                    <th>Después</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Cómplice que creyó haber cumplido</td>
+                                    <td>Desecho</td>
+                                </tr>
+                                <tr>
+                                    <td>La Mujer</td>
+                                    <td>Operadora cerrando su trabajo</td>
+                                    <td>Sale. Siguiente tarea</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-6">ESCENA 6 — El carro</h3>
+                    <p>El andén solo. El <strong class="emphasis-red">sonido del carro de la basura que llega y se parquea</strong>. El recolector — uniforme de trabajo, gesto rutinario. <strong class="emphasis-red">Recoge todo</strong> lo que hay en el andén. La caneca. El violín o lo que queda de él. Levanta una bolsa — se riegan pínpones rojos por todo el espacio.</p>
+                    <p>El recolector los recoge con escoba.</p>
+                    <p>Blackout lento.</p>
+                    <p>El sistema no tiene conflictos cuando procesa su basura. Solo tiene procedimientos.</p>
+                </div>
+            </section>
+
+            <section id="imagenes">
+                <h2>LAS IMÁGENES QUE SOSTIENEN TODA LA OBRA</h2>
+                <ul>
+                    <li>Eva actuando para la caneca de payaso en la intro — su único público fijo en la calle.</li>
+                    <li>El violín que no suena en la intro — promesa. El violín que no suena en el perfilamiento — el sistema lo silencia. El violín que suena como rebeldía — la única vez. El violín que se calla después del disparo — para siempre.</li>
+                    <li>Los pínpones del sueño de Eva regados por el suelo — recogidos con escoba por alguien que no sabe lo que son.</li>
+                    <li>El andén que tiene dos caras — la que parece y la que es.</li>
+                    <li>La voz de mujer en la máquina — que el espectador reconoce cuando llega La Mujer.</li>
+                    <li>Guille que apartó los ojos porque no podía sostenerla. Y que murió en el mismo andén donde le pidió que tocara.</li>
+                </ul>
+            </section>
+
+            <footer>
+                Documento de trabajo — Trash Machine — 2026
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // --- Sistema de Autenticación Cifrada ---
+        let TARGET_HASH = ""; 
+        const pChars = [98, 97, 115, 117, 114, 97, 57, 57]; // "basura99"
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function isLogged() {
+            const match = document.cookie.match(new RegExp('(^| )auth_token=([^;]+)'));
+            return match ? match[2] === TARGET_HASH : false;
+        }
+
+        function setAuthCookie() {
+            const d = new Date();
+            d.setTime(d.getTime() + (7*24*60*60*1000));
+            document.cookie = "auth_token=" + TARGET_HASH + ";expires=" + d.toUTCString() + ";path=/;Secure;SameSite=Strict";
+        }
+
+        async function initAuth() {
+            const expectedPwd = pChars.map(c => String.fromCharCode(c)).join('');
+            TARGET_HASH = await sha256(expectedPwd);
+            
+            if (isLogged()) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }
+        }
+
+        let clicks = 0;
+        document.getElementById('trash-icon').addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            clicks++;
+            if (clicks >= 5) {
+                const form = document.getElementById('login-form');
+                form.style.display = 'block';
+                setTimeout(() => form.style.opacity = '1', 10);
+            }
+        });
+
+        document.getElementById('btn-login').addEventListener('click', async () => {
+            const input = document.getElementById('pwd-input').value.trim();
+            const hash = await sha256(input);
+            if (hash === TARGET_HASH) {
+                setAuthCookie();
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            } else {
+                document.getElementById('pwd-input').value = '';
+            }
+        });
+
+        document.getElementById('pwd-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('btn-login').click();
+        });
+
+        // Inicializar
+        initAuth();
+
+        // --- UI Existente ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.querySelector('aside');
+        const overlay = document.getElementById('overlay');
+        const topNavbar = document.getElementById('top-navbar');
+        let lastScrollTop = 0;
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 60) {
+                topNavbar.classList.add('hidden');
+            } else {
+                topNavbar.classList.remove('hidden');
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        function toggleMenu() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if(window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
