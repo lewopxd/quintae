@@ -694,68 +694,161 @@ return device;
 
 
 
-(function() {
+ (function () {
     const imgElement = document.getElementById('portada-animada');
-    // Si el elemento no existe en la página actual, detiene la ejecución
-    if (!imgElement) return; 
-
-    const totalFrames = 192;
-    const fps = 24;
-    const interval = 1000 / fps;
-    const frames = [];
-
-    let loadedImages = 0;
-    let currentFrame = 0;
-    let forward = true;
-    let lastTime = performance.now();
-
-    // Precarga de imágenes
-    for (let i = 1; i <= totalFrames; i++) {
-        const img = new Image();
-        img.src = `../../images/animatedPortada/ffout${String(i).padStart(3, '0')}.gif`;
-        img.onload = checkLoad;
-        frames.push(img.src);
+    if (!imgElement) return;
+ 
+    // ── Configuración ─────────────────────────────────────────────────────────
+    const TOTAL          = 192;
+    const FPS            = 24;
+    const INTERVAL       = 1000 / FPS;
+    // Cuántos frames deben estar listos antes de arrancar la animación.
+    // 48 frames = 2 s forward + 2 s reverse de ping-pong → 4 s de buffer inicial.
+    const START_THRESHOLD = 48;
+    // Tamaño de cada chunk en la carga de background (ajustable)
+    const CHUNK_SIZE      = 20;
+ 
+    // ── Estado ────────────────────────────────────────────────────────────────
+    const frames       = new Array(TOTAL).fill(null);
+    let   loadedCount  = 0;          // frames listos (excluye frame 0)
+    let   animStarted  = false;
+    let   currentFrame = 0;
+    let   forward      = true;
+    let   lastTime     = 0;
+ 
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function frameUrl(oneBasedIndex) {
+        return `../../images/animatedPortada/ffout${String(oneBasedIndex).padStart(3, '0')}.gif`;
     }
-
-    // Verifica la carga y ejecuta las animaciones nativas de la plantilla
-    function checkLoad() {
-        loadedImages++;
-        if (loadedImages === totalFrames) {
-            
-            // Transiciones de la plantilla (jQuery)
-            if (typeof $ !== 'undefined') {
-                $("#preloader").fadeOut(600);
-                $(".preloader-bg").delay(400).fadeOut(600);
-                $(".fadeIn-element").delay(600).css({ display: "none" }).fadeIn(800);
-            }
-            
-            // Inicia la secuencia
+ 
+    // Oculta el preloader y muestra el contenido de la página.
+    // Se llama en cuanto el PRIMER frame está listo.
+    function showPage() {
+        if (typeof $ !== 'undefined') {
+            $("#preloader").fadeOut(600);
+            $(".preloader-bg").delay(400).fadeOut(600);
+            $(".fadeIn-element").delay(600).css({ display: "none" }).fadeIn(800);
+        }
+    }
+ 
+    // ── FASE 1: cargar el primer frame → ocultar preloader ───────────────────
+    // El src ya apunta a ffout001.gif en el HTML, pero lo cargamos explícitamente
+    // para tener control sobre el evento onload.
+    const seedImg   = new Image();
+    seedImg.onload  = function () {
+        frames[0] = seedImg.src;
+        showPage();
+        // Arrancar la carga del buffer inicial (frames 1…START_THRESHOLD-1)
+        loadRange(1, START_THRESHOLD, onBufferReady);
+    };
+    seedImg.onerror = showPage; // si falla la imagen, igual mostramos la página
+    seedImg.src     = frameUrl(1);
+ 
+    // ── FASE 2: buffer listo → arrancar animación ─────────────────────────────
+    function onBufferReady() {
+        if (!animStarted) {
+            animStarted = true;
+            lastTime    = performance.now();
             requestAnimationFrame(animate);
         }
+        // Cargar el resto en background sin bloquear el hilo principal
+        loadBackground(START_THRESHOLD);
     }
-
-    // Bucle de animación (ping-pong)
-    function animate(timestamp) {
-        const deltaTime = timestamp - lastTime;
-
-        if (deltaTime >= interval) {
-            imgElement.src = frames[currentFrame];
-
-            if (forward) {
-                currentFrame++;
-                if (currentFrame >= totalFrames) {
-                    currentFrame = totalFrames - 2;
-                    forward = false;
-                }
-            } else {
-                currentFrame--;
-                if (currentFrame < 0) {
-                    currentFrame = 1;
-                    forward = true;
-                }
-            }
-            lastTime = timestamp - (deltaTime % interval);
+ 
+    // Carga los índices [from, to) en paralelo y llama callback cuando terminan todos.
+    // Los índices son 0-based (frames[]); el nombre de archivo es idx+1.
+    function loadRange(from, to, callback) {
+        const count = to - from;
+        if (count <= 0) { callback && callback(); return; }
+ 
+        let done = 0;
+        for (let idx = from; idx < to; idx++) {
+            (function (i) {
+                const img   = new Image();
+                img.onload  = function () {
+                    frames[i] = img.src;
+                    loadedCount++;
+                    if (++done === count) callback && callback();
+                };
+                img.onerror = function () {
+                    // Frame roto: dejar null (la animación lo saltará)
+                    if (++done === count) callback && callback();
+                };
+                img.src = frameUrl(i + 1);
+            })(idx);
         }
-        requestAnimationFrame(animate);
     }
+ 
+    // Carga el resto de frames en chunks usando requestIdleCallback,
+    // de modo que nunca compite con la animación ni con la interacción del usuario.
+    function loadBackground(from) {
+        if (from >= TOTAL) {
+            // Todos los frames cargados: registrar Service Worker para la próxima visita
+            registerServiceWorker();
+            return;
+        }
+ 
+        const to      = Math.min(from + CHUNK_SIZE, TOTAL);
+        const schedule = window.requestIdleCallback
+            ? (cb) => window.requestIdleCallback(cb, { timeout: 2000 })
+            : (cb) => setTimeout(cb, 50);
+ 
+        schedule(function () {
+            loadRange(from, to, function () {
+                loadBackground(to);
+            });
+        });
+    }
+ 
+    // ── Loop de animación ping-pong ───────────────────────────────────────────
+    // Si el siguiente frame todavía no está cargado, la animación se congela
+    // en el frame actual hasta que llegue. Con START_THRESHOLD=48 esto solo
+    // puede ocurrir en los primeros segundos de una visita sin caché.
+    function animate(timestamp) {
+        requestAnimationFrame(animate);
+ 
+        const delta = timestamp - lastTime;
+        if (delta < INTERVAL) return;
+        // Corrección de drift para mantener el FPS estable
+        lastTime = timestamp - (delta % INTERVAL);
+ 
+        // Mostrar frame actual
+        if (frames[currentFrame] !== null) {
+            imgElement.src = frames[currentFrame];
+        }
+ 
+        // Calcular el próximo frame en dirección ping-pong
+        let next;
+        if (forward) {
+            next = currentFrame + 1;
+            if (next >= TOTAL) { next = TOTAL - 2; forward = false; }
+        } else {
+            next = currentFrame - 1;
+            if (next < 0) { next = 1; forward = true; }
+        }
+ 
+        // Solo avanzar si el frame destino ya está disponible
+        if (frames[next] !== null) {
+            currentFrame = next;
+        }
+        // Si es null → currentFrame queda igual → efecto "pausa" hasta que cargue
+    }
+ 
+    // ── Service Worker: cache agresivo para visitas subsiguientes ─────────────
+    // sw.js debe estar en la raíz del dominio (ver archivo sw.js adjunto).
+    // En la primera visita, el SW se registra cuando todos los frames están listos.
+    // A partir de la segunda visita, los 192 frames se sirven desde caché local
+    // y la animación arranca de inmediato sin ninguna descarga de red.
+    function registerServiceWorker() {
+        if (!('serviceWorker' in navigator)) return;
+        navigator.serviceWorker.register('/sw.js')
+            .then(function (reg) {
+                console.log('[5E] Service Worker registrado, scope:', reg.scope);
+            })
+            .catch(function (err) {
+                console.warn('[5E] Service Worker no pudo registrarse:', err);
+            });
+    }
+ 
 })();
+ 
