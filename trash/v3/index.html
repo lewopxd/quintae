@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRASH MACHINE - Estructura Dramatúrgica</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #c0392b;
+            --bg-color: #ffffff;
+            --sidebar-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #1a1a1a;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', Helvetica, Arial, sans-serif;
+            --sound-color: #2980b9;
+            --image-color: #8e44ad;
+        }
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-serif);
+            line-height: 1.35;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        #main-content {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Login Screen */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        #login-form {
+            display: none;
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #login-form input {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            outline: none;
+            font-family: var(--font-sans);
+        }
+
+        #login-form button {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            margin-left: 5px;
+        }
+
+        #trash-icon {
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #trash-icon:active {
+            transform: scale(0.95);
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #000000;
+            color: white;
+            z-index: 1050;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease-in-out;
+            transform: translateY(0);
+        }
+
+        .top-navbar.hidden {
+            transform: translateY(-100%);
+        }
+
+        .top-navbar-title {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .hamburger {
+            display: block;
+            position: absolute;
+            left: 1rem;
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 6px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Navegación Lateral */
+        aside {
+            width: 300px;
+            height: calc(100vh - 60px);
+            position: fixed;
+            left: 0;
+            top: 60px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            font-family: var(--font-sans);
+            transition: transform 0.3s ease;
+            transform: translateX(0);
+            z-index: 1000;
+        }
+
+        aside.collapsed {
+            transform: translateX(-100%);
+        }
+
+        aside::-webkit-scrollbar {
+            width: 6px;
+        }
+        aside::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+
+        .sidebar-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin-bottom: 0.8rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        .sub-nav {
+            margin-left: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            border-left: 1px solid var(--border-color);
+            padding-left: 0.8rem;
+        }
+
+        /* Contenido Principal */
+        main {
+            margin-left: 300px;
+            margin-top: 60px;
+            flex: 1;
+            max-width: 850px;
+            padding: 3rem 2rem;
+            background: white;
+            transition: margin-left 0.3s ease;
+        }
+
+        main.expanded {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        header {
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: var(--font-sans);
+            font-size: 2.5rem;
+            margin: 0;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-family: var(--font-sans);
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-top: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        p {
+            margin-bottom: 0.8rem;
+            text-align: justify;
+        }
+
+        .doc-meta {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Tablas */
+        .table-container {
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: left;
+            padding: 10px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+
+        .block-section {
+            padding: 1.5rem;
+            background: #fdfdfd;
+            border-left: 4px solid var(--primary-color);
+            margin: 2rem 0;
+        }
+
+        .emphasis {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .emphasis-purple {
+            color: #a200ff;
+            font-weight: bold;
+        }
+
+        .emphasis-red {
+            color: #8b0000;
+            font-weight: bold;
+        }
+
+        .cue-icon {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .icon-sound { color: var(--sound-color); }
+        .icon-image { color: var(--image-color); }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-bottom: 1px solid transparent;
+            border-top: 1px solid var(--border-color);
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: #888;
+            text-align: center;
+            padding-bottom: 2rem;
+        }
+
+        /* Botones de Biografía */
+        .btn-bio {
+            font-family: var(--font-sans);
+            font-size: 1.2rem;
+            line-height: 1;
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 0;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            margin-left: 12px;
+            vertical-align: middle;
+        }
+
+        .btn-bio:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Modal Biografías */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            z-index: 1040;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        .modal-content {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 5rem 2rem 3rem 2rem;
+            position: relative;
+        }
+
+        .modal-close {
+            position: fixed;
+            top: 80px;
+            right: 30px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1060;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .bio-section {
+            display: none;
+        }
+
+        .bio-section.active {
+            display: block;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 60px);
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            aside {
+                width: 280px;
+                transform: translateX(-100%);
+            }
+            aside.open { transform: translateX(0); }
+            main { margin-left: 0; padding: 2rem 1.5rem; }
+            main.expanded { margin-left: 0; }
+            .overlay.active { display: block; }
+            .modal-content { padding-top: 80px; }
+            .modal-close { top: 80px; right: 15px; }
+        }
+
+        @media print {
+            aside { display: none; }
+            .top-navbar { display: none; }
+            main { margin-left: 0; margin-top: 0; padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Íconos SVG reutilizables -->
+    <svg style="display: none;">
+        <symbol id="icon-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </symbol>
+        <symbol id="icon-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        </symbol>
+    </svg>
+
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <svg id="trash-icon" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 80px; height: 80px;">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
+        <div id="login-form">
+            <input type="password" id="pwd-input" placeholder="...">
+            <button id="btn-login">OK</button>
+        </div>
+    </div>
+
+    <!-- Contenedor Principal (Oculto por defecto) -->
+    <div id="main-content">
+        <!-- Top Navbar -->
+        <nav id="top-navbar" class="top-navbar">
+            <button id="menu-toggle" class="hamburger" aria-label="Abrir menú">
+                <svg viewBox="0 0 24 24" width="28" height="28"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+            <span class="top-navbar-title">TRASH MACHINE</span>
+        </nav>
+
+        <!-- Overlay para cerrar menú -->
+        <div id="overlay" class="overlay"></div>
+
+        <aside>
+            <div class="sidebar-title">Estructura del Documento</div>
+            <nav>
+                <ul>
+                    <li><a href="#premisa">I. Premisa</a></li>
+                    <li><a href="#nucleo">II. Núcleo de Convicción Dramática</a></li>
+                    <li><a href="#tema">III. Tema y Pregunta Dramática</a></li>
+                    <li><a href="#contexto">IV. Contexto</a></li>
+                    <li><a href="#organizacion">V. La Organización</a></li>
+                    <li>
+                        <a href="#personajes">VI. Los Tres Personajes</a>
+                        <div class="sub-nav">
+                            <a href="#eva">Eva Lucía</a>
+                            <a href="#guille">Guillermo</a>
+                            <a href="#mujer">La Mujer</a>
+                        </div>
+                    </li>
+                    <li><a href="#conflicto">VII. Conflicto General</a></li>
+                    <li><a href="#poder">VIII. La Relación de Poder</a></li>
+                    <li><a href="#escenografia">IX. El Diseño Escenográfico</a></li>
+                    <li><a href="#sonido">X. El Arco del Sonido</a></li>
+                    <li>
+                        <a href="#estructura">XI. Estructura Completa</a>
+                        <div class="sub-nav">
+                            <a href="#intro">Intro</a>
+                            <a href="#escena-1">Escena 1</a>
+                            <a href="#escena-2-1">Escena 2 (Parte 1)</a>
+                            <a href="#elipsis">La Máquina</a>
+                            <a href="#escena-2-2">Escena 2 (Parte 2)</a>
+                            <a href="#escena-3">Escena 3 — La Llegada</a>
+                            <a href="#escena-4">Escena 4 — La Oferta</a>
+                            <a href="#escena-5">Escena 5 — El Clímax</a>
+                            <a href="#escena-6">Escena 6 — El Descarte</a>
+                            <a href="#escena-7">Escena 7 — La Asimilación</a>
+                        </div>
+                    </li>
+                    <li><a href="#imagenes">XII. Imágenes que sostienen la obra</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main>
+            <header>
+                <h1>TRASH MACHINE</h1>
+                <p class="doc-meta">Estructura dramatúrgica — Documento de trabajo — v5</p>
+            </header>
+
+            <!-- I. PREMISA -->
+            <section id="premisa">
+                <h2>I. Premisa</h2>
+                <p>Una joven artista de calle atrapada bajo amenazas de muerte por sus deudas decide abandonar su identidad y sus sueños para salvar su vida, aceptando trabajar como materia prima al servicio de una red de trata.</p>
+            </section>
+
+            <!-- II. NÚCLEO -->
+            <section id="nucleo">
+                <h2>II. Núcleo de Convicción Dramática</h2>
+                <p>No hay amor ni humanidad que sobreviva ante un sistema para el que el cuerpo es basura.</p>
+            </section>
+
+            <!-- III. TEMA -->
+            <section id="tema">
+                <h2>III. Tema y Pregunta Dramática</h2>
+                <p><strong>Tema:</strong> Capitalismo biológico. Identidad.</p>
+                <p><strong>Pregunta:</strong> ¿Hasta dónde estamos dispuestos a abandonar nuestra identidad y nuestros sueños para sobrevivir?</p>
+            </section>
+
+            <!-- IV. CONTEXTO -->
+            <section id="contexto">
+                <h2>IV. Contexto — ¿Por qué aquí y a esta hora?</h2>
+                <p>Es domingo. Entre las 5:30 y las 9:00 PM. Parque de las Nieves, Carrera Séptima, Bogotá.</p>
+                <p>El Parque de las Nieves no es escenografía: es el sistema. El alto flujo peatonal del domingo hace del andén un punto de invisibilidad perfecta. Nadie mira a nadie. Todo pasa y nada pasa. Eva conoce este andén —es parte de su circuito de trabajo callejero, eso le da confianza. Para Guille no fue una elección: la red lo instaló aquí porque un hombre sin piernas trabajando en este andén específico, frente al poder político y financiero de la ciudad, es paisaje. No levanta preguntas.</p>
+                <p>La hora tiene una guillotina matemática: antes de las 9:00 PM vence la deuda con Don Pacho. El domingo siguiente vence el gota a gota. La red eligió este domingo porque es el día de mayor desesperación y menor capacidad de resistencia de Eva. <strong class="emphasis-red">El sistema no interviene cuando puede. Interviene cuando quiere, en el momento exacto en que la grieta está abierta.</strong></p>
+            </section>
+
+            <!-- V. LA ORGANIZACIÓN -->
+            <section id="organizacion">
+                <h2>V. La Organización</h2>
+                <p>El Clan del Golfo —AGC, Autodefensas Gaitanistas de Colombia— es en 2026 la red criminal más poderosa del país. Opera en Bogotá con células que combinan ex combatientes de distintos grupos, policías y militares activos en nómina, funcionarios judiciales y políticos, y empresarios que lavan dinero o consumen servicios. Tiene conexiones con carteles mexicanos y redes europeas de tráfico.</p>
+                <p>La especialidad de esta célula urbana es el <strong>extractivismo reproductivo</strong>: captación de mujeres jóvenes en situación de vulnerabilidad extrema para subrogación comercial orientada a clientes en Asia y Europa del Este. El perfil de la víctima es preciso: mujer joven, sin red de apoyo, en situación de vulnerabilidad económica extrema, sin acceso real a instituciones del Estado. Eva cumple todos los criterios.</p>
+                <p>La red no usa falsificación de calle. Usa corrupción institucional para gestionar documentación en días.</p>
+            </section>
+
+            <!-- VI. PERSONAJES -->
+            <section id="personajes">
+                <h2>VI. Los Tres Personajes</h2>
+
+                <h3 id="eva">Eva Lucía — La Payasa Violinista <button class="btn-bio" data-target="bio-eva" title="Ver Biografía Completa">+</button></h3>
+                <p>19 años. Artista callejera, clown y violinista originaria de Cali. Huye a Bogotá tras sufrir dinámicas de instrumentalización familiar. Subsiste en el centro y estudia arte brevemente antes de abandonar por abuso institucional. Su deuda matemática (pagadiario urgente y gota a gota mortal) es su asfixia inmediata. Mantiene un sueño vital: construir un circo propio 360°. Su fe en Guillermo se ancla en que fue el único que la protegió de manera real.</p>
+
+                <h3 id="guille">Guillermo — El Hombre del Carrito <button class="btn-bio" data-target="bio-guille" title="Ver Biografía Completa">+</button></h3>
+                <p>24 años. Verdadero nombre: José María Córdoba Velásquez. Indígena caucano forzado al conflicto armado desde niño. Tras desertar con su hija, la red criminal le impone trabajar como embolador y le amputa las piernas para evitar fugas, anclándolo como punto fijo de vigilancia en Bogotá. Su traición hacia Eva no nace de maldad, sino de la coerción letal de La Mujer sobre la vida de su hija Esperanza.</p>
+
+                <h3 id="mujer">La Mujer — Dayana <button class="btn-bio" data-target="bio-mujer" title="Ver Biografía Completa">+</button></h3>
+                <p>30 años. Policía Nacional activa y pieza logística operativa en la estructura criminal. Un trauma médico causó la muerte de su recién nacida, desarrollando en ella frialdad funcional y distancia clínica ante las mujeres jóvenes. Opera desde la amabilidad corporativa y el orden burocrático, sin sadismo ni violencia espectacular; perfiló minuciosamente el estado de quiebre de Eva.</p>
+            </section>
+
+            <!-- VII. CONFLICTO -->
+            <section id="conflicto">
+                <h2>VII. Conflicto General</h2>
+                <p><strong class="emphasis-purple">Fuerza A — Eva:</strong> quiere obtener el dinero para cancelar sus deudas, recuperar sus documentos y preservar su vida en Bogotá.</p>
+                <p><strong class="emphasis-purple">Fuerza B — La Mujer:</strong> quiere despojar a Eva de su autonomía para extraerla del país y usar su cuerpo en la red.</p>
+                <p><strong class="emphasis-purple">Fuerza C — Guille:</strong> quiere garantizar la entrega de Eva a La Mujer para evitar el asesinato de su hija.</p>
+                <p>Eva busca el capital de La Mujer manteniendo el control sobre su integridad. La Mujer y Guille condicionan ese dinero a la anulación de la libertad, el cuerpo y el arraigo de Eva. La supervivencia de Eva en sus propios términos es incompatible con el negocio de La Mujer y la supervivencia de la familia de Guille.</p>
+                <p>Entre lo orgánico y lo mecánico. Entre la vida irreducible —la música de Eva, el vínculo entre Eva y Guille, el sueño de la carpa y los pimpones— y el sistema que procesa cuerpos con lógica de mercado. Ningún conflicto se resuelve de forma liberadora. Todos se resuelven hacia adentro del sistema. <strong class="emphasis-red">El sistema no destruye la humanidad — la usa.</strong></p>
+            </section>
+
+            <!-- VIII. PODER -->
+            <section id="poder">
+                <h2>VIII. La Relación de Poder</h2>
+                <p>La Mujer tiene poder absoluto sobre Guille —fue ella quien coordinó la amputación. Para ella, Guille es un contacto que ya cumplió su función: descarte dentro del descarte. Su docilidad no es obediencia —es terror físico ante alguien que lo vigiló años sin que él lo supiera, que conoce a su hija, que actúa no cuando puede sino cuando quiere.</p>
+            </section>
+
+            <!-- IX. ESCENOGRAFÍA -->
+            <section id="escenografia">
+                <h2>IX. El Diseño Escenográfico</h2>
+                <p>Un andén de parque bogotano. Colorido, desgastado por el tiempo, con pasto y alguna florecita creciendo entre las grietas. Una caneca de basura con cabeza de payaso — objeto real que existió en Bogotá.</p>
+                <p>El andén tiene dos caras: la cara cotidiana que el espectador ve durante toda la primera parte, y la cara de máquina — cinta transportadora, industrial — que se revela cuando la caneca gira durante La Máquina. Al terminar, el andén vuelve a ser andén. <strong>El espectador no puede verlo igual después.</strong></p>
+            </section>
+
+            <!-- X. ARCO DEL SONIDO -->
+            <section id="sonido">
+                <h2>X. El Arco del Sonido</h2>
+                <p>El violín y los carros son los instrumentos de tiempo de la obra. El violín mide la identidad de Eva. El carro de la basura mide el avance del sistema de limpieza urbana.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Momento</th>
+                                <th>El violín</th>
+                                <th>El carro de la basura</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Intro</td>
+                                <td>No suena — promesa</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Escena 1</td>
+                                <td>No suena todavía</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Escena 2, primera parte</td>
+                                <td>Eva lo abre, mira las cuerdas, no toca</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Escena 2, segunda parte</td>
+                                <td>—</td>
+                                <td><strong class="emphasis-red">Primera vez: pasa por la Séptima. Nadie lo comenta. La ciudad sigue.</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Escena 3</td>
+                                <td>—</td>
+                                <td><strong class="emphasis-red">Segunda vez: pasa. Eva, ya despojada, no lo mira.</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Escena 4 (clímax)</td>
+                                <td><strong class="emphasis-red">Eva toca por obligación — última prueba de docilidad exigida. La única vez.</strong></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Escena 4 — Eva sale</td>
+                                <td>Eva arroja el violín a la basura con sus propias manos</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Escena 5 — Descarte</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Escena 6</td>
+                                <td>—</td>
+                                <td><strong class="emphasis-red">Tercera vez: el recolector. Los pimpones. La escoba.</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- XI. ESTRUCTURA -->
+            <section id="estructura">
+                <h2>XI. Estructura Completa</h2>
+
+                <div class="block-section">
+                    <h3 id="intro">INTRO — El Acto</h3>
+                    <p>Eva sola en el andén. Practica un acto de clown — lo está ensayando para salir a pedir dinero. Improvisa, ajusta, busca el ritmo. Abre la caja del violín como parte del acto: la usa como recipiente para las monedas, sin tocar. Se despide del violín, sale con él.</p>
+                    <p><svg class="cue-icon icon-image" width="20" height="20"><use href="#icon-image"></use></svg> Regresa. Ve a Guille. Se quita la nariz de payaso.</p>
+                    <p><em>El violín no suena. Es una promesa.</em></p>
+                </div>
+
+                <h3>PRIMERA PARTE</h3>
+
+                <div class="block-section">
+                    <h3 id="escena-1">ESCENA 1 — Juegos y Retención</h3>
+                    <p>Guille llega tarde y la desarma con humor: las llantas nuevas, Rayo McQueen, el juego físico. La dinámica de dos personas con historia larga. Guille insiste en que toque. Eva va por el violín pero algo en Guille no está bien. Lo lee. Él esquiva. Eva intenta irse. Guille la ancla recordándole la amenaza letal del gota a gota. Eva confiesa la urgencia real: debe 225.000 a Don Pacho, tiene 26.500, Don Pacho tiene su cédula y su cajita, cierra a las nueve. Guille le dice que espere.</p>
+                    <p><svg class="cue-icon icon-sound" width="20" height="20"><use href="#icon-sound"></use></svg> <em>El carro de la basura pasa por la Séptima. Los personajes no lo miran. La ciudad sigue.</em></p>
+                    <p><svg class="cue-icon icon-image" width="20" height="20"><use href="#icon-image"></use></svg> <em>Guille ve una flor de diente de león que crece en el borde del andén. Va directo hacia ella con el carrito. La rompe sin querer. La recoge y la tira a la caneca.</em></p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Quiere</th><th>Porque</th><th>Estrategia</th><th>Pero</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Que Eva se quede</td>
+                                    <td>Necesita entregarla o su hija paga las consecuencias</td>
+                                    <td>Humor y sueños. Luego el gota a gota, la amenaza, la promesa del dinero</td>
+                                    <td>Eva quiere irse a resolver su urgencia</td>
+                                </tr>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Irse a resolver su urgencia</td>
+                                    <td>Debe 225.000 a Don Pacho, tiene 26.500, Don Pacho tiene sus documentos y cajita</td>
+                                    <td>Insiste en irse, luego confiesa la urgencia exacta</td>
+                                    <td>Guille le promete exactamente lo que necesita</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Antes</th><th>Después</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Eva</td><td>Quiere irse a resolver su urgencia</td><td>Quiere quedarse — La Mujer es la solución a todo</td></tr>
+                                <tr><td>Guille</td><td>Ejecuta con frialdad relativa</td><td>Nombrar a la hija le costó. Algo se rompió.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-2-1">ESCENA 2 — Pasado y sueños / Primera parte</h3>
+                    <p>Eva abre el estuche. Mira las cuerdas. Comenta el estado del violín — afina la cuerda rota, evalúa lo que vale. Habla del abuso del profesor de la universidad. Guille reacciona con frialdad protectora. Guille le pregunta por qué no se fue donde su tía. Eva responde: no hay nada para ella allá, si el gota a gota supiera de su tía iría por las vaquitas. Guille escucha y entiende —y el espectador entiende antes que nadie— que Eva no tiene a dónde ir.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Quiere</th><th>Porque</th><th>Estrategia</th><th>Pero</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Confirmar que puede confiar en este plan</td>
+                                    <td>Es su única carta. No tiene a dónde ir si falla.</td>
+                                    <td>Pregunta directamente, busca leer a Guille</td>
+                                    <td>Guille esquiva, no puede decirle la verdad</td>
+                                </tr>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Que Eva no pregunte más</td>
+                                    <td>No puede sostenerle la mirada ni decirle la verdad</td>
+                                    <td>Humor, baile, música</td>
+                                    <td>Eva sigue leyendo que algo no cuadra</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="elipsis">— LA MÁQUINA —</h3>
+                    <p><svg class="cue-icon icon-image" width="20" height="20"><use href="#icon-image"></use></svg> La caneca gira. El andén revela su otra cara. Penumbra. Guille de espaldas al público. Entra La Mujer vestida de negro — no vemos su rostro. Ella sola canta la canción infantil. Con una rueda de madera que representa la sierra, le corta las piernas y las tira a la basura. La caneca vuelve a girar. El andén regresa.</p>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-2-2">ESCENA 2 — Pasado y sueños / Segunda parte</h3>
+                    <p>Eva y Guille en el suelo. Guille propone el juego de convergencia — los dos se meten en cajas de cartón. En el juego se filtran palabras del pasado de Guille.</p>
+                    <p>Eva despliega su monólogo: quiere quedarse en Colombia, crear una carpa itinerante que recorra todo el país. Toma el arco del violín como batuta. Construye con el cuerpo todo un circo desde la imaginación. Los pimpones rojos son el recuerdo.</p>
+                    <p>Guille la escucha. Ve las manos de una directora. Se rompe. Le dice que se vaya. Ya. Sin explicar por qué. Eva no entiende. Dayana irrumpe. Con la misma voz que el espectador ya conoce.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Quiere</th><th>Porque</th><th>Estrategia</th><th>Pero</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Saber si La Mujer va a llegar</td>
+                                    <td>Tiene hasta las 9pm, Guille es su única carta, no tiene a dónde ir</td>
+                                    <td>Pregunta directamente, busca leer a Guille</td>
+                                    <td>Guille esquiva, no puede decirle la verdad</td>
+                                </tr>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Retener a Eva el mayor tiempo posible</td>
+                                    <td>La máquina requiere que Eva esté ahí cuando llegue Dayana</td>
+                                    <td>Humor, el juego en cajas, provoca el monólogo del sueño</td>
+                                    <td>El monólogo lo rompe — al final ya no puede más</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Antes</th><th>Después</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Eva</td><td>Quiere que La Mujer llegue pronto. Confía en Guille.</td><td>Guille le dijo que se fuera sin explicar. Algo está muy mal. Llega La Mujer.</td></tr>
+                                <tr><td>Guille</td><td>Retiene con humor y afecto</td><td>Se rompió. Intentó decirle que se fuera. Llegó tarde.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3>SEGUNDA PARTE</h3>
+
+                <div class="block-section">
+                    <h3 id="escena-3">ESCENA 3 — La Llegada</h3>
+                    <p>Dayana llega. El espacio cambia sin que nadie lo nombre. Guille se achica — conoce esa voz. Eva no sabe todavía.</p>
+                    <p>Guille le comenta a La Mujer que Eva tiene un problema adicional al del gota a gota: lo del pagadiario. Dayana reacciona con amabilidad despreocupada. Se ofrece a pagarlo como regalo, sin compromiso. Le entrega el dinero a Guille y le ordena ir a donde Don Pacho a traer la cajita y los documentos de Eva.</p>
+                    <p>Guille no quiere ir. Sabe lo que significa salir: deja a Eva sola. Pero no puede negarse. Obedece. Sale.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Quiere</th><th>Porque</th><th>Estrategia</th><th>Pero</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>La Mujer</td>
+                                    <td>Aislar a Eva</td>
+                                    <td>Guille es un estorbo para el procedimiento</td>
+                                    <td>Convierte la deuda con Don Pacho en excusa operativa — la absorbe como gasto menor</td>
+                                    <td>Guille duda antes de obedecer</td>
+                                </tr>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>No irse</td>
+                                    <td>Sabe que al salir pierde el control del espacio</td>
+                                    <td>No tiene margen — obedece</td>
+                                    <td>Al salir cede todo</td>
+                                </tr>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Que la transacción avance</td>
+                                    <td>El reloj corre — tiene hasta las 9pm</td>
+                                    <td>Muestra cooperación</td>
+                                    <td>La Mujer opera a su propio ritmo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Antes</th><th>Después</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Eva</td><td>Escudada por su amigo</td><td>Expuesta. Sola con La Mujer.</td></tr>
+                                <tr><td>Guille</td><td>Contacto presente</td><td>Elemento excluido — contra su voluntad</td></tr>
+                                <tr><td>La Mujer</td><td>Evaluando</td><td>Con control total del espacio</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-4">ESCENA 4 — La Oferta</h3>
+                    <p>Eva y La Mujer solas. La Mujer comienza su oferta de trabajo. Es tan seductora la propuesta, tan reales sus afirmaciones, que nadie puede evitarlo. Eva no es tonta. Confronta directamente: <em>"¿me quiere mandar de puta?"</em> La Mujer la neutraliza sin levantar la voz. Le explica, sin nombrarlo directamente, que lo que van a usar de Eva no es su cara ni su voluntad: es lo que tiene adentro.</p>
+                    <p>Eva acepta verbalmente el contrato. <strong class="emphasis-red">La rendición del argumento.</strong> Dayana le ordena quitarse el maquillaje de clown, los piercings y las trenzas de colores — con sus propias manos. Eva obedece. Dayana le recoge el cabello. <strong class="emphasis-red">La rendición del cuerpo.</strong></p>
+                    <p><svg class="cue-icon icon-sound" width="20" height="20"><use href="#icon-sound"></use></svg> <em>El carro de la basura pasa por la Séptima. Eva, ya despojada, no lo mira.</em></p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Quiere</th><th>Porque</th><th>Estrategia</th><th>Pero</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>La Mujer</td>
+                                    <td>A Eva convencida y cooperativa</td>
+                                    <td>La red necesita que Eva viaje por voluntad propia</td>
+                                    <td>Oferta seductora, cierre de cada salida con argumentos, despojo metódico</td>
+                                    <td>Eva confronta y negocia antes de ceder</td>
+                                </tr>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Encontrar una grieta en el contrato</td>
+                                    <td>Su instinto callejero activa alarmas ante el exceso de facilidad</td>
+                                    <td>Confronta, negocia, busca condiciones</td>
+                                    <td>No hay grieta. Cada salida que abre se cierra con argumentos.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Antes</th><th>Después</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Eva</td><td>Sola. Con su identidad.</td><td>Despojada. La rendición del argumento y del cuerpo.</td></tr>
+                                <tr><td>La Mujer</td><td>Evaluando y ofertando</td><td>Con control total. Eva cedió verbalmente y corporalmente.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-5">ESCENA 5 — El Clímax: La Pinza y el Violín</h3>
+                    <p>Guille regresa con la caja de recuerdos. Eva intenta abordar el vehículo con el violín. Dayana lo prohíbe. Le ordena ejecutar una última pieza antes del traslado. Eva busca a Guille con la mirada. Lo que encuentra es la súplica de un padre aterrorizado. <strong class="emphasis-red">El ruego de Guille no confirma una decisión ya tomada: es lo que convierte la resistencia de Eva en rendición.</strong></p>
+                    <p><svg class="cue-icon icon-sound" width="20" height="20"><use href="#icon-sound"></use></svg> Eva toca. <strong class="emphasis-red">La rendición del alma. La única vez que el violín suena.</strong> Todo el virtuosismo de Eva, todo lo que construyó, todo lo que es, cabe en ese sonido.</p>
+                    <p>Eva arroja el violín a la basura con sus propias manos. Eva aborda el vehículo de la red. No la llevan. Camina.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Quiere</th><th>Porque</th><th>Estrategia</th><th>Pero</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>La Mujer</td>
+                                    <td>Que Eva salga esta noche funcional y cooperativa</td>
+                                    <td>La red necesita mercancía sin problemas locales</td>
+                                    <td>Prohíbe el violín, ordena tocarlo como prueba de docilidad</td>
+                                    <td>Eva todavía busca a Guille con la mirada</td>
+                                </tr>
+                                <tr>
+                                    <td>Eva</td>
+                                    <td>Una salida. Cualquiera.</td>
+                                    <td>Busca a Guille — su único punto de fuga posible</td>
+                                    <td>Mira a Guille. Espera.</td>
+                                    <td>Lo que encuentra en Guille es la súplica de un padre aterrorizado</td>
+                                </tr>
+                                <tr>
+                                    <td>Guille</td>
+                                    <td>Que Eva obedezca</td>
+                                    <td>Una mirada de Dayana es suficiente. Esperanza.</td>
+                                    <td>Le implora en silencio</td>
+                                    <td>Ese ruego es lo que convierte la resistencia de Eva en rendición</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Antes</th><th>Después</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Eva</td><td>Sujeto que todavía resiste</td><td>Elige irse — no la llevan, camina</td></tr>
+                                <tr><td>La Mujer</td><td>Cerrando la transacción</td><td>Transacción cerrada</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-6">ESCENA 6 — El Descarte</h3>
+                    <p>Guille regresa. Cree que cumplió. Exige a Dayana una confirmación. Suplica por Esperanza.</p>
+                    <p>Dayana no responde. Espera su propio carro. Cuando llega, Dayana lo ejecuta de un solo disparo. Sin palabras. Mete el cuerpo en una bolsa. Sale.</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>Personaje</th><th>Antes</th><th>Después</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Guille</td><td>Cómplice que creyó haber cumplido</td><td>Desecho</td></tr>
+                                <tr><td>La Mujer</td><td>Operadora cerrando su trabajo</td><td>Sale. Siguiente tarea.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-4">ESCENA 4 — La Oferta</h3>
+                    <p>Eva y La Mujer solas. La Mujer comienza su oferta de trabajo. Es tan seductora la propuesta, tan reales sus afirmaciones, que nadie puede evitarlo. Eva no es tonta. Confronta directamente: <em>"¿me quiere mandar de puta?"</em> La Mujer la neutraliza sin levantar la voz. Le explica, sin nombrarlo directamente, que lo que van a usar de Eva no es su cara ni su voluntad: es lo que tiene adentro.</p>
+                    <p>Eva acepta verbalmente el contrato. <strong class="emphasis-red">La rendición del argumento.</strong> Dayana le ordena quitarse el maquillaje de clown, los piercings y las trenzas de colores — con sus propias manos. Eva obedece. Dayana le recoge el cabello. <strong class="emphasis-red">La rendición del cuerpo.</strong></p>
+                    <p><svg class="cue-icon icon-sound" width="20" height="20"><use href="#icon-sound"></use></svg> <em>El carro de la basura pasa por la Séptima. Eva, ya despojada, no lo mira.</em></p>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-5">ESCENA 5 — El Clímax: La Pinza y el Violín</h3>
+                    <p>Guille regresa con la caja de recuerdos. Eva intenta abordar el vehículo con el violín. Dayana lo prohíbe. Le ordena ejecutar una última pieza antes del traslado. Eva busca a Guille con la mirada. Lo que encuentra es la súplica de un padre aterrorizado. <strong class="emphasis-red">El ruego de Guille no confirma una decisión ya tomada: es lo que convierte la resistencia de Eva en rendición.</strong></p>
+                    <p><svg class="cue-icon icon-sound" width="20" height="20"><use href="#icon-sound"></use></svg> Eva toca. <strong class="emphasis-red">La rendición del alma. La única vez que el violín suena.</strong> Todo el virtuosismo de Eva, todo lo que construyó, todo lo que es, cabe en ese sonido.</p>
+                    <p>Eva arroja el violín a la basura con sus propias manos. Eva aborda el vehículo de la red. No la llevan. Camina.</p>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-6">ESCENA 6 — El Descarte</h3>
+                    <p>Guille regresa. Cree que cumplió. Exige a Dayana una confirmación. Suplica por Esperanza.</p>
+                    <p>Dayana no responde. Espera su propio carro. Cuando llega, Dayana lo ejecuta de un solo disparo. Sin palabras. Mete el cuerpo en una bolsa. Sale.</p>
+                </div>
+
+                <div class="block-section">
+                    <h3 id="escena-7">ESCENA 7 — La Asimilación</h3>
+                    <p><svg class="cue-icon icon-sound" width="20" height="20"><use href="#icon-sound"></use></svg> <em>El carro de la basura, que esta vez no pasa: se parquea.</em></p>
+                    <p>El recolector municipal. Uniforme de trabajo. Gesto rutinario. Vacía la caneca del andén — el violín cae con la basura. Identifica la bolsa con el cuerpo de Guille. Para él es una bolsa de basura más.</p>
+                    <p><svg class="cue-icon icon-image" width="20" height="20"><use href="#icon-image"></use></svg> La bolsa se rompe. Los pimpones rojos de Eva se riegan por todo el andén.</p>
+                    <p>El recolector los barre con escoba.</p>
+                    <p><strong class="emphasis-red">Blackout.</strong></p>
+                </div>
+            </section>
+
+            <section id="imagenes">
+                <h2>XII. Las Imágenes que Sostienen Toda la Obra</h2>
+                <ul>
+                    <li>Eva practicando el acto para salir a pedir dinero — ensaya sola, para nadie, con la seriedad de quien trabaja.</li>
+                    <li>El violín que no suena en la intro — promesa. El violín que Eva abre y mira pero no toca en la Escena 2. El violín que suena una sola vez, por obligación. El violín que termina en la basura.</li>
+                    <li>Guille que ve una flor de diente de león creciendo en el borde del andén. La rompe sin querer. La tira a la caneca.</li>
+                    <li>Los pimpones del sueño de Eva — regados por el andén en la escena final, recogidos con escoba.</li>
+                    <li>El andén con dos caras — la que parece y la que es.</li>
+                    <li>La Mujer de negro, sin rostro, cantando una canción infantil.</li>
+                    <li>El gesto maternal de Dayana recogiendo el cabello de Eva después de haber cerrado el contrato de su destrucción.</li>
+                    <li>El zapatico de bebé dentro de la caja de lustrar — Guille no tiene foto porque una foto es peligrosa. Guarda los pies.</li>
+                </ul>
+            </section>
+
+            <footer>
+                Documento de trabajo — Trash Machine — v5 — 5esencia — 2026
+            </footer>
+        </main>
+    </div>
+
+    <!-- Modales Biografías -->
+    <div id="bio-modal-container" class="modal-overlay">
+        <div class="modal-content">
+            <button id="close-modal" class="modal-close">&times;</button>
+            
+            <!-- Biografía EVA -->
+            <div id="bio-eva" class="bio-section">
+                <h2>Biografía: Eva Lucía González Ramírez</h2>
+                <h3>1. Información General</h3>
+                <ul>
+                    <li><strong>Nombre Completo:</strong> Eva Lucía González Ramírez</li>
+                    <li><strong>Edad Actual:</strong> 19 años</li>
+                    <li><strong>Ciudad de Origen:</strong> Cali, Valle del Cauca</li>
+                    <li><strong>Ciudad de Residencia:</strong> Bogotá, D.C.</li>
+                    <li><strong>Ocupación:</strong> Artista callejera, clown, violinista y activista</li>
+                </ul>
+                <h3>2. Trayectoria Crítica y Línea de Tiempo</h3>
+                <p><strong>Edad (7-11 años) – El Refugio y la Explotación (Cali):</strong> Ingresa al clown como refugio en una Casa de Cultura barrial. Ante la crisis económica familiar, su madre instrumentaliza su talento y su primer violín, forzándola a sostener el hogar actuando en eventos privados. El instrumento se convierte en un factor de explotación antes de ser una herramienta propia.</p>
+                <p><strong>Edad (15 años) – Éxodo a Bogotá:</strong> Huye a la capital cortando vínculos con su madre para no resentir a su familia ni arrastrar a su hermana menor al mismo destino. La capital no fue una promesa: fue la única dirección posible. En Cali y en los municipios del Valle no existe formación artística formal que conduzca a una trayectoria profesional real. Bogotá no fue elección sino única salida.</p>
+                <p><strong>Edad (15-16 años) – Los primeros años en la calle:</strong> Subsiste a través del arte callejero en el centro de Bogotá, trabajando en el sector del Parque de las Nieves y los alrededores de la Plaza de Bolívar. Aprende sola las dinámicas de supervivencia del espacio público.</p>
+                <p><strong>Edad (16-17 años) – Encuentro con Guillermo:</strong> Conoce a Guillermo trabajando en el mismo sector. Él ya no tiene piernas. Eva infiere, erróneamente, que es una secuela de guerra en el ejército — la historia que Guille le cuenta y que ella acepta como suficiente. El vínculo se consolida de a poco, en el andar cotidiano de los dos. Guille se convierte en su soporte y mentor de supervivencia callejera.</p>
+                <p><strong>El Sacrificio del Primer Violín:</strong> Ya consolidado el vínculo, la Organización amenaza directamente la vida de Esperanza, la hija de Guillermo. Eva vende su primer violín — su herramienta de trabajo, el instrumento que cargó desde Cali — por 200.000 COP para pagar los pasajes de escape de la niña y su madre hacia un pueblo no especificado en el interior del país. Adquiere un segundo instrumento con sus propios medios. Esta decisión forja una deuda de lealtad que Eva no puede cuestionar y Guille no puede ignorar.</p>
+                <p><strong>Edad (17 años) – La Academia y la Protección:</strong> Accede a estudios formales de arte en una academia pública — el único acceso de ese tipo al que había podido llegar. Sufre dinámicas de abuso por parte de un docente. El patrón es documentado: el abuso en academias de arte en Colombia ocurre preferentemente sobre estudiantes foráneas, pobres y sin red familiar en la ciudad. Eva tenía todas esas condiciones. Guillermo fue el único que la protegió de manera real y concreta — le dijo que se parara duro y que él sería capaz de matar a ese hombre. Con ese respaldo abandona la institución. Guille no le devolvió la academia: le confirmó que el sistema no era para ella. Esa protección en su momento más oscuro es el pilar inquebrantable de su confianza en él.</p>
+                <p><strong>El Sueño del Circo Propio:</strong> Define su proyección artística ideal: un circo propio con carpa 360° en líneas rojas y negras, libre de explotación y jerarquías impositivas. Cuando habla de ese sueño no lo describe: lo construye con el cuerpo. Toma el arco del violín como batuta y dirige un circo imaginario completo. En ese gesto el arco deja de ser un instrumento de música y se convierte en el instrumento de una directora. Es el momento de mayor expansión vital de Eva en la obra y el detonante del quiebre de Guillermo.</p>
+                <h3>3. Conciencia Social y Posición Política</h3>
+                <p>Eva no es un cliché de víctima pasiva. Tiene pensamiento de izquierda, sale a marchar en las protestas de Bogotá y detesta el sistema que asfixia al país. Es rebelde, antisistema, convencida de que el arte puede cambiar el mundo. Esa posición no es decorativa: es estructural para el clímax. Que Eva termine dentro del sistema que odió y juró destruir no es solo una derrota personal — es la pregunta central de la obra hecha cuerpo. La decisión final no es solo sobrevivir: es traicionarse a sí misma para hacerlo. Eso es el suicidio ontológico.</p>
+                <h3>4. Por Qué Confía en Guillermo</h3>
+                <p>Eva no es ingenua. Su detector de mentiras callejero está afilado por años de trabajo en el espacio público. Sabe que Guillermo tiene secretos, ausencias y un dinero que no encaja del todo con un embolador. Pero tomó una decisión consciente de no preguntar, por dos razones:</p>
+                <p>Primera: la respuesta que tenía era suficiente. Las piernas amputadas, la historia de guerra, el TEPT visible en su comportamiento. Todo lo que no cierra en Guille tiene una explicación que no requiere más preguntas.</p>
+                <p>Segunda y más importante: cuando el docente abusó de ella, Guillermo fue el único que la protegió de manera real y concreta. Alguien que en el peor momento de tu vida fue lo único que se interpuso entre tú y el sistema no se cuestiona fácilmente, aunque haga cosas raras. Esa deuda no es sentimental: es estructural. Para Eva, los silencios de Guille son síntomas, no traición.</p>
+                <h3>5. Situación Actual: Los Dos Relojes — La Trampa Temporal</h3>
+                <p>Su asfixia es estrictamente matemática y está dividida en dos guillotinas. Eva está dispuesta a arriesgar la vida del futuro para salvar su identidad legal y afectiva en el presente.</p>
+                <ul>
+                    <li><strong>Pagadiario (Don Pacho):</strong> Monto ~225.000 COP (solo tiene 26.500). Plazo Límite: Hoy a las 9:00 PM. Consecuencia: Pérdida de cédula y caja de recuerdos — anulación de identidad.</li>
+                    <li><strong>Gota a Gota (Red criminal local):</strong> Monto ~3.000.000 COP. Plazo Límite: Próximo domingo. Consecuencia: Muerte.</li>
+                </ul>
+                <p>Cuando Eva dice "necesito plata hoy, no el domingo, hoy": está diciendo exactamente eso: la deuda que mata viene después, pero la deuda que le roba quién es ella vence esta noche. Eso dice todo sobre qué es lo más sagrado para Eva.</p>
+                <p><strong>Don Pacho:</strong> Usurero autónomo que administra su propia microeconomía de despojo — cobra el pagadiario, retiene las pertenencias cuando no pagan y vende lo que confisca. No pertenece a la Organización ni tiene contacto con ella. Para Eva no hay distinción: Pacho y el gota a gota son dos frentes del mismo colapso. Eva le oculta a Guillermo la urgencia de esa deuda por vergüenza. Guillermo ya lo sabe — Pacho se lo comentó al entregarle las llantas nuevas — pero usa ese silencio para retenerla en el andén.</p>
+                <p>Cuando La Mujer envía a Guillermo a buscar los documentos en la Escena 3, lo manda a saldar la deuda con Pacho como gasto operativo. La Organización libera los objetos de Eva para convertirlos en el anzuelo del clímax. Eva cree que es un gesto de Guille. No sabe que fue comprado por la red que la está capturando.</p>
+                <p><strong>El subtexto de la caja:</strong> Entre los objetos confiscados hay una caja de valor afectivo que contiene una manilla compartida con su hermana menor, un anillo de su madre que representa el trauma de la explotación infantil en Cali, adhesivos de su época académica, un collar sustraído a Guillermo — evidencia de que Eva también tomó fragmentos de la vida de Guille, un lazo de culpa mutua que se expone cuando la caja se materializa en escena — y registros fotográficos familiares.</p>
+                <h3>6. El Dilema del Segundo Violín</h3>
+                <p>Eva practica de manera intermitente con su instrumento actual, consciente de la necesidad de empeñarlo para mitigar la deuda con Pacho, aunque hacerlo significa perder su principal medio de producción. El estado material del violín es deficiente ("esta cuerda ya va a sacar la mano"). Esto disminuye su valor de venta y multiplica la frustración. El arco del violín aparece desde el inicio de la obra: Eva lo tiene en la mano durante su acto, preparada para tocar, pero no lo hace. El arco recorre la obra en ese estado de promesa diferida hasta el monólogo del circo, donde se convierte en batuta. Su última aparición es en el clímax, cuando Eva toca por única vez — mecánicamente, rindiéndose. El mismo objeto que construyó un futuro es el que en el clímax lo cancela.</p>
+                <h3>7. El Clímax — El Suicidio Ontológico</h3>
+                <p><strong>El Despojo Aséptico:</strong> Dayana no somete a Eva estéticamente. Le aplica un protocolo profiláctico y de control de calidad: quita el maquillaje de clown por higiene, retira piercings, manillas de artista y trenzas de colores, cambia sus zapatos por calzado institucional neutro. Todo lo que Eva es como artista desaparece en ese procedimiento. No por estética: porque la Organización no necesita lo que Eva es. Solo necesita lo que Eva tiene.</p>
+                <p><strong>La Verdad Corporativa:</strong> Dayana no miente ni seduce. Destruye la alternativa para que lo que ofrece suene a realidad. Cuando Eva pregunta directamente si va de prostituta, Dayana le responde con frialdad de analista de mercado: "Eva, si yo estuviera buscando putas para exportar, no estaría un domingo a las seis de la tarde en el Parque de las Nieves hablando con una payasa que debe el arriendo. Estaría en la Zona T buscando modelos de Instagram o venezolanas en la 85. La prostitución de lujo requiere una estética que tú no tienes y una sumisión que tampoco me sirves. No eres negocio para eso.". Después le dice que su cuerpo va a trabajar. Que lo que necesita de ella no es su cara ni su carisma: es lo de adentro. Le explica la servidumbre por deuda: empezará con un saldo en contra — pasajes, pasaporte, pago a Don Pacho, el gota a gota — y eso se descuenta. No dice la palabra subrogación. Deja que Eva complete el mapa con lo que puede imaginar. Eva entiende que lo que viene involucra su cuerpo de manera íntima, prolongada y clínica — algo peor que la prostitución que temía. No sabe exactamente qué. Esa brecha entre lo que Eva teme y lo que realmente le espera es donde vive el horror de la obra.</p>
+                <p><strong>La Derrota Matemática:</strong> Acorralada por los números, sin cédula, sin violín, con Guille rogando y con Esperanza en el balance, Eva toma la decisión más difícil que puede tomar alguien de 19 años: decide que sobrevivir hoy es más urgente que defender lo que es. No porque no le importe. Porque el sistema la acorraló hasta que no quedó otro movimiento. Eso no es una víctima. Es una persona destruida por el sistema desde adentro. Se arrodilla ante el capitalismo que juró destruir.</p>
+                <p><strong>El Violín a la Basura:</strong> Dayana le pide que tire el violín. Sin justificación elaborada — ese instrumento no viaja, punto. Antes de tirarlo, Dayana le exige que toque. No por sadismo ni curiosidad: es el último paso del protocolo de domesticación antes del transporte. Una mujer que toca su propio violín por última vez y después lo tira a la basura con sus propias manos es una mujer que aprendió a obedecer. Viendo la súplica aterrorizada de Guille, Eva toca mecánicamente. Termina. Arroja el violín a la basura. Entra al vehículo.</p>
+                <h3>8. Anclaje Temporal</h3>
+                <p>La cita fue pactada a las 5:00 PM. Eva lleva "hora y media" esperando cuando empieza la obra — en realidad media hora. Esto ancla el inicio exactamente a las 5:30 PM. Le restan únicamente tres horas y media para las 9:00 PM.</p>
+            </div>
+
+            <!-- Biografía GUILLE -->
+            <div id="bio-guille" class="bio-section">
+                <h2>Biografía: Guillermo (José María Córdoba Velásquez)</h2>
+                <h3>1. Información General</h3>
+                <ul>
+                    <li><strong>Nombre Real:</strong> José María Córdoba Velásquez</li>
+                    <li><strong>Alias:</strong> Guillermo</li>
+                    <li><strong>Edad Actual:</strong> 24 años (Nacimiento: 13 de junio de 2002)</li>
+                    <li><strong>Ciudad de Origen:</strong> Jambaló, Cauca</li>
+                    <li><strong>Ciudad de Residencia:</strong> Bogotá, D.C.</li>
+                    <li><strong>Ocupación:</strong> Lustrador de zapatos / Infiltrado, campanero y buzón de la Organización</li>
+                </ul>
+                <h3>2. Trayectoria Crítica y Línea de Tiempo</h3>
+                <p><strong>Infancia y Reclutamiento (Cauca):</strong> Hijo de Guardias Indígenas y líderes sociales. Crece bajo el fuego cruzado entre el ELN y disidencias de las FARC. Su madre es asesinada en 2006. En 2016 (14 años) es retenido por un grupo armado en Jambaló como represalia directa contra las normativas impuestas por su padre en el territorio. En 2018 (16 años) es forzado a integrarse a la organización armada. Comete su primer asesinato, iniciando un proceso de desensibilización psicológica. Conoce a su pareja, Paz. En las noches de guardia escucha música clásica en la radio del comandante — el sonido del violín queda grabado en su memoria como el único refugio sonoro en medio de la guerra. No sabe el nombre del instrumento. Solo conoce el sonido.</p>
+                <p><strong>Paternidad y Huida:</strong> Nace su hija Esperanza el 15 de agosto de 2020 (Guillermo tenía 18 años recién cumplidos). Desertan del grupo armado y huyen hacia Bogotá para ocultarse, adoptando la identidad falsa de "Guillermo".</p>
+                <p><strong>Supervivencia, El Oficio Impuesto y la Mutilación en la Capital:</strong> En 2021 (19 años), la Organización no lo deja elegir su oficio. Lo instala como lustrador de zapatos en el sector del Parque de las Nieves / Plaza de Bolívar porque necesita un buzón estático invisible frente al poder político y financiero de la ciudad. No es un rebusque ni una decisión autónoma: es una asignación operativa. Un hombre sin piernas que trabaja en algo específico y útil es paisaje. Un hombre sin piernas que mendiga levanta preguntas. La red le consiguió el puesto, le enseñó el oficio y le paga un complemento por encima de lo que gana limpiando zapatos. Su función es inteligencia pasiva: recolecta información de la calle, vigila movimientos ajenos a la red y sirve como buzón ciego para ocultar temporalmente dinero, armas o mensajes.</p>
+                <p><strong>El Error (2022, 20 años):</strong> Ante la presión de sostener a Paz y a Esperanza desde la distancia, comete el error que lo define: retiene una parte del dinero que debía custodiar para la Organización, intentando acumular lo suficiente para desaparecer con su familia. La Organización lo detecta pero no actúa de inmediato: primero lo vigila durante meses, confirma el monto y el alcance de la traición, y reconstruye toda su red de contactos en Bogotá.</p>
+                <p><strong>El Castigo de La Mujer (2023, 21 años):</strong> Dayana ejecuta y coordina la amputación de sus piernas. No es un acto de ira tardía: es una ejecución planificada con inteligencia previa. Esperó a tener el mapa completo de su vida antes de intervenir, para que el castigo fuera total: lo mutila para anclarlo geográficamente a su puesto fijo en la ciudad, donde sea fácil de vigilar y no pueda escapar con su familia. Guillermo obedece con terror absoluto no solo porque Dayana lo mutiló: es que lo vigiló durante años sin que él lo supiera, conoce a su hija, conoce a Paz, conoce sus rutas. El castigo demostró que la Organización sabe todo y actúa cuando quiere, no cuando puede.</p>
+                <p><strong>El Encuentro con Eva (Finales 2023 / 2024):</strong> Ya en su carrito, trabajando en el sector del Parque de las Nieves, escucha en una comparsa callejera exactamente el mismo sonido que conocía de la radio guerrillera. Lo rastrea hasta encontrar a Eva Lucía tocando el violín. El sonido llegó antes que la persona. A partir de ese día se la encuentra todos los días trabajando en el mismo sector. El vínculo se consolida de a poco, en el andar cotidiano de los dos. Se convierte en su soporte y mentor de supervivencia callejera. Falsifica su pasado presentándose como un exmilitar herido en combate para justificar su conocimiento de armas, dinámicas de violencia y la ausencia de sus piernas. Eva lo conoce desde el principio sin piernas y acepta esa historia como suficiente.</p>
+                <p><strong>El Sacrificio de Eva:</strong> Ya consolidado el vínculo, la Organización amenaza directamente la vida de Esperanza. Eva vende su primer violín por 200.000 COP para pagar los pasajes de escape de la niña y de Paz hacia un pueblo no especificado en el interior del país. El dinero alcanzó para el bus y unos pocos días de comida. La imprecisión del destino es su única protección operativa — el lugar no se nombra ni en la biografía ni en la obra. Tras el episodio, Eva rescata, limpia y cuida a Guillermo en un momento de crisis posterior. Esa deuda es la que hace imposible para Eva cuestionar a Guille, y para Guille ignorar lo que le debe. En 2026 recibe la orden directa de la Organización para retener y entregar a Eva Lucía.</p>
+                <h3>3. La Red y su Rol Operativo</h3>
+                <p><strong>La Organización:</strong> Opera como una célula urbana de alta sofisticación con la estructura del Clan del Golfo (AGC) en su variante bogotana: ex combatientes de distintos grupos, policías y militares activos en nómina, funcionarios judiciales y políticos, empresarios que lavan dinero o consumen servicios. Su especialidad en esta célula es el extractivismo reproductivo: captación de mujeres jóvenes en situación de vulnerabilidad extrema para subrogación comercial orientada a clientes de Europa del Este y Medio Oriente. Usa corrupción institucional — no falsificación de calle — para gestionar documentación de víctimas en días.</p>
+                <p><strong>La Entrega de Eva (La Trampa Única):</strong> La orden de entregar a Eva es una exigencia aislada y excepcional. Guillermo nunca ha sido captador serial de mujeres. Su función habitual es la inteligencia pasiva. Dayana perfiló a Eva durante sus patrullajes, identificó su aislamiento y el lazo de confianza ciega que tiene con Guillermo. Diseña la trampa usándolo puramente como el cebo humano que Eva jamás cuestionará.</p>
+                <h3>4. Asimetría de Información y Dinámica de Poder</h3>
+                <p><strong>El Terror de Estado:</strong> No existe un conteo regresivo de horas impuesto para la entrega. La presión es una amenaza permanente sobre la ubicación de Esperanza. Su relación con La Mujer está marcada por un terror físico y psicológico absoluto: Dayana le habla con una cordialidad corporativa y amable que resulta devastadora, pues sus piernas amputadas son el recordatorio físico constante de que esa mujer no duda al momento de destruir un cuerpo.</p>
+                <p><strong>Lo que Sabe y Oculta:</strong> Conoce la deuda de Eva con el gota a gota (~3.000.000 COP) y usa la falsa oferta de empleo con La Mujer como anzuelo. Sabe en secreto que Eva debe 225.000 COP a Don Pacho y que le retuvieron los documentos y su caja de recuerdos. Pacho se lo comentó al entregarle las llantas nuevas. Guillermo le oculta este conocimiento a Eva de manera estratégica para evitar que abandone el andén antes de que llegue La Mujer. Para Guillermo, Pacho es un vendedor conocido del barrio — circuito de segunda mano, microeconomía de despojo vecinal, sin conexión con la Organización. Guillermo le vende cosas que encuentra en la calle; Pacho le vendió las llantas del carro McQueen. Cuando La Mujer envía a Guille a buscar los documentos de Eva en la Escena 3, le ordena saldar la deuda con Pacho (225.000 COP) como gasto operativo. La Organización libera los objetos de Eva para convertirlos en el anzuelo del clímax.</p>
+                <p><strong>El Doble Punto Ciego Fatal:</strong> Cree, en el peor escenario que se permite imaginar, que Eva entrará a una red de explotación sexual clásica. Lo racionaliza: al menos estará viva, al menos tendrá un cuerpo. Ignora completamente que el destino real es subrogación comercial en aislamiento total. Cuando Dayana expone la escala industrial del destino de Eva en el clímax, Guillermo entiende en ese momento la profundidad de la maquinaria a la que sirvió. Confía en que su docilidad le garantiza la inmunidad a su familia. Ignora que para el sistema él es un residuo biológico inútil y un testigo prescindible, lo que determinará su ejecución inmediata por parte de La Mujer una vez completada la transacción.</p>
+                <h3>5. Perfil Psicológico e Inserción en el Conflicto</h3>
+                <p>Su actual carrito se lo regaló Eva. Siente el peso de la culpa: Eva salvó a su hija en el pasado. Guillermo ejecuta la traición por la supervivencia de su hija. Utiliza la velocidad del carro y los chistes como una pantalla de hiperactividad para tapar su desespero, consumir los minutos de Eva y acallar su propia conciencia.</p>
+                <p>Entre sus anécdotas de trabajo hay una que lo define: un magistrado o funcionario del Congreso — alguien con poder formal sobre las leyes del país, habitual de la Plaza de Bolívar — le pidió que le embolara los zapatos pero no tenía efectivo ese día. Le pagó con quipitos. Guillermo lo acepta y se ríe. El hombre que administra la ley del país le debe un lustrado y le paga con dulces de maquila. El cinismo como único refugio ante el sistema.</p>
+                <p><strong>El Detonante del Quiebre:</strong> La decisión de traicionar a Eva la tomó antes de la cita. Pero hay un momento en la Escena 2 en que algo en él colapsa y actúa contra su propia misión: intenta expulsarla del andén para salvarla. El detonante no es la culpa acumulada. Es un instante sensorial específico: Eva toma el arco del violín como batuta y construye con el cuerpo todo un circo imaginario — un texto que los dos saben de memoria, que han construido juntos tantas veces que él lo porta en el cuerpo igual que ella. En ese gesto Guillermo no ve las manos de una violinista. Ve las manos de una directora. Ve lo que va a entregar en movimiento, vivo, antes de que exista. Eso es insoportable porque no hay pasado que lo contenga.</p>
+                <p><strong>El Motor del Clímax:</strong> Guillermo no le ruega a Eva que toque porque sepa lo que le espera. Le ruega porque Dayana está ahí y sabe que si Eva se rebela, Esperanza muere. Una mirada de Dayana es suficiente. Él sabe lo que debe hacer. Su ruego es el de un padre aterrorizado empujando a su amiga al abismo, sin saber todavía exactamente cuál es ese abismo.</p>
+                <h3>6. Esperanza — La Presencia Ausente</h3>
+                <p>Esperanza tiene 6 años. Nació el 15 de agosto de 2020. Ya tiene memoria. Ya puede extrañar a su padre de manera consciente, ya puede preguntar por qué no está. Guillermo lo sabe. Vive oculta en un pueblo no especificado en el interior del país, adonde llegó en bus con su madre Paz y el dinero del primer violín de Eva. El lugar exacto no se nombra ni en la biografía ni en la obra — esa imprecisión es protección dramática y operativa.</p>
+                <p>Dentro de su cajita de lustrar, entre los tarros de betún y los trapos, Guille guarda un zapatico de bebé de Esperanza. No hay foto porque una foto es peligrosa: muestra una cara, fija una ubicación posible, es evidencia. El zapatico no muestra nada a quien no sabe leerlo. Para Guillermo es Esperanza completa: el tamaño que tenía, el peso que tuvo, el tiempo anterior a la huida. A él le amputaron las piernas. Él guarda los pies de su hija.</p>
+                <p>Esperanza se siente en el cuerpo de Guillermo durante toda la obra, no solo cuando se la menciona. Es la razón por la que llegó a esa cita. Es la razón por la que mantiene el humor cuando todo en él quiere colapsar. Es la razón por la que acepta los quipitos y se ríe y sigue.</p>
+            </div>
+
+            <!-- Biografía MUJER -->
+            <div id="bio-mujer" class="bio-section">
+                <h2>Biografía: La Mujer (Dayana)</h2>
+                <h3>1. Información General</h3>
+                <ul>
+                    <li><strong>Nombre Real:</strong> Dayana</li>
+                    <li><strong>Alias:</strong> La Mujer / "La Señora"</li>
+                    <li><strong>Edad Actual:</strong> 30 años</li>
+                    <li><strong>Estado Civil:</strong> Casada</li>
+                    <li><strong>Ciudad de Origen:</strong> Bogotá, D.C.</li>
+                    <li><strong>Ocupación:</strong> Policía Nacional Activa / Captadora y Operadora Logística de la Organización</li>
+                </ul>
+                <h3>2. Trayectoria Crítica y Línea de Tiempo</h3>
+                <p><strong>Infancia y Búsqueda de Orden:</strong> Creció en un entorno disfuncional y carente de afecto. Su madre murió prematuramente y su padre era ladrón. Esta contradicción la empujó a buscar una estructura rígida para no hundirse en el mismo destino. Ingresa a la Policía como mecanismo de supervivencia: el uniforme es la disciplina que nunca tuvo en casa y la cobertura que le permite operar dentro de la Organización. Su institución representa el orden que su infancia no tuvo — y simultáneamente es el recurso que pone al servicio del sistema criminal que la emplea.</p>
+                <p><strong>El Trauma Fundacional — La Maternidad Truncada:</strong> Quedó embarazada y tuvo una hija. Durante el parto, la recién nacida presentó aspiración de meconio. Debido a negligencia médica, los pulmones de la bebé colapsaron y murió a los pocos días. Este evento destruyó su capacidad de vincularse desde el amor. Su sexualidad se apagó. Desarrolló adicción al trabajo, al control extremo y un resentimiento profundo hacia la vitalidad de mujeres jóvenes — no como odio declarado sino como una distancia clínica que le permite tratar cuerpos fértiles como activos sin que le cueste nada emocionalmente. Al enviar a Eva a la red, Dayana racionaliza el acto: no la está destruyendo, le está dando un propósito que su propio cuerpo fallido ya no puede cumplir. No lo dice. No necesita decirlo. Pero ese mecanismo es lo que hace posible que actúe con amabilidad corporativa mientras destruye a una persona.</p>
+                <h3>3. La Red y su Rol Operativo</h3>
+                <p><strong>La Organización:</strong> Opera como una célula urbana de alta sofisticación con la estructura del Clan del Golfo (AGC) en su variante bogotana: ex combatientes de distintos grupos, policías y militares activos en nómina, funcionarios judiciales y políticos, empresarios que lavan dinero o consumen servicios. Su especialidad en esta célula es el extractivismo reproductivo: captación de mujeres jóvenes en situación de vulnerabilidad extrema para subrogación comercial orientada a clientes de Europa del Este y Medio Oriente. Usa corrupción institucional — no falsificación de calle — para gestionar documentación de víctimas en días. El magistrado que le paga a Guille con quipitos no sabe exactamente a qué red le sirve. Pero está dentro del sistema que la sostiene.</p>
+                <p><strong>El Uniforme como Doble Recurso:</strong> El uniforme de policía es simultáneamente su cobertura y su infraestructura. Le da acceso a bases de datos, redes de corrupción institucional y la capacidad de rastrear personas sin levantar sospechas. En operación siempre va de civil. Llega al Parque de las Nieves en carro civil, vestida como ejecutiva joven e impecable. Para Eva, que lleva años leyendo personas en la calle, una mujer así que busca talento es exactamente el perfil que Guille le prometió. La confianza inicial de Eva no es ingenuidad: el perfil encaja.</p>
+                <p><strong>La Relación con Guillermo:</strong> Cuando Guillermo intentó desertar con dinero de la Organización, Dayana lo rastreó gracias a sus recursos policiales. Coordinó y ejecutó la amputación de sus piernas como reestructuración laboral gélida: lo mutiló para anclarlo permanentemente como buzón en el centro de Bogotá. No lo hizo en un ataque de ira sino como una operación fría de logística urbana planificada con meses de inteligencia previa. Trata a Guillermo con cortesía condescendiente y corporativa. Le pregunta por su hija con tono amable. Eso es devastador para él: esa amabilidad proviene de la misma persona que lo desmembró. Sus piernas amputadas son el recordatorio físico permanente de lo que Dayana hace con los cuerpos cuando lo considera necesario. Guillermo obedece mecánicamente, aterrorizado.</p>
+                <h3>4. El Perfilamiento de Eva</h3>
+                <p>Nunca ha hablado con Eva antes de la obra. La ha observado durante sus patrullajes en el sector del Parque de las Nieves. Identificó su vulnerabilidad económica, su aislamiento — sin familia en la ciudad, sin red de apoyo, con dos deudas activas — y su confianza ciega en Guillermo. Conoció la deuda con Pacho y con el gota a gota a través de la red de información de la Organización. Eligió el domingo porque es el día en que vence el pagadiario — el día de mayor desesperación y menor capacidad de resistencia de Eva. Esa precisión de timing no es casualidad: Dayana lleva tiempo mirando. El sistema no interviene cuando puede — interviene cuando quiere, en el momento exacto en que la grieta está abierta y ya no hay tiempo para cerrarla. Sabiendo que Guillermo es el único cebo que Eva jamás cuestionará, le ordena explícitamente que se la entregue, usando a Esperanza como palanca de coacción.</p>
+                <h3>5. El Sometimiento en el Clímax</h3>
+                <p><strong>La Llegada:</strong> Baja del carro en la calle lateral que desciende de la Séptima, junto al Parque de las Nieves. Llega de civil, como ejecutiva joven. El sonido del carro que se parquea es el mismo leitmotiv que el espectador ya escuchó antes durante la Escena 2 — cuando creía que era tráfico de fondo, Dayana ya estaba monitoreando el andén antes de bajar.</p>
+                <p><strong>El Despojo Profiláctico:</strong> Dayana no tortura ni humilla estéticamente. Le aplica a Eva un protocolo de control de calidad con la frialdad de quien realiza un procedimiento sanitario: quita el maquillaje de clown por higiene, recoge el cabello, retira los piercings, las manillas de artista y las trenzas de colores. Cambia sus zapatos por calzado institucional neutro. Todo lo que Eva es como artista desaparece en ese procedimiento. No por estética: porque la Organización no necesita lo que Eva es. Solo necesita lo que Eva tiene adentro.</p>
+                <p><strong>La Verdad Corporativa:</strong> Dayana no miente ni seduce. Destruye la alternativa para que lo que ofrece suene a realidad. Cuando Eva pregunta directamente si va de prostituta, Dayana responde con frialdad de analista de mercado: "Eva, si yo estuviera buscando putas para exportar, no estaría un domingo a las seis de la tarde en el Parque de las Nieves hablando con una payasa que debe el arriendo. Estaría en la Zona T buscando modelos de Instagram o venezolanas en la 85. La prostitución de lujo requiere una estética que tú no tienes y una sumisión que tampoco me sirves. No eres negocio para eso.". Después le dice que su cuerpo va a trabajar. Que lo que necesita de ella no es su cara ni su carisma: es lo de adentro. Le explica la servidumbre por deuda: Eva empezará con un saldo en contra — pasajes, pasaporte, pago a Don Pacho, el gota a gota — y eso se descuenta. No dice la palabra subrogación. No describe el mecanismo exacto. Deja que Eva complete el mapa con lo que puede imaginar. Eva entiende que lo que viene involucra su cuerpo de manera íntima, prolongada y clínica. Algo peor que la prostitución que temía. No sabe exactamente qué. Esa brecha entre lo que Eva teme y lo que realmente le espera es donde vive el horror de la obra para el espectador.</p>
+                <p><strong>La Exigencia del Violín:</strong> Primero el despojo físico de la identidad. Después el violín. Dayana le pide que lo tire a la basura. Sin justificación elaborada: ese instrumento no viaja. Punto. Antes de tirarlo, le exige que toque. No por sadismo ni curiosidad perversa: es el último paso del protocolo de domesticación antes del transporte. Una mujer que toca su propio violín por última vez y después lo tira a la basura con sus propias manos es una mujer que aprendió a obedecer. Una mirada a Guillermo es suficiente — él sabe lo que debe hacer: rogarle a Eva que toque, o Esperanza muere y Eva también. Viendo esa súplica, Eva toca. Termina. Arroja el violín. Entra al vehículo.</p>
+                <p><strong>La Proyección del Trauma:</strong> Al enviarla a la red, Dayana racionaliza el acto. En su mente no la está destruyendo: le está dando un propósito que su propio cuerpo fallido ya no puede cumplir. Eva va a gestar vida. Dayana no pudo. Ese desplazamiento no es consciente y nunca se declara en escena. Opera por debajo de todo lo que Dayana dice y hace — y es lo que hace posible que lo haga con amabilidad, con eficiencia, sin remordimiento visible.</p>
+                <h3>6. La Logística Post-Clímax</h3>
+                <p><strong>Destino Inmediato de Eva:</strong> Esa misma noche Eva es llevada a una clínica u hotel clandestino en el sector de Kennedy — corredor documentado de trata en Bogotá. Los días siguientes: pasaporte gestionado por corrupción institucional, preparación clínica inicial, vuelo al país de destino. El protocolo está diseñado para que Eva salga del país antes de que alguien la busque. Nadie la va a buscar.</p>
+                <p><strong>El Descarte de Guillermo:</strong> Para Dayana, Guillermo es un residuo biológico. Al finalizar la transferencia de Eva, lo ejecuta sin remordimiento — con la misma frialdad con que desecharía un bolígrafo sin tinta. Cierra el ciclo logístico sin dejar testigos. No hay drama en ese acto. Es un procedimiento administrativo más.</p>
+                <h3>7. La Banalidad del Mal</h3>
+                <p>Dayana no opera desde el sadismo maniqueo ni los gritos. Su necesidad es burocrática, administrativa, envuelta en amabilidad. Se convence a sí misma de que sus acciones tienen una justificación práctica — y la tienen. Habla con seguridad, evita detalles innecesarios y es experta en la manipulación emocional sin que parezca manipulación. Muestra protección cuando tiende una trampa. Muestra amabilidad cuando destruye. Es la imagen exacta de lo que Hannah Arendt describió: el mal no necesita monstruos. Necesita funcionarios eficientes que hacen su trabajo.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Sistema de Autenticación Cifrada ---
+        let TARGET_HASH = ""; 
+        const pChars = [98, 97, 115, 117, 114, 97, 57, 57]; // "basura99"
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function isLogged() {
+            const match = document.cookie.match(new RegExp('(^| )auth_token=([^;]+)'));
+            return match ? match[2] === TARGET_HASH : false;
+        }
+
+        function setAuthCookie() {
+            const d = new Date();
+            d.setTime(d.getTime() + (7*24*60*60*1000));
+            document.cookie = "auth_token=" + TARGET_HASH + ";expires=" + d.toUTCString() + ";path=/;Secure;SameSite=Strict";
+        }
+
+        async function initAuth() {
+            const expectedPwd = pChars.map(c => String.fromCharCode(c)).join('');
+            TARGET_HASH = await sha256(expectedPwd);
+            
+            if (isLogged()) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }
+        }
+
+        let clicks = 0;
+        document.getElementById('trash-icon').addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            clicks++;
+            if (clicks >= 5) {
+                const form = document.getElementById('login-form');
+                form.style.display = 'block';
+                setTimeout(() => form.style.opacity = '1', 10);
+            }
+        });
+
+        document.getElementById('btn-login').addEventListener('click', async () => {
+            const input = document.getElementById('pwd-input').value.trim();
+            const hash = await sha256(input);
+            if (hash === TARGET_HASH) {
+                setAuthCookie();
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            } else {
+                document.getElementById('pwd-input').value = '';
+            }
+        });
+
+        document.getElementById('pwd-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') document.getElementById('btn-login').click();
+        });
+
+        initAuth();
+
+        // --- UI Existente y Menú ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.querySelector('aside');
+        const overlay = document.getElementById('overlay');
+        const topNavbar = document.getElementById('top-navbar');
+        let lastScrollTop = 0;
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 60) {
+                topNavbar.classList.add('hidden');
+            } else {
+                topNavbar.classList.remove('hidden');
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        function toggleMenu() {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                document.querySelector('main').classList.toggle('expanded');
+            }
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                if(window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+
+        // --- Sistema de Modales para Biografías ---
+        const modalContainer = document.getElementById('bio-modal-container');
+        const btnCloseModal = document.getElementById('close-modal');
+        const bioSections = document.querySelectorAll('.bio-section');
+        const bioButtons = document.querySelectorAll('.btn-bio');
+
+        bioButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const targetId = e.target.getAttribute('data-target');
+                
+                // Ocultar todas las secciones
+                bioSections.forEach(sec => sec.classList.remove('active'));
+                
+                // Mostrar la sección seleccionada
+                document.getElementById(targetId).classList.add('active');
+                
+                // Mostrar el contenedor del modal
+                modalContainer.classList.add('active');
+                
+                // Prevenir scroll en el body
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        btnCloseModal.addEventListener('click', () => {
+            modalContainer.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Cerrar modal si se hace clic fuera del contenido
+        modalContainer.addEventListener('click', (e) => {
+            if (e.target === modalContainer) {
+                modalContainer.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
