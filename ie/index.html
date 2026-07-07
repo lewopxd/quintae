@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBERESCENA · Formulario de Coproducción (Unificado - PRUEBA)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#1677ff;
+  --primary-dark:#0958d9;
+  --primary-bg:#e6f2ff;
+  --success:#52c41a;
+  --danger:#ff4d4f;
+  --warning:#faad14;
+  --text:#1f1f1f;
+  --text-soft:#595959;
+  --border:#d9d9d9;
+  --radius:14px;
+  --shadow:0 6px 20px rgba(0,0,0,.06);
+  --page-bg:#f0f2f5;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Barlow',Arial,Helvetica,sans-serif;
+  background:var(--page-bg);
+  color:var(--text);
+}
+
+/* ---------- Watermark de prueba ---------- */
+.test-watermark{
+  position:fixed;
+  top:10px;
+  left:10px;
+  z-index:9999;
+  background:repeating-linear-gradient(45deg,#ff4d4f,#ff4d4f 10px,#d9363e 10px,#d9363e 20px);
+  color:#fff;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  padding:6px 14px;
+  border-radius:6px;
+  box-shadow:0 3px 10px rgba(0,0,0,.25);
+  pointer-events:none;
+  user-select:none;
+}
+
+/* ---------- Header ---------- */
+.site-header{
+  background:#fff;
+  padding:18px 24px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+.site-header img{height:48px;}
+.site-header .brand-title{
+  font-weight:700;
+  font-size:18px;
+  color:var(--text);
+}
+.title-banner{
+  color:#fff;
+  text-align:center;
+  padding:34px 16px;
+  background:linear-gradient(rgba(10,20,40,.55),rgba(10,20,40,.55)),
+    url('https://iberescena.org/Header_Titles/3.jpg') center center / cover no-repeat;
+}
+.title-banner h2{margin:0;font-weight:700;font-size:26px;}
+
+/* ---------- Layout ---------- */
+.page-wrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:32px 16px 64px;
+}
+
+/* ---------- Steps nav ---------- */
+.steps-bar{
+  display:flex;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  padding:16px;
+  margin-bottom:28px;
+  overflow-x:auto;
+  gap:4px;
+  -webkit-overflow-scrolling: touch;
+}
+.step-item{
+  flex:1 1 0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  min-width:150px;
+  transition:background .15s ease;
+  border:none;
+  background:transparent;
+  text-align:left;
+}
+.step-item:hover{background:var(--primary-bg);}
+.step-icon{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:#f0f0f0;color:var(--text-soft);
+  font-size:16px;flex:none;
+  transition:all .15s ease;
+}
+.step-item.active .step-icon{background:var(--primary);color:#fff;}
+.step-item.done .step-icon{background:var(--success);color:#fff;}
+.step-label{font-size:13px;font-weight:600;color:var(--text-soft);line-height:1.2;}
+.step-item.active .step-label{color:var(--primary);}
+.step-num{font-size:11px;color:#bbb;font-weight:600;}
+
+/* ---------- Card / form panels ---------- */
+.card{
+  background:#fff;
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  padding:40px;
+  margin-bottom:24px;
+}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+.section-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:32px 0 24px;
+  color:var(--primary);font-weight:600;font-size:15px;
+}
+.section-divider:first-child{margin-top:0;}
+.section-divider::before,.section-divider::after{
+  content:"";flex:1;height:1px;background:var(--border);
+}
+
+.form-item{margin-bottom:20px; position:relative;}
+.form-item label{
+  display:block;font-weight:600;font-size:13.5px;margin-bottom:6px;color:var(--text);
+}
+.form-item label .req{color:var(--danger);margin-right:4px;}
+.form-item .help{font-size:12px;color:var(--text-soft);margin-top:4px;}
+.form-item .error-msg{font-size:12.5px;color:var(--danger);margin-top:4px;display:none;}
+.form-item.has-error .error-msg{display:block;}
+.form-item.has-error input,
+.form-item.has-error select,
+.form-item.has-error textarea{border-color:var(--danger) !important;box-shadow:0 0 0 2px rgba(255,77,79,.08);}
+.form-item.has-warning input{border-color:var(--warning) !important;background:#fffbe6;}
+
+.input-icon-wrap{position:relative;}
+.input-icon-wrap .ic{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  color:#bbb;font-size:14px;pointer-events:none;
+}
+.field-control{
+  width:100%;
+  padding:10px 14px;
+  font-size:14.5px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-family:inherit;
+  background:#fff;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.field-control.with-icon{padding-left:36px;}
+.field-control:focus{
+  outline:none;border-color:var(--primary);
+  box-shadow:0 0 0 2px rgba(22,119,255,.12);
+}
+textarea.field-control{min-height:110px;resize:vertical;}
+.row-2, .row-3{display:grid;gap:16px;}
+.row-2{grid-template-columns:1fr 1fr;}
+.row-3{grid-template-columns:1fr 1fr 1fr;}
+
+.check-group,.radio-group{display:flex;flex-wrap:wrap;gap:10px 22px;}
+.check-group label,.radio-group label{
+  display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;cursor:pointer;
+}
+.check-group input,.radio-group input{width:16px;height:16px;accent-color:var(--primary);cursor:pointer;}
+
+.team-block{
+  border:1px dashed var(--border);
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:16px;
+  position:relative;
+  background:#fafafa;
+}
+.team-block h4{margin:0 0 14px;font-size:14px;color:var(--primary-dark);font-weight:700;}
+.team-block .remove-participant{
+  position:absolute;top:14px;right:14px;
+  background:none;border:none;color:var(--danger);font-weight:700;cursor:pointer;font-size:13px;
+}
+.add-participant-btn{
+  border:1px dashed var(--primary);color:var(--primary);background:var(--primary-bg);
+  border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer;width:100%;
+}
+.add-participant-btn:hover{background:#d5e9ff;}
+
+.alert-box{
+  border-radius:10px;padding:12px 16px;font-size:13.5px;margin-bottom:18px;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.alert-warning{background:#fffbe6;border:1px solid #ffe58f;color:#874d00;}
+.alert-error{background:#fff2f0;border:1px solid #ffccc7;color:#a8071a;}
+.alert-success{background:#f6ffed;border:1px solid #b7eb8f;color:#237804;}
+.alert-box.hidden{display:none;}
+.alert-box ul{margin:6px 0 0;padding-left:18px;}
+
+.table-matrix{width:100%;border-collapse:collapse;margin-top:10px;}
+.table-matrix th,.table-matrix td{border:1px solid var(--border);padding:10px;text-align:center;font-size:13.5px;}
+.table-matrix th{background:#fafafa;}
+.table-matrix input{width:70px;text-align:center;padding:6px;border:1px solid var(--border);border-radius:6px;}
+.total-count{
+  text-align:center;font-weight:700;color:var(--primary-dark);margin:14px 0;font-size:14.5px;
+}
+
+.upload-item{
+  border:1px dashed var(--border);border-radius:10px;padding:16px;margin-bottom:16px;background:#fafafa;
+}
+.upload-item .up-desc{font-size:13px;color:var(--text-soft);margin-bottom:10px;line-height:1.4;}
+.upload-item .up-file-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.upload-item .up-filename{
+  font-size:13px;background:#e6f2ff;color:var(--primary-dark);
+  padding:5px 10px;border-radius:6px;display:none;
+}
+.upload-item .up-remove{color:var(--danger);cursor:pointer;font-size:12px;display:none;font-weight:600;background:none;border:none;}
+
+.btn{
+  border:none;border-radius:8px;padding:10px 22px;font-weight:600;font-size:14.5px;cursor:pointer;
+  transition:all .15s ease;
+}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-dark);}
+.btn-outline{background:#fff;border:1px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary);}
+.btn-success{background:var(--success);color:#fff;}
+.btn-success:hover{background:#3f9713;}
+.form-actions{
+  display:flex;justify-content:center;gap:14px;margin-top:30px;flex-wrap:wrap;
+}
+
+.progress-mini{font-size:12px;color:var(--text-soft);text-align:center;margin-bottom:8px;}
+.char-count{font-size:12px;color:var(--text-soft);text-align:right;margin-top:4px;}
+
+footer.site-footer{
+  text-align:center;color:var(--text-soft);font-size:12.5px;padding:24px 16px 48px;
+}
+
+.summary-box{border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px;}
+.summary-box h4{margin:0 0 10px;color:var(--primary-dark);font-size:14px;}
+.summary-box dl{display:grid;grid-template-columns:280px 1fr;gap:6px 14px;margin:0;font-size:13.5px;}
+.summary-box dt{color:var(--text-soft);}
+.summary-box dd{margin:0;font-weight:600;word-break:break-word;}
+
+/* ---------- Comentarios y Auto-guardado ---------- */
+.btn-comment {
+  background: #f0f0f0; 
+  border: 1px solid var(--border); 
+  border-radius: 6px;
+  cursor: pointer; 
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-soft);
+  margin-left: 10px; 
+  padding: 4px 10px;
+  transition: all 0.2s ease; 
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.btn-comment:hover { 
+  background: var(--primary-bg); 
+  border-color: #91caff;
+  color: var(--primary);
+}
+.btn-comment.has-note {
+  background: var(--primary); 
+  color: #fff; 
+  border-color: var(--primary);
+  box-shadow: 0 3px 8px rgba(22,119,255,0.3);
+  transform: translateY(-1px);
+}
+.comment-box {
+  margin-top: 8px; padding: 12px; background: #fffbe6; border: 1px dashed #ffe58f;
+  border-radius: 8px; display: none;
+}
+.comment-box.active { display: block; animation: fadeIn 0.2s ease; }
+.comment-box textarea {
+  width: 100%; min-height: 70px; border: 1px solid #ffe58f; border-radius: 6px;
+  padding: 8px; font-family: inherit; font-size: 13.5px; resize: vertical;
+  background: #fff;
+}
+.comment-box textarea:focus { outline: none; border-color: var(--warning); box-shadow: 0 0 0 2px rgba(250,173,20,.15); }
+.comment-actions {
+  display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;
+}
+.btn-sm {
+  padding: 6px 14px; font-size: 12.5px; font-weight: 600; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: #fff; transition: all 0.2s;
+}
+.btn-sm.primary {
+  background: var(--primary); color: #fff; border-color: var(--primary);
+}
+.btn-sm.primary:hover { background: var(--primary-dark); }
+.btn-sm.cancel:hover { background: #f0f0f0; }
+
+.floating-comments-btn {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  background: var(--primary); color: #fff; border: none; border-radius: 50px;
+  padding: 14px 20px; font-size: 15px; font-weight: 600; box-shadow: var(--shadow);
+  cursor: pointer; transition: background 0.2s, transform 0.2s; display: flex; align-items: center; gap: 8px;
+}
+.floating-comments-btn:hover { background: var(--primary-dark); transform: translateY(-2px); }
+.comments-modal {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6); z-index: 10000; display: none;
+  align-items: center; justify-content: center; backdrop-filter: blur(3px);
+}
+.comments-modal.active { display: flex; animation: fadeIn 0.2s ease; }
+.comments-modal-content {
+  background: #fff; padding: 28px; border-radius: 16px; width: 90%; max-width: 550px;
+  max-height: 85vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  position: relative;
+}
+.comments-modal-content h3 { margin: 0 0 20px 0; color: var(--primary-dark); font-size: 20px; }
+.comments-modal-close {
+  position: absolute; top: 20px; right: 20px; background: #f0f0f0; border: none;
+  border-radius: 50%; width: 32px; height: 32px; font-size: 16px; cursor: pointer; color: var(--text);
+  display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+}
+.comments-modal-close:hover { background: #e0e0e0; }
+.comments-list { list-style: none; padding: 0; margin: 0; }
+.comments-list li {
+  background: #fafafa; border: 1px solid var(--border); padding: 14px;
+  border-radius: 10px; margin-bottom: 12px;
+}
+.comments-list .meta { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+.comments-list .text { font-size: 14px; color: var(--text); white-space: pre-wrap; margin: 0; line-height: 1.5; }
+.comments-empty { text-align: center; color: var(--text-soft); padding: 20px; font-size: 14px; }
+
+/* ---------- Responsividad (Móviles) ---------- */
+@media (max-width: 768px) {
+  .row-2, .row-3 { grid-template-columns: 1fr; }
+  .card { padding: 24px 16px; margin-bottom: 16px; }
+  .page-wrap { padding: 20px 10px 80px; }
+  
+  .site-header { flex-direction: column; text-align: center; padding: 16px; }
+  .site-header img { height: 40px; }
+  
+  .title-banner { padding: 24px 16px; }
+  .title-banner h2 { font-size: 20px; }
+  
+  /* Hacer que la matriz sea scrolleable horizontalmente en móviles */
+  .table-matrix { display: block; overflow-x: auto; white-space: nowrap; }
+  
+  /* Arreglar listas de resumen en móvil */
+  .summary-box dl { grid-template-columns: 1fr; }
+  .summary-box dt { margin-bottom: 2px; }
+  .summary-box dd { margin-bottom: 12px; }
+
+  /* Expandir botones al 100% en pantallas pequeñas */
+  .form-actions { flex-direction: column; gap: 10px; }
+  .form-actions .btn { width: 100%; text-align: center; }
+  
+  .floating-comments-btn { bottom: 16px; right: 16px; font-size: 14px; padding: 12px 16px; }
+}
+</style>
+</head>
+<body>
+<div class="test-watermark">Formulario de prueba</div>
+
+<header class="site-header">
+  <img src="https://iberescena.org/Iberescena_Logo_Full_Color-cropped.svg" alt="IBERESCENA">
+  <span class="brand-title">Mis Solicitudes — Formulario de Coproducción</span>
+</header>
+
+<div class="title-banner">
+  <h2>Ayudas a la Coproducción de Espectáculos de Artes Escénicas</h2>
+</div>
+
+<div class="page-wrap">
+
+  <div class="alert-box alert-warning" id="globalDuplicateAlert" style="display:none;">
+    <span>⚠️</span>
+    <div>
+      <strong>Nombres repetidos en el equipo del proyecto:</strong>
+      <ul id="globalDuplicateList"></ul>
+      Revisa que cada persona esté ingresada una sola vez.
+    </div>
+  </div>
+
+  <nav class="steps-bar" id="stepsBar">
+    <button type="button" class="step-item active" data-step="1">
+      <div class="step-icon">👤</div>
+      <div><div class="step-num">Paso 1</div><div class="step-label">Datos persona solicitante</div></div>
+    </button>
+    <button type="button" class="step-item" data-step="2">
+      <div class="step-icon">📄</div>
+      <div><div class="step-num">Paso 2</div><div class="step-label">Proyecto</div></div>
+    </button>
+    <button type="button" class="step-item" data-step="3">
+      <div class="step-icon">📎</div>
+      <div><div class="step-num">Paso 3</div><div class="step-label">Documentación aportada</div></div>
+    </button>
+    <button type="button" class="step-item" data-step="4">
+      <div class="step-icon">📊</div>
+      <div><div class="step-num">Paso 4</div><div class="step-label">Encuesta</div></div>
+    </button>
+    <button type="button" class="step-item" data-step="5">
+      <div class="step-icon">📤</div>
+      <div><div class="step-num">Paso 5</div><div class="step-label">Enviar solicitud</div></div>
+    </button>
+  </nav>
+
+  <form id="iberescenaForm" novalidate>
+    <section class="tab-pane active card" id="tab-1" data-tabindex="1">
+      <div class="section-divider">Datos persona solicitante</div>
+
+      <div class="form-item" data-required="true">
+        <label title="Nombre de la entidad solicitante"><span class="req">*</span>Nombre de la entidad solicitante</label>
+        <div class="input-icon-wrap"><span class="ic">👤</span>
+          <input type="text" class="field-control with-icon" id="NombreLegal" placeholder="Nombre" value="Quinta Esencia">
+        </div>
+        <div class="error-msg">Campo obligatorio</div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="País de procedencia"><span class="req">*</span>País de procedencia</label>
+          <div class="input-icon-wrap"><span class="ic">🌎</span>
+            <select class="field-control with-icon" id="paises_procedencia"></select>
+          </div>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Localidad"><span class="req">*</span>Localidad</label>
+          <input type="text" class="field-control" id="Localidad" placeholder="Localidad">
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="form-item" data-required="true">
+        <label title="Nombre de la persona representante legal de la entidad solicitante"><span class="req">*</span>Nombre de la persona representante legal de la entidad solicitante</label>
+        <input type="text" class="field-control team-name" data-group="general" id="RepresentanteLegal" placeholder="Nombre y apellido">
+        <div class="error-msg">Campo obligatorio</div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="Sexo Registral"><span class="req">*</span>Sexo Registral</label>
+          <select class="field-control" id="Sexo">
+            <option value="">Seleccione</option>
+            <option value="Hombre" selected>Hombre</option>
+            <option value="Mujer">Mujer</option>
+            <option value="Intersex">Intersex</option>
+            <option value="Prefiero no decir">Prefiero no decir</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Identidad de género"><span class="req">*</span>Identidad de género</label>
+          <select class="field-control" id="IdentidadGenero">
+            <option value="">Seleccione</option>
+            <option value="Masculino" selected>Masculino</option>
+            <option value="Femenino">Femenino</option>
+            <option value="No binario">No binario</option>
+            <option value="Otro">Otro</option>
+            <option value="Prefiero no decir">Prefiero no decir</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="form-item">
+        <label title="¿Te autopercibes como perteneciente a alguno de estos grupos culturales?">¿Te autopercibes como perteneciente a alguno de estos grupos culturales?</label>
+        <div class="check-group" id="gruposCulturales">
+          <label><input type="checkbox" name="gruposCulturales" value="Afrodescendientes"> Afrodescendientes</label>
+          <label><input type="checkbox" name="gruposCulturales" value="Pueblos Originarios"> Pueblos Originarios</label>
+          <label><input type="checkbox" name="gruposCulturales" value="Ninguno de ellos" checked> Ninguno de ellos</label>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="Correo electrónico a efectos de notificación"><span class="req">*</span>Correo electrónico a efectos de notificación <span style="font-weight:400;color:var(--text-soft);">(sin espacios en blanco antes o después)</span></label>
+          <input type="email" class="field-control" id="Correo" placeholder="correo@ejemplo.com" autocomplete="off">
+          <div class="error-msg">Ingresa un correo electrónico válido</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Confirmar la dirección de correo a efectos de notificación"><span class="req">*</span>Confirmar la dirección de correo a efectos de notificación</label>
+          <input type="email" class="field-control" id="CorreoConfirmar" placeholder="correo@ejemplo.com" autocomplete="off">
+          <div class="error-msg">Los correos electrónicos no coinciden</div>
+        </div>
+      </div>
+
+      <div class="form-item" data-required="true">
+        <label title="Teléfono"><span class="req">*</span>Teléfono <span style="font-weight:400;color:var(--text-soft);">(agregar el prefijo del país)</span></label>
+        <div class="input-icon-wrap"><span class="ic">📞</span>
+          <input type="tel" class="field-control with-icon" id="Telefono" placeholder="+57..." value="+573214960609">
+        </div>
+        <div class="error-msg">Campo obligatorio</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="guardarBorrador(true)">Guardar Borrador</button>
+        <button type="button" class="btn btn-primary" onclick="goToStep(2)">Siguiente →</button>
+      </div>
+    </section>
+    <section class="tab-pane card" id="tab-2" data-tabindex="2">
+      <div class="section-divider">Proyecto</div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="Nombre del proyecto"><span class="req">*</span>Nombre del proyecto</label>
+          <input type="text" class="field-control" id="NombreProyecto" placeholder="Nombre del proyecto">
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Autoría original"><span class="req">*</span>Autoría original</label>
+          <input type="text" class="field-control" id="AutoriaOriginal" placeholder="Autoría original">
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="form-item" data-required="true">
+        <label title="Disciplina artística del espectáculo"><span class="req">*</span>Disciplina artística del espectáculo</label>
+        <div class="check-group">
+          <label><input type="checkbox" name="disciplina" value="Teatro" checked> Teatro</label>
+          <label><input type="checkbox" name="disciplina" value="Danza"> Danza</label>
+          <label><input type="checkbox" name="disciplina" value="Circo"> Circo</label>
+          <label><input type="checkbox" name="disciplina" value="Artes Vivas"> Artes Vivas</label>
+          <label><input type="checkbox" name="disciplina" value="Interdisciplinar"> Interdisciplinar</label>
+        </div>
+        <div class="error-msg">Selecciona al menos una disciplina</div>
+      </div>
+
+      <div class="form-item" data-required="true">
+        <label title="Idioma del espectáculo"><span class="req">*</span>Idioma del espectáculo</label>
+        <div class="check-group">
+          <label><input type="checkbox" name="idioma" value="Español" checked> Español</label>
+          <label><input type="checkbox" name="idioma" value="Portugués"> Portugués</label>
+          <label><input type="checkbox" name="idioma" value="Otro"> Otro</label>
+        </div>
+        <div class="error-msg">Selecciona al menos un idioma</div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="Fecha de estreno comprometida"><span class="req">*</span>Fecha de estreno comprometida</label>
+          <input type="date" class="field-control" id="FechaEstreno">
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Lugar de estreno"><span class="req">*</span>Lugar de estreno <span style="font-weight:400;color:var(--text-soft);">(si es virtual, especificarlo)</span></label>
+          <input type="text" class="field-control" id="LugarEstreno" placeholder="Ciudad, país o 'Modalidad virtual'">
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="Modalidad de Trayectoria"><span class="req">*</span>Modalidad de Trayectoria</label>
+          <select class="field-control" id="ModalidadTrayectoria">
+            <option value="">Seleccione</option>
+            <option value="Trayectoria Emergente (Menos de 5 años de experiencia)" selected>Trayectoria Emergente (Menos de 5 años de experiencia)</option>
+            <option value="Trayectoria Consolidada (5 años o más de experiencia)">Trayectoria Consolidada (5 años o más de experiencia)</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Modalidad de participación"><span class="req">*</span>Modalidad de participación</label>
+          <select class="field-control" id="Modalidad">
+            <option value="">Seleccione</option>
+            <option value="PRESENCIAL" selected>PRESENCIAL</option>
+            <option value="VIRTUAL">VIRTUAL</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="País Mayoritario"><span class="req">*</span>País Mayoritario (núcleo coproductor)</label>
+          <select class="field-control country-select" id="paisCoproductorMayoritario"></select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="País Minoritario"><span class="req">*</span>País Minoritario (núcleo coproductor)</label>
+          <select class="field-control country-select" id="paisCoproductorMinoritario"></select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="section-divider">Equipo de coproducción</div>
+
+      <div class="team-block">
+        <h4>Representante · Núcleo coproductor Mayoritario</h4>
+        <div class="row-2">
+          <div class="form-item" data-required="true">
+            <label><span class="req">*</span>Nombre y apellido</label>
+            <input type="text" class="field-control team-name" data-group="equipo" id="NombreMayoritario" placeholder="Nombre y apellido">
+            <div class="error-msg">Campo obligatorio</div>
+          </div>
+          <div class="form-item" data-required="true">
+            <label><span class="req">*</span>País</label>
+            <select class="field-control country-select" id="PaisRepMayoritario"></select>
+            <div class="error-msg">Campo obligatorio</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-block">
+        <h4>Representante · Núcleo coproductor Minoritario</h4>
+        <div class="row-2">
+          <div class="form-item" data-required="true">
+            <label><span class="req">*</span>Nombre y apellido</label>
+            <input type="text" class="field-control team-name" data-group="equipo" id="NombreMinoritario" placeholder="Nombre y apellido">
+            <div class="error-msg">Campo obligatorio</div>
+          </div>
+          <div class="form-item" data-required="true">
+            <label><span class="req">*</span>País</label>
+            <select class="field-control country-select" id="PaisRepMinoritario"></select>
+            <div class="error-msg">Campo obligatorio</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="participantesAdicionales">
+        </div>
+
+      <button type="button" class="add-participant-btn" onclick="agregarParticipante()">+ Agregar participante adicional</button>
+
+      <div class="section-divider">Presupuesto</div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="Gasto total de la actividad"><span class="req">*</span>Gasto total de la actividad <span style="font-weight:400;color:var(--text-soft);">(euros, sin puntos ni comas)</span></label>
+          <input type="number" min="0" class="field-control" id="GastoTotal" placeholder="0">
+          <div class="error-msg">Ingresa un número válido</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Cantidad solicitada a IBERESCENA"><span class="req">*</span>Cantidad solicitada a IBERESCENA <span style="font-weight:400;color:var(--text-soft);">(euros, sin puntos ni comas)</span></label>
+          <input type="number" min="0" class="field-control" id="CantidadSolicitada" placeholder="0">
+          <div class="error-msg">Ingresa un número válido</div>
+          <div class="help" id="cantidadHelp"></div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="¿Cuenta con otras fuentes de financiación?"><span class="req">*</span>¿Cuenta con otras fuentes de financiación?</label>
+          <select class="field-control" id="OtrasFuentes">
+            <option value="">Seleccione</option>
+            <option value="Si">Sí</option>
+            <option value="No">No</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Participación de mujeres"><span class="req">*</span>¿La participación de las mujeres en los equipos técnicos, directivos y creativos es igual o superior al 50% del total del equipo?</label>
+          <select class="field-control" id="ParticipacionMujeres">
+            <option value="">Seleccione</option>
+            <option value="Si">Sí</option>
+            <option value="No">No</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="Transversalización de género"><span class="req">*</span>¿La temática del proyecto está vinculada con transversalización de género?</label>
+          <select class="field-control" id="Tematica">
+            <option value="">Seleccione</option>
+            <option value="Si">Sí</option>
+            <option value="No" selected>No</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Cuidado de infancias"><span class="req">*</span>¿El presupuesto de su proyecto incluye una partida destinada al cuidado de las infancias para facilitar la conciliación familiar durante la realización del proyecto?</label>
+          <select class="field-control" id="CuidadoInfancias">
+            <option value="">Seleccione</option>
+            <option value="Si" selected>Sí</option>
+            <option value="No">No</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="goToStep(1)">← Anterior</button>
+        <button type="button" class="btn btn-outline" onclick="guardarBorrador(true)">Guardar Borrador</button>
+        <button type="button" class="btn btn-primary" onclick="goToStep(3)">Siguiente →</button>
+      </div>
+    </section>
+    <section class="tab-pane card" id="tab-3" data-tabindex="3">
+      <div class="section-divider">Documentación aportada</div>
+
+      <div class="form-item" data-required="true">
+        <label title="Tipo de Persona"><span class="req">*</span>Tipo de Persona</label>
+        <select class="field-control" id="TipoPersona">
+          <option value="">Seleccione</option>
+          <option value="Persona Jurídica">Persona Jurídica</option>
+          <option value="Persona Física/Natural">Persona Física/Natural</option>
+        </select>
+        <div class="error-msg">Campo obligatorio</div>
+      </div>
+
+      <div id="uploadFieldsContainer"></div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="goToStep(2)">← Anterior</button>
+        <button type="button" class="btn btn-outline" onclick="guardarBorrador(true)">Guardar Borrador</button>
+        <button type="button" class="btn btn-primary" onclick="goToStep(4)">Siguiente →</button>
+      </div>
+    </section>
+    <section class="tab-pane card" id="tab-4" data-tabindex="4">
+      <div class="section-divider">Encuesta</div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="¿Cuál es tu edad?"><span class="req">*</span>¿Cuál es tu edad?</label>
+          <select class="field-control" id="Edad">
+            <option value="">Seleccione</option>
+            <option value="Menos de 25">Menos de 25</option>
+            <option value="25 a 34">25 a 34</option>
+            <option value="35 a 44">35 a 44</option>
+            <option value="45 a 54">45 a 54</option>
+            <option value="55 a 64">55 a 64</option>
+            <option value="65 o más">65 o más</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Nivel de formación"><span class="req">*</span>¿Cuál es tu nivel de formación completado?</label>
+          <select class="field-control" id="Formacion">
+            <option value="">Seleccione</option>
+            <option value="Primaria">Primaria</option>
+            <option value="Secundaria">Secundaria</option>
+            <option value="Técnico/Tecnológico">Técnico/Tecnológico</option>
+            <option value="Universitario/Grado">Universitario/Grado</option>
+            <option value="Posgrado/Maestría">Posgrado/Maestría</option>
+            <option value="Doctorado">Doctorado</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="Formación específica"><span class="req">*</span>¿Tienes formación específica (talleres, cursos o similares) en producción, gestión cultural y/o formulación de proyectos?</label>
+          <select class="field-control" id="Informacion">
+            <option value="">Seleccione</option>
+            <option value="Si">Sí</option>
+            <option value="No">No</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Fuente de ingreso"><span class="req">*</span>¿Las artes escénicas son tu principal fuente de ingreso económico?</label>
+          <select class="field-control" id="Principal">
+            <option value="">Seleccione una opción</option>
+            <option value="Si">Sí</option>
+            <option value="No">No</option>
+            <option value="Parcialmente">Parcialmente</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="form-item" data-required="true">
+        <label>* Indica, por favor, el número de personas que componen los equipos técnicos, directivos y creativos de tu proyecto en relación a su enfoque multicultural y de no discriminación. (Rellenar el número exacto de personas en cada cuadro. En caso de que no haya representatividad de ninguno de los grupos, dejar el valor en cero (0)).</label>
+        <table class="table-matrix">
+          <thead><tr><th>Género</th><th>Técnico</th><th>Directivo</th><th>Creativo</th></tr></thead>
+          <tbody>
+            <tr><td>Masculino</td>
+              <td><input type="number" min="0" class="matrix-input" data-row="Masculino" data-col="Tecnico" value="0"></td>
+              <td><input type="number" min="0" class="matrix-input" data-row="Masculino" data-col="Directivo" value="0"></td>
+              <td><input type="number" min="0" class="matrix-input" data-row="Masculino" data-col="Creativo" value="0"></td>
+            </tr>
+            <tr><td>Femenino</td>
+              <td><input type="number" min="0" class="matrix-input" data-row="Femenino" data-col="Tecnico" value="0"></td>
+              <td><input type="number" min="0" class="matrix-input" data-row="Femenino" data-col="Directivo" value="0"></td>
+              <td><input type="number" min="0" class="matrix-input" data-row="Femenino" data-col="Creativo" value="0"></td>
+            </tr>
+            <tr><td>Otro</td>
+              <td><input type="number" min="0" class="matrix-input" data-row="Otro" data-col="Tecnico" value="0"></td>
+              <td><input type="number" min="0" class="matrix-input" data-row="Otro" data-col="Directivo" value="0"></td>
+              <td><input type="number" min="0" class="matrix-input" data-row="Otro" data-col="Creativo" value="0"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="total-count">Total de integrantes del equipo: <span id="totalIntegrantes">0</span></div>
+      </div>
+
+      <div class="form-item" data-required="true">
+        <label title="Razones"><span class="req">*</span>¿Cuáles son las principales razones por las que presentas este proyecto?</label>
+        <div class="check-group">
+          <label><input type="checkbox" name="razones" value="Para generar ingresos económicos"> Para generar ingresos económicos</label>
+          <label><input type="checkbox" name="razones" value="Por una búsqueda artística"> Por una búsqueda artística</label>
+          <label><input type="checkbox" name="razones" value="Para brindar al público una oferta cultural que lo satisfaga"> Para brindar al público una oferta cultural que lo satisfaga</label>
+          <label><input type="checkbox" name="razones" value="Para incidir en un proceso de cambio social"> Para incidir en un proceso de cambio social</label>
+          <label><input type="checkbox" name="razones" value="Para vincularse con artistas de otros países y generar redes"> Para vincularse con artistas de otros países y generar redes</label>
+        </div>
+        <div class="error-msg">Selecciona al menos una opción</div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-item" data-required="true">
+          <label title="Ayuda IBERESCENA"><span class="req">*</span>¿Se te ha concedido alguna vez una ayuda de IBERESCENA?</label>
+          <select class="field-control" id="Ayuda">
+            <option value="">Seleccione</option>
+            <option value="Si">Sí</option>
+            <option value="No">No</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+        <div class="form-item" data-required="true">
+          <label title="Conoces ODS"><span class="req">*</span>¿Conoces los Objetivos de Desarrollo Sostenible (ODS)?</label>
+          <select class="field-control" id="Conoces">
+            <option value="">Seleccione</option>
+            <option value="Si">Sí</option>
+            <option value="No">No</option>
+          </select>
+          <div class="error-msg">Campo obligatorio</div>
+        </div>
+      </div>
+
+      <div class="form-item">
+        <label title="Cómo te enteraste">¿Cómo te enteraste de las ayudas de IBERESCENA?</label>
+        <div class="check-group">
+          <label><input type="checkbox" name="entero" value="A través de las redes sociales"> A través de las redes sociales</label>
+          <label><input type="checkbox" name="entero" value="A través del newsletter"> A través del newsletter</label>
+          <label><input type="checkbox" name="entero" value="A través de una charla sobre el Programa"> A través de una charla sobre el Programa</label>
+          <label><input type="checkbox" name="entero" value="A través de una amistad"> A través de una amistad</label>
+          <label><input type="checkbox" name="entero" value="Otros"> Otros</label>
+        </div>
+      </div>
+
+      <div class="form-item" data-required="true">
+        <label title="Relación con ODS"><span class="req">*</span>¿Crees que tu proyecto se relaciona de forma directa con alguno de estos Objetivos?</label>
+        <select class="field-control" id="Relaciona">
+          <option value="">Seleccione</option>
+          <option value="Si">Sí</option>
+          <option value="No">No</option>
+          <option value="No estoy seguro/a">No estoy seguro/a</option>
+        </select>
+        <div class="error-msg">Campo obligatorio</div>
+      </div>
+
+      <div class="form-item" data-required="true">
+        <label title="Institución que financia"><span class="req">*</span>¿Tienes conocimiento de qué institución financia el Programa IBERESCENA en tu país?</label>
+        <select class="field-control" id="Conocimiento">
+          <option value="">Seleccione</option>
+          <option value="Si">Sí</option>
+          <option value="No">No</option>
+        </select>
+        <div class="error-msg">Campo obligatorio</div>
+      </div>
+
+      <div class="form-item" data-required="true">
+        <label title="Líneas de acción"><span class="req">*</span>¿Consideras que las Líneas de Acción actuales del programa (Ayudas a la Creación en Residencia, a la Co-producción y a la Programación de Espacios Escénicas, Festivales y Mercados, y la Beca de Investigación Magaly Muguercia) son las más pertinentes para promover el desarrollo del sector de las artes escénicas a nivel iberoamericano?</label>
+        <select class="field-control" id="Pertenecientes">
+          <option value="">Seleccione</option>
+          <option value="Muy de acuerdo">Muy de acuerdo</option>
+          <option value="De acuerdo">De acuerdo</option>
+          <option value="Neutral">Neutral</option>
+          <option value="En desacuerdo">En desacuerdo</option>
+          <option value="Muy en desacuerdo">Muy en desacuerdo</option>
+        </select>
+        <div class="error-msg">Campo obligatorio</div>
+      </div>
+
+      <div class="form-item">
+        <label title="Otros mecanismos">¿Qué otros mecanismo de apoyo, además de la convocatoria de proyectos a la que te estás presentando, consideras podría atender IBERESCENA para promover el desarrollo del sector de las artes escénicas iberoamericanas y por qué?</label>
+        <textarea class="field-control" id="OtrosMecanismos" maxlength="1000" placeholder="Escribe tu respuesta..."></textarea>
+        <div class="char-count"><span id="otrosMecanismosCount">0</span>/1000</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="goToStep(3)">← Anterior</button>
+        <button type="button" class="btn btn-outline" onclick="guardarBorrador(true)">Guardar Borrador</button>
+        <button type="button" class="btn btn-primary" onclick="goToStep(5)">Siguiente →</button>
+      </div>
+    </section>
+    <section class="tab-pane card" id="tab-5" data-tabindex="5">
+      <div class="section-divider">Enviar solicitud</div>
+
+      <div class="alert-box alert-error hidden" id="submitErrorsBox">
+        <span>⛔</span>
+        <div>
+          <strong>Antes de enviar, corrige lo siguiente:</strong>
+          <ul id="submitErrorsList"></ul>
+        </div>
+      </div>
+
+      <div class="alert-box alert-success hidden" id="submitOkBox">
+        <span>✅</span>
+        <div>Todo en orden. Puedes revisar el resumen y enviar la solicitud (modo prueba: no se envía a ningún servidor).</div>
+      </div>
+
+      <div id="resumenContainer"></div>
+
+      <div class="form-item">
+        <label style="display:flex;align-items:flex-start;gap:8px;font-weight:400;">
+          <input type="checkbox" id="declaracionVeraz" style="margin-top:3px;">
+          Declaro que la información suministrada es veraz y que he leído las bases de la convocatoria.
+        </label>
+      </div>
+      <div class="form-item">
+        <label style="display:flex;align-items:flex-start;gap:8px;font-weight:400;">
+          <input type="checkbox" id="declaracionDatos" style="margin-top:3px;">
+          Autorizo el tratamiento de mis datos personales conforme a la política de privacidad de IBERESCENA.
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="goToStep(4)">← Anterior</button>
+        <button type="button" class="btn btn-outline" onclick="guardarBorrador(true)">Guardar Borrador</button>
+        <button type="button" class="btn btn-outline" onclick="actualizarResumen(true)">🔎 Revisar formulario</button>
+        <button type="button" class="btn btn-success" onclick="enviarSolicitud()">📤 Enviar Solicitud (prueba)</button>
+      </div>
+    </section>
+
+  </form>
+</div>
+
+<button type="button" class="floating-comments-btn" onclick="toggleCommentsModal(true)">
+  📋 Ver Notas
+</button>
+
+<div class="comments-modal" id="globalCommentsModal">
+  <div class="comments-modal-content">
+    <button type="button" class="comments-modal-close" onclick="toggleCommentsModal(false)">✕</button>
+    <h3>Resumen de Notas Guardadas</h3>
+    <ul class="comments-list" id="globalCommentsList"></ul>
+  </div>
+</div>
+
+<footer class="site-footer">
+  Documento de trabajo interno — IBERESCENA · Ayudas a la Coproducción 2020-2027. No es el formulario oficial en línea.
+</footer>
+<script>
+/* ============================================================
+   IBERESCENA — Formulario unificado (PRUEBA)
+   ============================================================ */
+
+const PAISES = [
+  "Argentina","Bolivia","Brasil","Chile","Colombia","Costa Rica","Cuba",
+  "Ecuador","El Salvador","España","Guatemala","Honduras","México",
+  "Nicaragua","Panamá","Paraguay","Perú","Portugal","República Dominicana",
+  "Uruguay","Venezuela","Otro"
+];
+
+const FUNCIONES = [
+  "Autor/a","Director/a","Dramaturgo/a","Escenógrafo/a","Diseñador/a de vestuario",
+  "Diseñador/a de iluminación","Actor/Actriz","Bailarín/a","Técnico/a",
+  "Productor/a","Gestor/a cultural","Otro"
+];
+
+const UPLOAD_FIELDS = [
+  {id:"DocIdentificacion", maxMb:5, accept:".pdf,.jpg,.jpeg,.png",
+   desc:"Documento de identificación o pasaporte de la persona que sea representante legal de la entidad o de la persona física/natural solicitante (PDF o imagen JPG/PNG). Máx. 5Mb"},
+  {id:"DocAutorizacion", maxMb:5, accept:".pdf",
+   desc:"Documento de autorización y/o cesión de derechos de representación por parte de la persona titular de los derechos de autoría correspondientes al espectáculo conforme a la sociedad de gestión de dichos derechos. En caso de obra de creación propia, usar el modelo disponible en la plataforma de IBERESCENA. (PDF). Máx. 5Mb"},
+  {id:"DocCoproductores", maxMb:10, accept:".pdf",
+   desc:"Documento firmado por todas las personas coproductoras del proyecto (duración del acuerdo, tareas y recursos aportados por cada núcleo de coproducción), según modelo facilitado por IBERESCENA. (PDF) Máx. 10Mb"},
+  {id:"DocCV", maxMb:30, accept:".pdf",
+   desc:"Curriculum vitae y otros documentos acreditativos de la trayectoria profesional de las personas participantes en el proyecto (adjuntar todos los CV en un único documento). (PDF) Máx. 30Mb"},
+  {id:"DocDescripcionProyecto", maxMb:50, accept:".pdf",
+   desc:"Descripción del proyecto según modelo facilitado por IBERESCENA: sinopsis, puesta en escena, ficha artístico-técnica, lugares de ejecución y cronograma, estrategia de públicos y plan de explotación del proyecto. (PDF) Máx. 50Mb"},
+  {id:"DocPresupuesto", maxMb:10, accept:".pdf,.xls,.xlsx",
+   desc:"Presupuesto total del proyecto presentado, detallado por rubros (según modelo facilitado por IBERESCENA). (PDF, XLS, XLSX) Máx. 10Mb"},
+  {id:"DocFinanciacion", maxMb:10, accept:".pdf",
+   desc:"Plan de financiación del proyecto (adjuntar cartas de otras instituciones/entidades que financien el proyecto y/o acreditación de subvenciones públicas, en su caso). (PDF) Máx. 10Mb"},
+];
+
+let participantCounter = 0;
+let comentariosGlobales = {};
+
+/* ---------------- Inicialización ---------------- */
+document.addEventListener('DOMContentLoaded', () => {
+  fillCountrySelects();
+  renderUploadFields();
+  agregarParticipante("Nombre y apellido 1","Función 1","México");
+  agregarParticipante("Nombre y apellido 2","Función 2","México");
+  attachGlobalListeners();
+  cargarBorrador();
+  initComments();
+  updateMatrixTotal();
+  actualizarResumen(false);
+});
+
+function fillCountrySelects(){
+  document.querySelectorAll('#paises_procedencia, .country-select').forEach(sel => {
+    sel.innerHTML = '<option value="">Seleccione</option>' +
+      PAISES.map(p => `<option value="${p}">${p}</option>`).join('');
+  });
+  setSelectValue('paises_procedencia','Colombia');
+  setSelectValue('paisCoproductorMayoritario','Colombia');
+  setSelectValue('paisCoproductorMinoritario','México');
+  setSelectValue('PaisRepMayoritario','Colombia');
+  setSelectValue('PaisRepMinoritario','México');
+}
+function setSelectValue(id,val){
+  const el = document.getElementById(id);
+  if(el) el.value = val;
+}
+
+/* ---------------- Sistema de Comentarios ---------------- */
+function initComments() {
+  const stored = localStorage.getItem('iberescena_comentarios_prueba');
+  if (stored) {
+    try { comentariosGlobales = JSON.parse(stored); } catch(e){}
+  }
+
+  document.querySelectorAll('.tab-pane').forEach((tab) => {
+    const stepNum = tab.dataset.tabindex;
+    
+    // Inyectar controles de comentarios a cada fila form-item
+    tab.querySelectorAll('.form-item').forEach((item, index) => {
+      const qId = `s${stepNum}_q${index + 1}`;
+      const label = item.querySelector('label');
+
+      if (label) {
+        // 1. Botón Principal de Nota
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-comment';
+        btn.id = `btn-${qId}`;
+        btn.title = 'Añadir o ver comentario interno';
+        btn.innerHTML = '💬 Nota';
+        
+        label.appendChild(btn);
+
+        // 2. Caja de texto con Controles
+        const box = document.createElement('div');
+        box.className = 'comment-box';
+        box.id = `cbox-${qId}`;
+        
+        const textarea = document.createElement('textarea');
+        textarea.placeholder = 'Escribe tu nota o recordatorio sobre esta pregunta aquí...';
+        
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'comment-actions';
+        
+        const btnCancel = document.createElement('button');
+        btnCancel.type = 'button';
+        btnCancel.className = 'btn-sm cancel';
+        btnCancel.textContent = 'Cancelar';
+
+        const btnSave = document.createElement('button');
+        btnSave.type = 'button';
+        btnSave.className = 'btn-sm primary';
+        btnSave.textContent = 'Guardar';
+        
+        actionsDiv.appendChild(btnCancel);
+        actionsDiv.appendChild(btnSave);
+        
+        box.appendChild(textarea);
+        box.appendChild(actionsDiv);
+        item.appendChild(box);
+
+        // Iluminar botón si ya existe un comentario
+        if (comentariosGlobales[qId] && comentariosGlobales[qId].text.trim() !== '') {
+          btn.classList.add('has-note');
+        }
+
+        // --- LÓGICA DE EVENTOS ---
+        
+        // Abrir ventana
+        btn.onclick = (e) => {
+          e.preventDefault();
+          // Cargar el valor actual guardado para descartar cambios sueltos previos si los hay
+          textarea.value = comentariosGlobales[qId]?.text || '';
+          box.classList.add('active');
+        };
+
+        // Guardar ventana
+        btnSave.onclick = (e) => {
+          e.preventDefault();
+          saveComment(qId, stepNum, index + 1, textarea.value);
+          box.classList.remove('active');
+        };
+
+        // Cancelar (cerrar sin guardar)
+        btnCancel.onclick = (e) => {
+          e.preventDefault();
+          box.classList.remove('active');
+        };
+      }
+    });
+  });
+}
+
+function saveComment(qId, step, qNum, text) {
+  if (text.trim() === '') {
+    delete comentariosGlobales[qId];
+    document.getElementById(`btn-${qId}`).classList.remove('has-note');
+  } else {
+    comentariosGlobales[qId] = { step, qNum, text };
+    document.getElementById(`btn-${qId}`).classList.add('has-note');
+  }
+  localStorage.setItem('iberescena_comentarios_prueba', JSON.stringify(comentariosGlobales));
+}
+
+function toggleCommentsModal(show) {
+  const modal = document.getElementById('globalCommentsModal');
+  if (!show) {
+    modal.classList.remove('active');
+    return;
+  }
+  
+  const list = document.getElementById('globalCommentsList');
+  list.innerHTML = '';
+  
+  const keys = Object.keys(comentariosGlobales);
+  
+  // Ordenar por Paso y por Pregunta
+  keys.sort((a, b) => {
+    const cA = comentariosGlobales[a];
+    const cB = comentariosGlobales[b];
+    if (cA.step !== cB.step) return cA.step - cB.step;
+    return cA.qNum - cB.qNum;
+  });
+
+  if (keys.length === 0) {
+    list.innerHTML = '<div class="comments-empty">No hay notas guardadas actualmente.</div>';
+  } else {
+    keys.forEach(k => {
+      const c = comentariosGlobales[k];
+      const li = document.createElement('li');
+      li.innerHTML = `<div class="meta">Paso ${c.step} — Pregunta ${c.qNum}</div>
+                      <div class="text">${c.text}</div>`;
+      list.appendChild(li);
+    });
+  }
+  modal.classList.add('active');
+}
+
+/* ---------------- Navegación entre pasos ---------------- */
+function goToStep(n){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');
+  document.querySelectorAll('.step-item').forEach(s=>{
+    const idx = parseInt(s.dataset.step,10);
+    s.classList.toggle('active', idx===n);
+    s.classList.toggle('done', idx<n);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(n===5) actualizarResumen(false);
+}
+document.addEventListener('click', (e)=>{
+  const step = e.target.closest('.step-item');
+  if(step) goToStep(parseInt(step.dataset.step,10));
+});
+
+/* ---------------- Participantes adicionales (equipo) ---------------- */
+function agregarParticipante(nombreVal="", funcionVal="", paisVal=""){
+  participantCounter++;
+  const pid = participantCounter;
+  const wrap = document.createElement('div');
+  wrap.className = 'team-block';
+  wrap.dataset.participant = pid;
+  wrap.innerHTML = `
+    <button type="button" class="remove-participant" onclick="quitarParticipante(${pid})">✕ Quitar</button>
+    <h4>Participante adicional</h4>
+    <div class="row-3">
+      <div class="form-item">
+        <label>Nombre y apellido</label>
+        <input type="text" class="field-control team-name" data-group="equipo" placeholder="Nombre y apellido" value="${nombreVal}">
+      </div>
+      <div class="form-item">
+        <label>Función</label>
+        <select class="field-control participante-funcion">
+          <option value="">Seleccione</option>
+          ${FUNCIONES.map(f=>`<option value="${f}" ${f===funcionVal?'selected':''}>${f}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-item">
+        <label>País</label>
+        <select class="field-control country-select participante-pais"></select>
+      </div>
+    </div>`;
+  document.getElementById('participantesAdicionales').appendChild(wrap);
+  const paisSel = wrap.querySelector('.participante-pais');
+  paisSel.innerHTML = '<option value="">Seleccione</option>' + PAISES.map(p=>`<option value="${p}">${p}</option>`).join('');
+  if(paisVal) paisSel.value = paisVal;
+  wrap.querySelector('.team-name').addEventListener('input', checkDuplicateNames);
+}
+function quitarParticipante(pid){
+  const el = document.querySelector(`.team-block[data-participant="${pid}"]`);
+  if(el) el.remove();
+  checkDuplicateNames();
+  guardarBorrador(false);
+}
+
+/* ---------------- Detección de nombres repetidos y Auto-Guardado ---------------- */
+function attachGlobalListeners(){
+  const form = document.getElementById('iberescenaForm');
+  
+  // Autoguardado silencioso para cualquier interacción dentro del formulario
+  form.addEventListener('input', () => guardarBorrador(false));
+  form.addEventListener('change', () => guardarBorrador(false));
+
+  document.querySelectorAll('.team-name').forEach(inp=>{
+    inp.addEventListener('input', checkDuplicateNames);
+  });
+  document.getElementById('Correo').addEventListener('input', checkCorreoMatch);
+  document.getElementById('CorreoConfirmar').addEventListener('input', checkCorreoMatch);
+  document.querySelectorAll('.matrix-input').forEach(inp=>{
+    inp.addEventListener('input', updateMatrixTotal);
+  });
+  const textarea = document.getElementById('OtrosMecanismos');
+  textarea.addEventListener('input', ()=>{
+    document.getElementById('otrosMecanismosCount').textContent = textarea.value.length;
+  });
+  document.getElementById('CantidadSolicitada').addEventListener('input', checkCantidad);
+  document.getElementById('GastoTotal').addEventListener('input', checkCantidad);
+}
+
+function checkDuplicateNames(){
+  const inputs = Array.from(document.querySelectorAll('.team-name'));
+  const seen = {};
+  const dupSet = new Set();
+  inputs.forEach(inp=>{
+    const val = inp.value.trim().toLowerCase();
+    inp.closest('.form-item')?.classList.remove('has-warning');
+    if(!val) return;
+    if(seen[val]){
+      dupSet.add(val);
+      seen[val].push(inp);
+    } else {
+      seen[val] = [inp];
+    }
+  });
+  const box = document.getElementById('globalDuplicateAlert');
+  const list = document.getElementById('globalDuplicateList');
+  if(dupSet.size===0){
+    box.style.display = 'none';
+    list.innerHTML = '';
+    return;
+  }
+  list.innerHTML = '';
+  dupSet.forEach(val=>{
+    seen[val].forEach(inp => inp.closest('.form-item')?.classList.add('has-warning'));
+    const li = document.createElement('li');
+    li.textContent = seen[val][0].value.trim() + ` (aparece ${seen[val].length} veces)`;
+    list.appendChild(li);
+  });
+  box.style.display = 'flex';
+}
+
+/* ---------------- Correo: verificación de coincidencia ---------------- */
+function checkCorreoMatch(){
+  const a = document.getElementById('Correo');
+  const b = document.getElementById('CorreoConfirmar');
+  const item = b.closest('.form-item');
+  if(b.value && a.value.trim() !== b.value.trim()){
+    item.classList.add('has-error');
+  } else {
+    item.classList.remove('has-error');
+  }
+}
+
+/* ---------------- Cantidad solicitada vs gasto total ---------------- */
+function checkCantidad(){
+  const gasto = parseFloat(document.getElementById('GastoTotal').value)||0;
+  const cant = parseFloat(document.getElementById('CantidadSolicitada').value)||0;
+  const help = document.getElementById('cantidadHelp');
+  if(cant>0 && gasto>0 && cant>gasto){
+    help.textContent = '⚠️ La cantidad solicitada supera el gasto total de la actividad.';
+    help.style.color = 'var(--danger)';
+  } else {
+    help.textContent = '';
+  }
+}
+
+/* ---------------- Matriz multicultural ---------------- */
+function updateMatrixTotal(){
+  let total = 0;
+  document.querySelectorAll('.matrix-input').forEach(inp=>{
+    total += parseInt(inp.value,10)||0;
+  });
+  document.getElementById('totalIntegrantes').textContent = total;
+}
+
+/* ---------------- Documentos (uploads) ---------------- */
+function renderUploadFields(){
+  const container = document.getElementById('uploadFieldsContainer');
+  container.innerHTML = UPLOAD_FIELDS.map(f => `
+    <div class="upload-item" data-required="true" id="wrap-${f.id}">
+      <label><span class="req">*</span>${f.desc}</label>
+      <div class="up-file-row">
+        <input type="file" class="upload-input" id="${f.id}" data-maxmb="${f.maxMb}" accept="${f.accept}">
+        <span class="up-filename" id="${f.id}-name"></span>
+        <button type="button" class="up-remove" id="${f.id}-remove" onclick="quitarArchivo('${f.id}')">Quitar</button>
+      </div>
+      <div class="error-msg">Este documento es obligatorio</div>
+    </div>`).join('');
+
+  UPLOAD_FIELDS.forEach(f=>{
+    document.getElementById(f.id).addEventListener('change', (e)=>handleFileSelect(e, f));
+  });
+}
+
+function handleFileSelect(e, fieldDef){
+  const file = e.target.files[0];
+  const nameSpan = document.getElementById(fieldDef.id+'-name');
+  const removeBtn = document.getElementById(fieldDef.id+'-remove');
+  const wrap = document.getElementById('wrap-'+fieldDef.id);
+  if(!file){ nameSpan.style.display='none'; removeBtn.style.display='none'; return; }
+  const maxBytes = fieldDef.maxMb * 1024 * 1024;
+  if(file.size > maxBytes){
+    alert(`El archivo "${file.name}" pesa ${(file.size/1024/1024).toFixed(1)}Mb y supera el máximo permitido de ${fieldDef.maxMb}Mb.`);
+    e.target.value = '';
+    nameSpan.style.display='none';
+    removeBtn.style.display='none';
+    wrap.classList.add('has-error');
+    return;
+  }
+  wrap.classList.remove('has-error');
+  nameSpan.textContent = `📄 ${file.name} (${(file.size/1024/1024).toFixed(2)}Mb)`;
+  nameSpan.style.display='inline-block';
+  removeBtn.style.display='inline-block';
+  guardarBorrador(false);
+}
+function quitarArchivo(id){
+  document.getElementById(id).value='';
+  document.getElementById(id+'-name').style.display='none';
+  document.getElementById(id+'-remove').style.display='none';
+  guardarBorrador(false);
+}
+
+/* ---------------- Validación general ---------------- */
+function validateTab(tabIndex){
+  const errors = [];
+  const tab = document.querySelector(`.tab-pane[data-tabindex="${tabIndex}"]`);
+  if(!tab) return errors;
+
+  tab.querySelectorAll('[data-required="true"]').forEach(item=>{
+    let ok = true;
+    const input = item.querySelector('input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"], select, textarea');
+    const checkGroup = item.querySelector('.check-group');
+    const fileInput = item.querySelector('.upload-input');
+
+    if(fileInput){
+      ok = fileInput.files && fileInput.files.length>0;
+    } else if(checkGroup){
+      ok = checkGroup.querySelectorAll('input[type="checkbox"]:checked').length>0;
+    } else if(input){
+      ok = input.value.trim() !== '';
+    }
+
+    item.classList.toggle('has-error', !ok);
+    if(!ok){
+      const label = item.querySelector('label');
+      errors.push({tab: tabIndex, text: label ? label.textContent.replace('*','').replace('💬 Nota','').trim() : 'Campo obligatorio'});
+    }
+  });
+
+  if(tabIndex===1){
+    checkCorreoMatch();
+    const correoItem = document.getElementById('CorreoConfirmar').closest('.form-item');
+    if(correoItem.classList.contains('has-error')){
+      errors.push({tab:1, text:'Los correos electrónicos no coinciden'});
+    }
+  }
+  return errors;
+}
+
+function validateAll(){
+  let all = [];
+  for(let i=1;i<=4;i++){ all = all.concat(validateTab(i)); }
+  checkDuplicateNames();
+  const dupBox = document.getElementById('globalDuplicateAlert');
+  if(dupBox.style.display !== 'none'){
+    all.push({tab:2, text:'Hay nombres de participantes repetidos en el equipo del proyecto'});
+  }
+  if(!document.getElementById('declaracionVeraz').checked){
+    all.push({tab:5, text:'Debes declarar que la información suministrada es veraz'});
+  }
+  if(!document.getElementById('declaracionDatos').checked){
+    all.push({tab:5, text:'Debes autorizar el tratamiento de datos personales'});
+  }
+  return all;
+}
+
+/* ---------------- Resumen (paso 5) ---------------- */
+function actualizarResumen(showAlerts){
+  const container = document.getElementById('resumenContainer');
+  const val = id => (document.getElementById(id)?.value || '—');
+  const checks = name => Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(c=>c.value).join(', ') || '—';
+
+  container.innerHTML = `
+    <div class="summary-box">
+      <h4>Datos persona solicitante</h4>
+      <dl>
+        <dt>Nombre entidad</dt><dd>${val('NombreLegal')}</dd>
+        <dt>País de procedencia</dt><dd>${val('paises_procedencia')}</dd>
+        <dt>Localidad</dt><dd>${val('Localidad')}</dd>
+        <dt>Representante legal</dt><dd>${val('RepresentanteLegal')}</dd>
+        <dt>Correo</dt><dd>${val('Correo')}</dd>
+        <dt>Teléfono</dt><dd>${val('Telefono')}</dd>
+      </dl>
+    </div>
+    <div class="summary-box">
+      <h4>Proyecto</h4>
+      <dl>
+        <dt>Nombre del proyecto</dt><dd>${val('NombreProyecto')}</dd>
+        <dt>Disciplina</dt><dd>${checks('disciplina')}</dd>
+        <dt>Idioma</dt><dd>${checks('idioma')}</dd>
+        <dt>Modalidad de participación</dt><dd>${val('Modalidad')}</dd>
+        <dt>País mayoritario / minoritario</dt><dd>${val('paisCoproductorMayoritario')} / ${val('paisCoproductorMinoritario')}</dd>
+        <dt>Gasto total</dt><dd>${val('GastoTotal')}</dd>
+        <dt>Cantidad solicitada</dt><dd>${val('CantidadSolicitada')}</dd>
+      </dl>
+    </div>
+    <div class="summary-box">
+      <h4>Documentación</h4>
+      <dl>
+        ${UPLOAD_FIELDS.map(f=>{
+          const inp = document.getElementById(f.id);
+          const has = inp && inp.files && inp.files.length>0;
+          return `<dt>${f.id}</dt><dd>${has? '✅ '+inp.files[0].name : '❌ Sin adjuntar'}</dd>`;
+        }).join('')}
+      </dl>
+    </div>`;
+
+  if(showAlerts){
+    const errors = validateAll();
+    const errBox = document.getElementById('submitErrorsBox');
+    const okBox = document.getElementById('submitOkBox');
+    if(errors.length){
+      document.getElementById('submitErrorsList').innerHTML = errors.map(e=>`<li>Paso ${e.tab}: ${e.text}</li>`).join('');
+      errBox.classList.remove('hidden');
+      okBox.classList.add('hidden');
+    } else {
+      errBox.classList.add('hidden');
+      okBox.classList.remove('hidden');
+    }
+  }
+}
+
+/* ---------------- Enviar / Guardar ---------------- */
+function enviarSolicitud(){
+  actualizarResumen(true);
+  const errors = validateAll();
+  if(errors.length){
+    goToStep(errors[0].tab);
+    setTimeout(()=>goToStep(5), 10);
+    alert('Hay '+errors.length+' campo(s) por corregir antes de enviar. Revisa el listado en el paso "Enviar solicitud".');
+    return;
+  }
+  guardarBorrador(true);
+  alert('✅ Formulario de PRUEBA validado correctamente.\n\nEsto es una herramienta de planeación interna: no se ha enviado nada a IBERESCENA.');
+}
+
+function serializeForm(){
+  const data = {};
+  document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"], select, textarea').forEach(el=>{
+    // Ignoramos textareas de los comentarios
+    if(el.id && !el.closest('.comment-box')) data[el.id] = el.value;
+  });
+  data.checkboxes = {};
+  document.querySelectorAll('input[type="checkbox"]').forEach((el,idx)=>{
+    const key = el.name || el.id || ('chk'+idx);
+    if(!data.checkboxes[key]) data.checkboxes[key]=[];
+    if(el.checked) data.checkboxes[key].push(el.value || true);
+  });
+  data.declaraciones = {
+    veraz: document.getElementById('declaracionVeraz').checked,
+    datos: document.getElementById('declaracionDatos').checked
+  };
+  return data;
+}
+
+function guardarBorrador(showToast = true){
+  try{
+    localStorage.setItem('iberescena_borrador_prueba', JSON.stringify(serializeForm()));
+    
+    if (showToast) {
+      const toast = document.createElement('div');
+      toast.textContent = '💾 Formulario guardado en este navegador';
+      toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1f1f1f;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:10001;box-shadow:0 4px 14px rgba(0,0,0,.2);';
+      document.body.appendChild(toast);
+      setTimeout(()=>toast.remove(), 2500);
+    }
+  }catch(err){ console.error('No se pudo guardar el borrador', err); }
+}
+
+function cargarBorrador(){
+  try{
+    const raw = localStorage.getItem('iberescena_borrador_prueba');
+    if(!raw) return;
+    const data = JSON.parse(raw);
+    Object.keys(data).forEach(key=>{
+      if(key==='checkboxes' || key==='declaraciones') return;
+      const el = document.getElementById(key);
+      if(el) el.value = data[key];
+    });
+    if(data.checkboxes){
+      Object.keys(data.checkboxes).forEach(name=>{
+        const vals = data.checkboxes[name];
+        document.querySelectorAll(`input[name="${name}"]`).forEach(cb=>{
+          cb.checked = vals.includes(cb.value);
+        });
+      });
+    }
+    if(data.declaraciones){
+      document.getElementById('declaracionVeraz').checked = !!data.declaraciones.veraz;
+      document.getElementById('declaracionDatos').checked = !!data.declaraciones.datos;
+    }
+    checkDuplicateNames();
+    updateMatrixTotal();
+  }catch(err){ console.error('No se pudo cargar el borrador', err); }
+}
+</script>
+</body>
+</html>
