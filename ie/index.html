@@ -66,6 +66,43 @@
       flex: none;
     }
 
+    /* ---------- Contador de cierre de convocatoria ---------- */
+    .countdown-badge {
+      position: fixed;
+      top: 52px;
+      right: 14px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--primary-bg);
+      color: var(--primary-dark);
+      border: 1px solid #91caff;
+      font-weight: 600;
+      font-size: 12px;
+      padding: 6px 12px 6px 10px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .countdown-badge .cd-icon {
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    .countdown-badge .cd-num {
+      font-weight: 700;
+    }
+
+    .countdown-badge.cd-closed {
+      background: #fff2f0;
+      color: #a8071a;
+      border-color: #ffccc7;
+    }
+
     /* ---------- Header ---------- */
     .site-header {
       background: #fff;
@@ -1117,6 +1154,12 @@
         padding: 5px 10px;
       }
 
+      .countdown-badge {
+        top: 46px;
+        font-size: 11px;
+        padding: 5px 10px;
+      }
+
       .dp-modal {
         width: 100vw;
         height: 100vh;
@@ -1136,6 +1179,8 @@
       <path d="M12 9v5" stroke="#874d00" stroke-width="1.6" stroke-linecap="round" />
       <circle cx="12" cy="17" r="1" fill="#874d00" />
     </svg>Formulario de prueba</div>
+  <div class="countdown-badge" id="countdownBadge"><span class="cd-icon">⏳</span><span
+      id="countdownText">Calculando…</span></div>
   <header class="site-header">
     <img src="https://iberescena.org/Iberescena_Logo_Full_Color-cropped.svg" alt="IBERESCENA">
     <span class="brand-title">Mis Solicitudes — Formulario de Coproducción</span>
@@ -1819,7 +1864,31 @@
       initNotes();
       updateMatrixTotal();
       actualizarResumen(false);
+      initCountdown();
     });
+
+    /* ---------------- Contador de cierre de convocatoria ---------------- */
+    function initCountdown() {
+      // 20 de julio de 2026, 12:00 m., hora de Colombia (UTC-5, sin horario de verano)
+      const DEADLINE = new Date("2026-07-20T12:00:00-05:00").getTime();
+      const el = document.getElementById('countdownText');
+      const badge = document.getElementById('countdownBadge');
+
+      function tick() {
+        const now = Date.now();
+        const diff = DEADLINE - now;
+        if (diff <= 0) {
+          el.innerHTML = 'Convocatoria cerrada';
+          badge.classList.add('cd-closed');
+          return;
+        }
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        el.innerHTML = `<span class="cd-num">${days}d</span> <span class="cd-num">${hours}h</span> para el cierre`;
+      }
+      tick();
+      setInterval(tick, 30000);
+    }
 
     function fillCountrySelects() {
       document.querySelectorAll('#paises_procedencia, .country-select').forEach(sel => {
