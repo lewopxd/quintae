@@ -1,0 +1,471 @@
+/* ============================================================
+   SIDEBAR — 2x2 tabs, tree (compact CAD style inspired by Paneton),
+   layers, visibility/lock/color
+   ============================================================ */
+#sidebar, #catalogo-panel {
+    width: 280px;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    position: absolute;
+    top: 0;
+    bottom: 26px;
+    left: -280px;
+    transition: left 0.3s ease;
+    z-index: 201;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+#sidebar.open, #catalogo-panel.open {
+    left: 0;
+}
+
+/* ---- SELECTOR DE CONTEXTO: 2 filas de pestañas ---- */
+.sidebar-tab-grid {
+    display: flex;
+    flex-direction: column;
+    background: #2a2d2e;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-top: 5px;
+    user-select: none;
+}
+
+.sidebar-tab-row {
+    display: flex;
+}
+
+.sidebar-tab-row:first-child {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-tab-grid .tab-btn {
+    flex: 1;
+    padding: 8px 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar-tab-grid .tab-btn:hover {
+    color: #e0e0e0;
+}
+
+.sidebar-tab-grid .tab-btn.active {
+    color: #6eb5ff;
+    border-bottom-color: #3b8eea;
+    background: var(--bg-sidebar);
+}
+
+/* Border between columns in each row */
+.sidebar-tab-row .tab-btn + .tab-btn {
+    border-left: 1px solid var(--border-color);
+}
+
+/* ---- Properties panel header tabs (keep original style) ---- */
+.sidebar-tabs {
+    display: flex;
+    background: transparent;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+#prop-desktop-header .tab-btn,
+.sidebar-tabs > .tab-btn:not(.sidebar-tab-grid .tab-btn) {
+    flex: 1;
+    padding: 8px 5px;
+    font-size: 10px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+    letter-spacing: 0.5px;
+    transition: 0.2s;
+}
+
+#prop-desktop-header .tab-btn:hover {
+    color: var(--text-main);
+}
+
+#prop-desktop-header .tab-btn.active {
+    color: var(--text-main);
+    border-bottom-color: var(--accent);
+}
+
+/* ---- SCROLL AREA for the tree ---- */
+.tree-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 4px 4px 2px;
+}
+
+/* ============================================================
+   TREE DESIGN — Compact Paneton-inspired tree with guide lines
+   
+   Key idea: every nesting level gets a consistent small indent
+   (10px total = margin-left + padding-left). Guide lines are 
+   drawn with border-left. Leaf nodes sit slightly indented from
+   their parent folder to show hierarchy clearly.
+   ============================================================ */
+
+/* Disable all native text selection, long-press callouts, and tap blue highlights inside tree container */
+#tree-container, #tree-container * {
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* ---- TREE NODES ---- */
+.tree-node {
+    display: flex;
+    align-items: center;
+    padding: 1px 2px 1px 2px;
+    cursor: pointer;
+    border-radius: 3px;
+    min-height: 21px;
+    -webkit-touch-callout: none; /* Disables iOS long-press callout menu */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: element; /* iOS Safari drag-and-drop support flag */
+}
+
+/* Touch hold pending visual feedback */
+.tree-node.dnd-poly-dragstart-pending {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.3) !important;
+    border-radius: 3px;
+    opacity: 0.9;
+}
+
+/* Touch hold active dragging visual feedback */
+.tree-node.dnd-poly-dragstart-active {
+    opacity: 0.4;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.tree-node:hover {
+    background-color: #2a2d2e;
+}
+
+.tree-node.selected {
+    background-color: #37373d;
+}
+
+/* ---- TREE CHILDREN (nested/collapsible) ---- 
+   Every level indents 10px total: 4px margin (line position) + 6px padding.
+   The border-left draws the guide line connecting siblings. */
+.tree-children {
+    padding-left: 6px;
+    border-left: 1px solid rgba(255, 255, 255, 0.07);
+    margin-left: 4px;
+    display: none;
+}
+
+.tree-children.open {
+    display: block;
+}
+
+/* Leaf-only containers get the SAME indent as mixed containers.
+   This keeps hierarchy visible. The guide line is slightly 
+   more subtle for pure-leaf groups. */
+.tree-children.leaf-group {
+    padding-left: 6px;
+    margin-left: 4px;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ---- CHEVRON (expand/collapse arrow) ---- */
+.tree-node .chevron {
+    font-size: 11px;
+    margin-right: 2px;
+    color: var(--text-muted);
+    transition: transform 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    border-radius: 2px;
+}
+
+.tree-node .chevron:hover {
+    color: #ccc;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tree-node .chevron.open {
+    transform: rotate(90deg);
+}
+
+/* Spacer for leaf nodes — same width as chevron so icons align */
+.tree-node .chevron-spacer {
+    width: 14px;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+/* ---- NODE ICON (type icon — Phosphor) ---- */
+.tree-node .node-icon {
+    font-size: 15px;
+    margin-right: 4px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+/* ---- NODE NAME ---- */
+.tree-node .node-name {
+    color: #ccc;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+/* ---- RIGHT CONTROLS (4-slot grid) ---- */
+.tree-node-controls {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+    margin-left: auto;
+    padding-left: 2px;
+    gap: 6px;
+}
+
+.tree-node:hover .tree-node-controls,
+.tree-node-controls.always-visible {
+    opacity: 1;
+}
+
+/* Each control slot — compact 14px */
+.ctrl-slot {
+    width: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Add/Eye/Lock button icons */
+.ctrl-slot .ctrl-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #858585;
+    transition: color 0.15s;
+}
+
+.ctrl-slot .ctrl-btn:hover {
+    color: #e0e0e0;
+}
+
+.ctrl-slot .ctrl-add {
+    color: #6eb5ff;
+}
+
+.ctrl-slot .ctrl-add:hover {
+    color: #9ad0ff;
+}
+
+/* Color dot */
+.ctrl-slot .color-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid #555;
+}
+
+/* ---- VISIBILITY/LOCK (functional classes) ---- */
+.ctrl-btn.hidden-layer {
+    opacity: 0.4;
+    color: var(--text-muted);
+}
+
+.ctrl-btn.is-locked {
+    color: #666666;
+}
+
+/* ---- LEGACY SELECTORS (for compatibility with Properties/History) ---- */
+.layer-controls {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.visibility-btn,
+.lock-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.visibility-btn {
+    color: rgba(255, 255, 255, 0.65) !important;
+    opacity: 1 !important;
+}
+
+.visibility-btn.hidden-layer {
+    color: rgba(255, 255, 255, 0.25) !important;
+    opacity: 0.6 !important;
+}
+
+.lock-btn {
+    color: rgba(255, 255, 255, 0.65) !important;
+    opacity: 1 !important;
+}
+
+.lock-btn.is-locked {
+    color: rgba(255, 255, 255, 0.25) !important;
+    opacity: 0.6 !important;
+}
+
+.visibility-btn i,
+.lock-btn i {
+    font-size: 12px;
+}
+
+/* Color picker (small circle) — kept for compatibility */
+.color-picker {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background: none;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.color-picker::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color-picker::-webkit-color-swatch {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+}
+
+.color-picker::-moz-color-swatch {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+}
+
+/* ---- DRAG STATE ---- */
+.tree-node.dragging {
+    opacity: 0.4;
+}
+
+.tree-node.dragging-mobile {
+    opacity: 0.35;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.tree-node.drag-over {
+    background-color: rgba(91, 155, 255, 0.2) !important;
+    outline: 2px dashed #5b9bff !important;
+    border-radius: 4px;
+}
+
+/* Floating touch drag ghost copy */
+.tree-node-ghost {
+    position: fixed;
+    margin: 0 !important;
+    transform: scale(0.95) !important;
+    pointer-events: none;
+    background: rgba(30, 30, 30, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(91, 155, 255, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 13px;
+    z-index: 100000000;
+    opacity: 0.85;
+}
+
+.tree-node-ghost i {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (min-width: 768px) {
+    #sidebar, #catalogo-panel {
+        bottom: 0;
+    }
+    #sidebar.open, #catalogo-panel.open {
+        left: 48px;
+    }
+}
+
+/* Quick actions row inside properties panel */
+.prop-actions-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 8px;
+}
+
+.quick-action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s, color 0.2s;
+    user-select: none;
+}
+
+.quick-action-btn i {
+    font-size: 14px;
+}
+
+.quick-action-btn:hover {
+    background-color: var(--hover-bg);
+    color: #fff;
+}
+
+.quick-action-btn.btn-delete:hover {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+}

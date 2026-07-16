@@ -1,0 +1,177 @@
+/* ============================================================
+   CANVAS — wrapper, split dividers, gizmo, tool cursors
+   ============================================================ */
+#canvas-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 10;
+    transition: left 0.3s ease, width 0.3s ease;
+}
+
+@media (min-width: 768px) {
+    #canvas-wrapper {
+        left: 48px;
+        width: calc(100% - 48px);
+    }
+}
+
+/* Ruler overlay canvas */
+#ruler-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 15;
+    pointer-events: none;
+    display: none;
+}
+
+/* Split view dividers */
+.split-divider {
+    position: absolute;
+    background-color: var(--border-color);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.split-divider.v {
+    width: 2px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    display: none;
+}
+
+.split-divider.h {
+    height: 2px;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: none;
+}
+
+.split-active .split-divider {
+    display: block;
+}
+
+/* Split view badges */
+.split-badge, .single-badge {
+    position: absolute;
+    display: none;
+    align-items: center;
+    gap: 5px;
+    background: rgba(15, 15, 15, 0.4);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 300;
+    padding: 3px 8px;
+    border-radius: 6px;
+    z-index: 500;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.split-badge i, .single-badge i {
+    font-size: 12px;
+    opacity: 0.75;
+}
+
+.split-active .split-badge {
+    display: flex;
+}
+
+.single-active .single-badge {
+    display: flex;
+}
+
+.split-badge.tl, .single-badge.tl { top: 15px; left: 15px; }
+.split-badge.tr { top: 15px; left: calc(50% + 15px); }
+.split-badge.bl { top: calc(50% + 15px); left: 15px; }
+.split-badge.br { top: calc(50% + 15px); left: calc(50% + 15px); }
+
+/* Gizmo */
+#gizmo-container {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 80px;
+    height: 80px;
+    z-index: 150;
+    cursor: grab;
+    border-radius: 50%;
+    touch-action: none;
+}
+
+#gizmo-container:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#gizmo-container:active {
+    cursor: grabbing;
+}
+
+/* Tool cursors */
+#canvas-wrapper.tool-select,
+#canvas-wrapper.tool-move,
+#canvas-wrapper.tool-orbit {
+    cursor: default;
+}
+
+#canvas-wrapper.tool-orbit:active {
+    cursor: grabbing;
+}
+
+#canvas-wrapper.tool-pan {
+    cursor: grab;
+}
+
+    cursor: grabbing;
+}
+
+/* Move cursor: use standard arrow as requested */
+#canvas-wrapper.handle-hover,
+#canvas-wrapper.dragging-move {
+    cursor: default;
+}
+
+/* ============================================================
+   CANVAS LOADING OVERLAY
+============================================================ */
+#canvas-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--base-bg);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cube-spinner {
+    width: 40px; 
+    height: 40px;
+    background-color: var(--accent);
+    animation: rotateCube 1.2s infinite ease-in-out;
+}
+
+@keyframes rotateCube {
+    0% { transform: perspective(120px) rotateX(0deg) rotateY(0deg); }
+    50% { transform: perspective(120px) rotateX(-180deg) rotateY(0deg); }
+    100% { transform: perspective(120px) rotateX(-180deg) rotateY(-180deg); }
+}
+
+/* UI Lock during 3D load */
+#app-shell.app-loading {
+    pointer-events: none !important;
+}
+#app-shell.app-loading #canvas-loading-overlay {
+    display: flex !important;
+}

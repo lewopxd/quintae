@@ -1,0 +1,285 @@
+/* ============================================================
+   TOP-BAR — RESPONSIVE FLEX WRAP
+   Grupos semánticos que saltan de fila cuando no caben
+   ============================================================ */
+#top-bar {
+    background-color: var(--bg-topbar);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    padding: 4px 8px;
+    gap: 3px;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 300;
+    flex-shrink: 0;
+    position: relative;
+    /* sin height fijo: la barra crece lo que necesite */
+}
+
+/* Grupos de botones que se mantienen juntos y no se parten */
+.tb-group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+/* Separador vertical entre grupos */
+.tb-sep {
+    width: 1px;
+    height: 20px;
+    background-color: var(--border-color);
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+/* El grupo de acción derecha (undo/redo/brillo) en PC flota a la derecha;
+   en pantallas estrechas pasa a la siguiente fila y se alinea a la izquierda */
+.tb-group-right {
+    margin-left: auto;
+}
+
+@media (max-width: 560px) {
+    .tb-group-right {
+        margin-left: 0;
+        /* ocupa toda la fila para mantener alineación */
+        order: 99;
+    }
+
+    /* en móvil pequeño, padding mínimo */
+    #top-bar {
+        padding: 3px 6px;
+        gap: 2px;
+    }
+
+    .tb-sep {
+        margin: 0 2px;
+    }
+}
+
+/* TOOLBAR 2D — también wrap */
+#toolbar-2d {
+    background-color: var(--bg-toolbar);
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 3px 8px;
+    gap: 3px;
+    border-bottom: 1px solid var(--border-color);
+    z-index: 299;
+    flex-shrink: 0;
+    position: relative;
+}
+
+#toolbar-2d.active {
+    display: flex;
+}
+
+/* Icon button — base component */
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    font-size: 18px;  /* Phosphor icon default size in toolbars */
+}
+
+.icon-btn:hover {
+    background-color: var(--hover-bg);
+}
+
+.icon-btn.active {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: var(--accent) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.icon-btn.active i {
+    color: var(--accent) !important;
+}
+
+.icon-btn.sm {
+    width: 28px;
+    height: 28px;
+}
+
+.icon-btn.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* .separator legacy — kept for 2D toolbar inline use */
+.separator {
+    width: 1px;
+    height: 20px;
+    background-color: var(--border-color);
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+
+/* Move planes buttons */
+#move-planes {
+    display: none;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+#move-planes.visible {
+    display: flex;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0 4px;
+    margin: 0 4px;
+}
+
+.btn-plane {
+    font-size: 10px;
+    font-weight: bold;
+    width: 32px;
+    height: 24px;
+    letter-spacing: 0;
+}
+
+/* Move family container grouping card */
+.move-family-container {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 2px;
+    gap: 2px;
+    margin: 0 2px;
+    height: 34px;
+    box-sizing: border-box;
+}
+
+
+
+
+
+/* Brightness container */
+#brightness-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--bg-sidebar);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    z-index: 120;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+}
+
+@media (min-width: 768px) {
+    #btn-top-explorer,
+    #btn-top-properties {
+        display: none !important;
+    }
+}
+
+/* Quick action buttons in the top app title bar */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.header-actions .icon-btn.sm {
+    width: 20px;
+    height: 20px;
+    font-size: 11.5px;
+    border-radius: 3px;
+    background: none;
+    border: none;
+    color: #888888;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s, color 0.2s;
+    padding: 0;
+}
+
+.header-actions .icon-btn.sm:hover {
+    background-color: var(--hover-bg);
+    color: #fff;
+}
+
+.header-actions .icon-btn.sm.active {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: var(--accent) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.header-actions .icon-btn.sm.active i {
+    color: var(--accent) !important;
+}
+
+.header-actions .icon-btn.sm.disabled {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.header-actions .header-sep {
+    width: 1px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.08);
+    margin: 0 4px;
+}
+
+/* 2-line Hamburger Menu styling */
+.hamburger-lines {
+    width: 18px;
+    height: 9px; /* Slimmer for 2 lines */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hamburger-lines .line {
+    display: block;
+    height: 2px;
+    width: 100%;
+    border-radius: 4px;
+    background-color: var(--text-main);
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+#btn-mobile-menu {
+    display: none; /* Hidden on PC */
+}
+
+@media (max-width: 767px) {
+    #btn-mobile-menu {
+        display: flex !important;
+        margin-right: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #btn-mobile-menu.active .line1 {
+        transform: translateY(3.5px) rotate(45deg);
+        background-color: var(--accent);
+    }
+
+    #btn-mobile-menu.active .line2 {
+        transform: translateY(-3.5px) rotate(-45deg);
+        background-color: var(--accent);
+    }
+}

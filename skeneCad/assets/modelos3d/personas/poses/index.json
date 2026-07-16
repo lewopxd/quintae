@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Female Sitting Pose",
+        "file": "female sitting pose.glb"
+    },
+    {
+        "name": "Female Standing Pose",
+        "file": "female standing pose.glb"
+    },
+    {
+        "name": "Male Sitting Pose",
+        "file": "male sitting pose.glb"
+    },
+    {
+        "name": "Male Standing Pose",
+        "file": "male standing pose.glb"
+    },
+    {
+        "name": "T-Pose",
+        "file": "T-Pose.glb"
+    }
+]

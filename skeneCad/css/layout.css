@@ -1,0 +1,209 @@
+/* ============================================================
+   APP LAYOUT — shell, title bar, main wrapper, bottom bar
+   ============================================================ */
+#app-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    /* fix mobile: dynamic viewport height */
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#app-shell.ready {
+    opacity: 1;
+}
+
+#app-title {
+    height: 24px;
+    background-color: var(--bg-title);
+    color: #888888;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    letter-spacing: 0.5px;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* FIX MOBILE: min-height:0 evita overflow en flex child */
+#main-wrapper {
+    display: block;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-height: 0;
+}
+
+#activity-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 48px;
+    height: 100%;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    display: none; /* Hidden on mobile */
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    gap: 10px;
+    z-index: 210;
+}
+
+.act-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.act-btn:hover {
+    color: var(--text-main);
+    background: var(--hover-bg);
+}
+
+.act-btn.active {
+    color: #ffffff;
+    background: var(--active-bg);
+    border-left: 2px solid var(--accent);
+}
+
+.act-btn i {
+    font-size: 20px;
+}
+
+@media (min-width: 768px) {
+    #activity-bar {
+        display: flex;
+    }
+}
+
+/* FIX MOBILE: safe-area-inset-bottom para notch / Dynamic Island */
+#bottom-bar {
+    height: 24px;
+    background-color: var(--bg-bottombar);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    font-size: 12px;
+    color: var(--text-main);
+    justify-content: space-between;
+    z-index: 300;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 15, 20, 0.6);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.status-item span {
+    font-family: "Inter", "Segoe UI", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: #e0e0e0;
+}
+
+.status-item i {
+    font-size: 14px;
+    color: #888888;
+}
+
+/* Mobile sliding narrow activity-bar and pushing layout */
+@media (max-width: 767px) {
+    #activity-bar {
+        display: flex !important; /* Force display to toggle open/close */
+        position: absolute !important;
+        top: 0 !important; /* Starts exactly below the top toolbar (#top-bar) */
+        left: -48px !important;
+        width: 48px !important;
+        bottom: 26px !important; /* Matches exactly the top edge of the collapsed properties title bar */
+        height: auto !important;
+        background-color: var(--bg-sidebar) !important; /* Solid opaque color */
+        border-right: 1px solid var(--border-color) !important;
+        box-shadow: none !important; /* No shadow when closed/offscreen */
+        transition: left 0.2s ease-out, bottom 0s linear 0.2s !important; /* Delay height change when closing */
+        padding-top: 12px !important;
+        gap: 18px !important;
+        z-index: 999999 !important;
+        align-items: center !important;
+        flex-direction: column !important;
+    }
+
+    #activity-bar.open {
+        left: 0 !important;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3) !important; /* Shadow only when open */
+        transition: left 0.2s ease-out, bottom 0s linear 0s !important; /* Instant height change when opening */
+    }
+
+    /* Sidebars on mobile: default to left: 0 when open */
+    #sidebar.open, #catalogo-panel.open {
+        left: 0 !important;
+        transition: left 0.2s ease-out !important;
+    }
+
+    /* PUSH EFFECT: When the activity-bar is open, push the active sidebars 48px to the right */
+    #activity-bar.open ~ #sidebar.open,
+    #activity-bar.open ~ #catalogo-panel.open {
+        left: 48px !important;
+    }
+
+    /* Properties panel transition behavior on mobile */
+    #properties-panel {
+        z-index: 1000000 !important; /* Higher than activity-bar (999999) to clip its shadow */
+        transition: transform 0.3s, left 0.2s ease-out, width 0.2s ease-out !important;
+    }
+
+    /* By default on mobile, when collapsed, the properties panel spans 100% width starting at left: 0 */
+    #properties-panel.collapsed {
+        left: 0 !important;
+        width: 100% !important;
+    }
+
+    /* When the activity-bar is open and properties panel is expanded (NOT collapsed),
+       shrink and push the properties panel 48px to the right, showing distinct borders */
+    #activity-bar.open ~ #properties-panel:not(.collapsed) {
+        left: 48px !important;
+        width: calc(100% - 48px) !important;
+        border-left: 1px solid var(--border-color) !important;
+    }
+
+    /* Shift content inside properties panel to provide comfortable padding-left breathing room */
+    #activity-bar.open ~ #properties-panel:not(.collapsed) #prop-content {
+        padding-left: 5px !important;
+    }
+
+    /* When both are open (activity-bar is open and properties panel is NOT collapsed),
+       stretch the activity-bar all the way to the bottom bar (bottom: 0) */
+    #activity-bar.open:has(~ #properties-panel:not(.collapsed)) {
+        bottom: 0 !important;
+    }
+
+    /* Remove the activity-bar shadow when it sits side-by-side with any open panel
+       (sidebar, catalog, or expanded properties) to avoid shadow overlapping */
+    #activity-bar.open:has(~ #sidebar.open),
+    #activity-bar.open:has(~ #catalogo-panel.open),
+    #activity-bar.open:has(~ #properties-panel:not(.collapsed)) {
+        box-shadow: none !important;
+    }
+}

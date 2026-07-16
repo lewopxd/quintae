@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SkeneCAD</title>
+    <meta name="description" content="SkeneCAD — Simulación de teatros e iluminación escénica. IDE web tipo WYSIWYG CAD para visualización 3D de espacios teatrales.">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+
+
+    <!-- CSS Modules -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/properties.css">
+    <link rel="stylesheet" href="css/modals.css">
+    <link rel="stylesheet" href="css/context-menu.css">
+    <link rel="stylesheet" href="css/message-dialog.css">
+    <link rel="stylesheet" href="css/canvas.css">
+    <link rel="stylesheet" href="css/catalog.css">
+    <link rel="stylesheet" href="css/watermark.css">
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- ============================================================
+         LOADER — renderizado por CSS desde el primer byte
+    ============================================================ -->
+    <div id="tecal-loader">
+        <div class="loader-brand">
+            <div class="loader-brand-title">SkeneCAD</div>
+            <div class="loader-brand-sub">Plano Estructural 3D</div>
+        </div>
+
+        <div class="loader-steps" id="loader-steps">
+            <!-- Steps se insertan por JS, pero el contenedor existe desde HTML -->
+        </div>
+
+        <div class="loader-bar-track">
+            <div class="loader-bar-fill" id="loader-bar"></div>
+        </div>
+
+        <div class="loader-status" id="loader-status">Inicializando…</div>
+    </div>
+
+    <!-- ============================================================
+         APP SHELL — oculto hasta que el loader termina
+    ============================================================ -->
+    <div id="app-shell" class="app-loading">
+        <div id="app-title">
+            <div id="brand-title" style="display:flex; align-items:center; gap:10px;">
+                SkeneCAD
+            </div>
+            <div class="header-actions">
+                <button id="btn-undo" class="icon-btn sm disabled" title="Deshacer (Ctrl+Z)"><i class="ph ph-arrow-u-up-left"></i></button>
+                <button id="btn-redo" class="icon-btn sm disabled" title="Rehacer (Ctrl+Y)"><i class="ph ph-arrow-u-up-right"></i></button>
+                <div class="header-sep"></div>
+                <button id="btn-brightness" class="icon-btn sm" title="Luz Ambiente"><i class="ph ph-sun"></i></button>
+            </div>
+        </div>
+
+        <div id="top-bar">
+            <button id="btn-mobile-menu" class="icon-btn" title="Menú">
+                <div class="hamburger-lines">
+                    <span class="line line1"></span>
+                    <span class="line line2"></span>
+                </div>
+            </button>
+
+            <!-- GRUPO 1: Menú + toggle 2D/3D -->
+            <div class="tb-group">
+                <button id="btn-toggle-view" class="icon-btn active" title="Alternar 2D/3D"><i class="ph ph-cube"></i></button>
+            </div>
+
+            <div class="tb-sep"></div>
+
+            <!-- GRUPO 2: Visibilidad de escena -->
+            <div class="tb-group">
+                <button id="btn-dimensions" class="icon-btn" title="Mostrar/Ocultar Acotaciones"><i class="ph ph-ruler"></i></button>
+                <button id="btn-grid" class="icon-btn" title="Ajustes de Grid"><i class="ph ph-grid-four"></i></button>
+                <button id="btn-wireframe" class="icon-btn" title="Wire View"><i class="ph ph-bounding-box"></i></button>
+                <button id="btn-gizmo" class="icon-btn active" title="Mostrar/Ocultar Gizmo"><i class="ph ph-compass"></i></button>
+            </div>
+
+            <div class="tb-sep"></div>
+
+            <!-- GRUPO 3: Herramientas -->
+            <div class="tb-group">
+                <!-- Subgrupo: Edición de Escena -->
+                <button id="btn-select" class="icon-btn" title="Seleccionar (Q)"><i class="ph ph-cursor"></i></button>
+
+                <!-- Familia de Movimiento (Agrupada visualmente con borde sutil) -->
+                <div class="move-family-container">
+                    <button id="btn-move" class="icon-btn" title="Mover (W)"><i class="ph ph-arrows-out-cardinal"></i></button>
+                    <div id="move-planes">
+                        <button class="icon-btn sm btn-plane active" data-plane="xz" title="Mover en plano horizontal XZ">XZ</button>
+                        <button class="icon-btn sm btn-plane" data-plane="xy" title="Mover en plano frontal XY">XY</button>
+                        <button class="icon-btn sm btn-plane" data-plane="yz" title="Mover en plano lateral YZ">YZ</button>
+                    </div>
+                    <button id="btn-clamp" class="icon-btn sm active" title="Restringir al área del espacio escénico"><i class="ph ph-arrows-in"></i></button>
+                </div>
+
+                <button id="btn-rotate" class="icon-btn" title="Rotar (R)"><i class="ph ph-arrows-clockwise"></i></button>
+
+                <div class="tb-sep"></div>
+
+                <!-- Subgrupo: Navegación de Cámara -->
+                <button id="btn-orbit" class="icon-btn active" title="Órbita / Navegar (E)"><i class="ph ph-globe-hemisphere-east"></i></button>
+                <button id="btn-pan" class="icon-btn" title="Encuadre / Pan (H)"><i class="ph ph-hand"></i></button>
+                <button id="btn-zoom-toggle" class="icon-btn sm active" title="Zoom hacia el cursor (CAD)"><i class="ph ph-cursor-click"></i></button>
+            </div>
+
+
+
+        </div>
+
+        <div id="toolbar-2d">
+            <button class="icon-btn sm btn-cam-mode" data-mode="top" title="Superior"><i class="ph ph-arrow-line-down"></i></button>
+            <button class="icon-btn sm btn-cam-mode" data-mode="front" title="Frontal"><i class="ph ph-align-center-horizontal"></i></button>
+            <button class="icon-btn sm btn-cam-mode" data-mode="bottom" title="Inferior"><i class="ph ph-arrow-line-up"></i></button>
+            <button class="icon-btn sm btn-cam-mode" data-mode="left" title="Lateral Izquierda"><i class="ph ph-arrow-line-right"></i></button>
+            <button class="icon-btn sm btn-cam-mode" data-mode="right" title="Lateral Derecha"><i class="ph ph-arrow-line-left"></i></button>
+            <button class="icon-btn sm btn-cam-mode" data-mode="ortho" title="Ortogonal"><i class="ph ph-selection-all"></i></button>
+            <div class="separator"></div>
+            <button class="icon-btn sm btn-cam-mode" data-mode="split" title="Vista Dividida"><i class="ph ph-squares-four"></i></button>
+            <div class="separator"></div>
+            <button class="icon-btn sm btn-fit-view" id="btn-fit-view" title="Encuadrar Vista (Fit)"><i class="ph ph-frame-corners"></i></button>
+        </div>
+
+        <div id="main-wrapper">
+            <nav class="rail" id="activity-bar">
+                <button class="rail-btn active" id="nav-explorer" onclick="window._toggleExplorer()" title="Explorador de Escena">
+                    <i class="ph ph-tree-structure" style="font-size: 22px;"></i>
+                    <div class="rail-indicator"></div>
+                </button>
+                <button class="rail-btn" id="nav-properties" onclick="window._toggleProperties()" title="Propiedades">
+                    <i class="ph ph-sliders" style="font-size: 22px;"></i>
+                    <div class="rail-indicator"></div>
+                </button>
+                <button class="rail-btn" id="nav-catalogo" onclick="window._toggleCatalog()" title="Catálogo de Teatros">
+                    <i class="ph ph-bank" style="font-size: 22px;"></i>
+                    <div class="rail-indicator"></div>
+                </button>
+                <div class="rail-spacer"></div>
+                <button class="rail-btn" id="nav-config" title="Configuración">
+                    <i class="ph ph-gear" style="font-size: 20px;"></i>
+                </button>
+            </nav>
+            
+            <div id="canvas-wrapper" class="tool-orbit single-active">
+                <canvas id="ruler-overlay"></canvas>
+                <div class="split-divider v"></div>
+                <div class="split-divider h"></div>
+                <div class="split-badge tl"><i class="ph ph-arrow-line-down"></i> Superior</div>
+                <div class="split-badge tr"><i class="ph ph-align-center-horizontal"></i> Frontal</div>
+                <div class="split-badge bl"><i class="ph ph-arrow-line-right"></i> Lateral</div>
+                <div class="split-badge br"><i class="ph ph-selection-all"></i> Ortogonal</div>
+                
+                <div class="mode-chip" id="mode-indicator" style="display: none;">
+                    <i class="ph ph-cube"></i> Perspectiva (3D)
+                </div>
+                
+                <div class="canvas-center" id="canvas-overlay-center" style="display: none; position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center; pointer-events:none; z-index: 10;">
+                    <i class="ph ph-cube" id="canvas-icon" style="font-size:56px; color:#666; opacity:0.55; margin-bottom:10px;"></i>
+                    <div id="canvas-text" style="color:#7a7a7a; font-size:15px; letter-spacing:.25em; text-transform:uppercase; font-weight:300;">RENDER 3D</div>
+                    <div id="canvas-subtext" style="color:#5a5a5a; font-size:10.5px; letter-spacing:.03em; margin-top:6px;"></div>
+                </div>
+
+                <div class="single-badge tl" id="single-badge"><i class="ph ph-cube"></i> <span>Perspectiva (3D)</span></div>
+                
+                <div id="gizmo-container" title="Arrastrar Gizmo"></div>
+                
+                <!-- Loading Overlay for 3D assets -->
+                <div id="canvas-loading-overlay" style="display: none;">
+                    <div class="cube-spinner"></div>
+                </div>
+            </div>
+
+            <aside id="sidebar">
+                <!-- VISTA EXPLORADOR -->
+                <div class="view active" id="view-explorer" style="display:flex; flex-direction:column; height:100%;">
+                    <!-- SELECTOR DE CONTEXTO (2 Filas de Pestañas) -->
+                    <div class="sidebar-tab-grid">
+                        <div class="sidebar-tab-row">
+                            <button onclick="window._switchCategory('arquitectura')" id="tab-arquitectura" class="tab-btn">
+                                Espacio Arquitectónico
+                            </button>
+                            <button onclick="window._switchCategory('escena')" id="tab-escena" class="tab-btn">
+                                Espacio Escénico
+                            </button>
+                        </div>
+                        <div class="sidebar-tab-row">
+                            <button onclick="window._switchCategory('iluminacion')" id="tab-iluminacion" class="tab-btn">
+                                Iluminación y Medios
+                            </button>
+                            <button onclick="window._switchCategory('personas')" id="tab-personas" class="tab-btn">
+                                Personas
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CONTENEDOR ESCÉNICO PANEL -->
+                    <div id="contenedor-panel">
+                        <div class="cont-header" onclick="window._toggleContenedor()">
+                            <div class="title">
+                                <i class="ph ph-bounding-box" style="color:#5b9bff; font-size:16px;"></i> Contenedor Escénico
+                            </div>
+                            <i class="ph ph-caret-down chev" id="contenedor-chevron"></i>
+                        </div>
+                        <div id="contenedor-body">
+                            <p>Este volumen se fija al iniciar el proyecto. Todo lo que diseñes se posiciona dentro de él.</p>
+                            <div class="field-grid">
+                                <div class="field"><label>Ancho boca (m)</label><input type="number" id="c-ancho" value="10" step="0.1"></div>
+                                <div class="field"><label>Profundidad (m)</label><input type="number" id="c-profundidad" value="8" step="0.1"></div>
+                                <div class="field"><label>Alto proscenio (m)</label><input type="number" id="c-alto" value="5.5" step="0.1"></div>
+                                <div class="field"><label>Altura parrilla (m)</label><input type="number" id="c-parrilla" value="9" step="0.1"></div>
+                            </div>
+                            <button class="apply-btn" id="btn-apply-container" onclick="window._applyContainer()">Aplicar cambios al contenedor</button>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor ÚNICO del Árbol de Nodos -->
+                    <div class="tree-scroll-area" id="tree-container">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- PANEL DE CATÁLOGO (Independiente) -->
+            <aside id="catalogo-panel" class="side-panel">
+                <div class="view" id="view-catalogo" style="display:flex; flex-direction:column; height:100%;">
+                    
+                    <!-- TEATRO SELECTOR PANEL -->
+                    <div id="teatro-selector-panel" style="display:block;">
+                        <div class="cont-header" style="cursor:default">
+                            <div class="title">
+                                <i class="ph ph-bank" style="color:#5b9bff; font-size:16px;"></i> Teatro Activo
+                            </div>
+                        </div>
+                        <div style="padding:0 12px 12px;">
+                            <p>Define qué arquitectura real se renderiza en 3D. No afecta tu Contenedor Escénico ni tu diseño.</p>
+                            <select id="teatro-select" class="field" onchange="window._onTeatroChange(this.value)" style="width:100%;background:#1e1e1e;border:1px solid var(--border);border-radius:3px;padding:5px 6px;color:#eaeaea;font-size:12px;">
+                                <option value="ninguno">Ninguno</option>
+                            </select>
+                            <div id="sync-banner" style="display:none;margin-top:8px;background:#20222a;border:1px solid #2c5789;border-radius:4px;padding:8px;">
+                                <p style="color:#dbe9ff; margin-bottom:7px;">¿Sincronizar el <b>Contenedor Escénico</b> con las medidas de <span id="sync-theater-name"></span>?</p>
+                                <div style="display:flex;gap:6px;">
+                                    <button onclick="window._syncContainerFromActive(true)" style="flex:1;font-size:11px;background:#2c5789;border:none;border-radius:3px;padding:5px;color:#fff;cursor:pointer;">Sí</button>
+                                    <button onclick="window._syncContainerFromActive(false)" style="flex:1;font-size:11px;background:#2d2d2e;border:1px solid var(--border);border-radius:3px;padding:5px;color:#ccc;cursor:pointer;">No</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cat-head">
+                        <div class="t">Catálogo de Teatros</div>
+                        <div class="s">Verifica tu diseño contra cada recinto sin alterar tu contenedor.</div>
+                    </div>
+                    <div id="catalog-container"></div>
+                    <div class="new-theater-bar">
+                        <button class="new-theater-btn" onclick="alert('Funcionalidad para crear teatro personalizado próximamente.')">
+                            <i class="ph ph-plus" style="font-size:14px;"></i> Crear nuevo teatro
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- VERIFY DRAWER -->
+            <div id="verify-drawer">
+                <div class="vd-head">
+                    <div>
+                        <div class="eyebrow">Verificación de diseño</div>
+                        <div class="title" id="verify-theater-name">—</div>
+                    </div>
+                    <button class="vd-close" onclick="window._closeVerify()">
+                        <i class="ph ph-x" style="font-size: 18px;"></i>
+                    </button>
+                </div>
+                <div id="verify-summary"></div>
+                <div id="verify-list"></div>
+                <div class="vd-foot">
+                    <button class="vd-close-btn" onclick="window._closeVerify()">Cerrar verificación (tu contenedor no cambió)</button>
+                </div>
+            </div>
+
+            <div id="brightness-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <label style="margin: 0;">Intensidad Luz Ambiente</label>
+                    <button id="btn-close-brightness" class="icon-btn sm" style="margin-left: 10px;"><i class="ph ph-x"></i></button>
+                </div>
+                <input type="range" id="brightness-slider" min="0" max="1" step="0.01" value="1">
+            </div>
+
+            <div id="properties-panel" class="collapsed">
+                <div class="sidebar-tabs" id="prop-desktop-header">
+                    <button class="tab-btn active">Propiedades</button>
+                </div>
+                <div id="prop-header">
+                    <span id="prop-title-path">Contenedor</span>
+                    <span id="desktop-prop-title">Propiedades</span>
+                    <i class="ph ph-caret-down panel-toggle-icon"></i>
+                </div>
+                <div id="prop-content"></div>
+            </div>
+        </div>
+
+        <div id="watermark">
+            <div class="wm-title">SkeneCAD</div>
+            <div class="wm-author">By Leonardo Merchán</div>
+            <a href="https://instagram.com/_ledirec" target="_blank" class="wm-link">@_ledirec</a>
+        </div>
+
+        <div id="bottom-bar">
+            <div class="status-item" id="status-coords"><i class="ph ph-ruler"></i> <span>8m (W) x 4.5m (H) x 7.5m (D)</span></div>
+            <div class="status-item" id="status-rotation"><i class="ph ph-arrows-clockwise"></i> <span>0.0° / 0.0° / 0.0°</span></div>
+            <div class="status-item"><i class="ph ph-camera"></i> <span id="status-cam">Perspectiva (3D)</span></div>
+        </div>
+    </div><!-- #app-shell -->
+
+    <!-- Floating DEV button: Clear localStorage + cache + reload -->
+    <button id="btn-clear-all" title="DEV: Limpiar cache + localStorage + reload"
+        style="position:fixed; top:72px; right:8px; z-index:99999; background:rgba(30,30,30,0.9); border:1px solid #ff6b6b; color:#ff6b6b; border-radius:6px; padding:6px 10px; cursor:pointer; font-size:12px; display:flex; align-items:center; gap:5px; backdrop-filter:blur(4px); transition: background 0.2s, transform 0.1s;"
+        onmouseover="this.style.background='rgba(255,107,107,0.2)'; this.style.transform='scale(1.05)';"
+        onmouseout="this.style.background='rgba(30,30,30,0.9)'; this.style.transform='scale(1)';">
+        <i class="ph ph-trash" style="font-size:14px;"></i>
+        <span>Clear</span>
+    </button>
+
+    <!-- Floating crosshair hint near cursor -->
+    <div id="cursor-move-hint">
+        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="7" y1="1" x2="7" y2="5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="7" y1="9" x2="7" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="1" y1="7" x2="5" y2="7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="9" y1="7" x2="13" y2="7" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <!-- Entry Point -->
+    <script type="module" src="js/main.js"></script>
+
+</body>
+
+</html>
