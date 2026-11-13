@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0b0b0c">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel de Control — ALMA</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23f4f3ef' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%23f4f3ef'/%3E%3C/svg%3E">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0b0b0c;
+      color: #f4f3ef;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #almaControlFrame {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      width: 100dvw;
+      height: 100dvh;
+      border: 0;
+      background: #0b0b0c;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <iframe
+    id="almaControlFrame"
+    title="Panel de Control — ALMA"
+    allow="camera *; microphone *; autoplay *; clipboard-write *; fullscreen *"
+    allowfullscreen
+  ></iframe>
+  <script>
+    (function(){
+      var APP_ORIGIN = 'https://alma-tickets-app.vercel.app';
+      var SID_KEY = 'alma_ctrl_sid_v1';
+      var PATH_KEY = 'alma_ctrl_last_path_v1';
+
+      function getSavedSid(){
+        try { return localStorage.getItem(SID_KEY) || ''; } catch(e){ return ''; }
+      }
+
+      window.addEventListener('message', function(ev){
+        if(!ev || ev.origin !== APP_ORIGIN || !ev.data) return;
+        if(ev.data.type === 'ALMA_CTRL_SID' && ev.data.sid){
+          try { localStorage.setItem(SID_KEY, ev.data.sid); } catch(e){}
+          if(ev.data.path){
+            try { sessionStorage.setItem(PATH_KEY, ev.data.path); } catch(e){}
+          }
+        } else if(ev.data.type === 'ALMA_CTRL_LOGOUT'){
+          try { localStorage.removeItem(SID_KEY); } catch(e){}
+          try { sessionStorage.removeItem(PATH_KEY); } catch(e){}
+        }
+      });
+
+      var params = new URLSearchParams(window.location.search);
+      var sid = getSavedSid();
+      if(sid && !params.has('_sid')){
+        params.set('_sid', sid);
+      }
+      var targetPath = '/control';
+      try {
+        var lastPath = sessionStorage.getItem(PATH_KEY) || '';
+        if(lastPath && lastPath.indexOf('/control') === 0 && !window.location.search){
+          var u = new URL(APP_ORIGIN + lastPath);
+          targetPath = u.pathname;
+          u.searchParams.forEach(function(v, k){
+            if(!params.has(k)) params.set(k, v);
+          });
+        }
+      } catch(e){}
+      var qs = params.toString();
+      var frame = document.getElementById('almaControlFrame');
+      frame.src = APP_ORIGIN + targetPath + (qs ? ('?' + qs) : '') + (window.location.hash || '');
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#000000">
+  <title>ALMA — Quinta Esencia</title>
+  <meta name="description" content="Activa tu boleta para ALMA — Obra de teatro de Quinta Esencia.">
+  <meta property="og:title" content="ALMA — Quinta Esencia">
+  <meta property="og:description" content="Ingresa el código de tu boleta para activar tu entrada a la función de ALMA.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://5esencia.art/alma-tickets">
+  <meta property="og:image" content="https://alma-tickets-app.vercel.app/static/poster.jpg">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23f4f3ef' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%23f4f3ef'/%3E%3C/svg%3E">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000000;
+      color: #f4f3ef;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #almaFrame {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      width: 100dvw;
+      height: 100dvh;
+      border: 0;
+      background: #000000;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <iframe
+    id="almaFrame"
+    title="ALMA — Quinta Esencia"
+    allow="autoplay *; fullscreen *; clipboard-write *"
+    allowfullscreen
+  ></iframe>
+  <script>
+    (function(){
+      var APP_ORIGIN = 'https://alma-tickets-app.vercel.app';
+      var STORAGE_KEY = 'alma_ticket_v1';
+      var COOKIE_NAME = 'alma_t5e';
+      var THREE_MONTHS_MS = 90 * 24 * 60 * 60 * 1000;
+
+      function getCookie(name){
+        var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+        return m ? decodeURIComponent(m[1]) : '';
+      }
+
+      function setCookie(name, val, maxAgeSec){
+        document.cookie = name + '=' + encodeURIComponent(val) + '; path=/; max-age=' + maxAgeSec + '; SameSite=Lax; Secure';
+      }
+
+      function getSavedToken(){
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if(raw){
+            var parsed = JSON.parse(raw);
+            if(parsed && parsed.token && (!parsed.expiresAt || parsed.expiresAt > Date.now())){
+              return parsed.token;
+            }
+          }
+        } catch(e){}
+        return getCookie(COOKIE_NAME) || '';
+      }
+
+      function saveToken(token, code){
+        if(!token) return;
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            token: token,
+            code: code || '',
+            expiresAt: Date.now() + THREE_MONTHS_MS
+          }));
+        } catch(e){}
+        try {
+          setCookie(COOKIE_NAME, token, 90 * 24 * 60 * 60);
+        } catch(e){}
+      }
+
+      function clearToken(){
+        try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+        try { setCookie(COOKIE_NAME, '', 0); } catch(e){}
+      }
+
+      window.addEventListener('message', function(ev){
+        if(!ev || ev.origin !== APP_ORIGIN || !ev.data) return;
+        if(ev.data.type === 'ALMA_TICKET_SAVE' && ev.data.token){
+          saveToken(ev.data.token, ev.data.code);
+        } else if(ev.data.type === 'ALMA_TICKET_CLEAR'){
+          clearToken();
+        }
+      });
+
+      var params = new URLSearchParams(window.location.search);
+      var savedTok = getSavedToken();
+      if(savedTok && !params.has('_t')){
+        params.set('_t', savedTok);
+      }
+      var qs = params.toString();
+      var frame = document.getElementById('almaFrame');
+      frame.src = APP_ORIGIN + '/' + (qs ? ('?' + qs) : '') + (window.location.hash || '');
+    })();
+  </script>
+</body>
+</html>
